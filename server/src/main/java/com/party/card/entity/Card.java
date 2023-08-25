@@ -1,13 +1,11 @@
 package com.party.card.entity;
 
+import com.party.chatting.entity.Chatting;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -35,6 +33,10 @@ public class Card {
     private CardStatus cardStatus;
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @OneToOne
+    @JoinColumn(name = "CHATTING_ID")
+    private Chatting chatting;
 
     public enum CardStatus{
 
