@@ -18,6 +18,6 @@ public class Chatting {
 
     private int chattingUnread;
 
-    @OneToOne(mappedBy = "Chatting")
+    @OneToOne(mappedBy = "chatting")
     private Card card;
 }
