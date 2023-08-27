@@ -18,9 +18,8 @@ public class MemberCard {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberCardId;
 
-    /*
-    history, store 구현
-     */
+    @Enumerated(value = EnumType.STRING)
+    private CardType cardType;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -30,5 +29,15 @@ public class MemberCard {
     @JoinColumn(name = "CARD_ID")
     private Card card;
 
+    public enum CardType {
+        HISTORY("나의 모임"),
+        STORE("찜");
 
+        @Getter
+        private String status;
+
+        CardType(String status) {
+            this.status = status;
+        }
+    }
 }

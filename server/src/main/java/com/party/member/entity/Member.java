@@ -20,12 +20,16 @@ public class Member {
     private Long memberId;
 
     @Email
+    @Column(nullable = false, unique = true)
     private String memberEmail;
 
+    @Column(nullable = false, unique = true)
     private String memberNickname;
 
+    @Column(nullable = false)
     private String memberGender;
 
+    @Column(nullable = false)
     private String memberPassword;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
@@ -34,8 +38,6 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ProfileImage> profileImages = new ArrayList<>();
 
-    /*
-    role 구현
-     */
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 }
