@@ -1,4 +1,7 @@
 package com.party.member.mapper;
 
-public class MemberMapper {
+import org.mapstruct.Mapper;
+
+@Mapper
+public interface MemberMapper {
 }
