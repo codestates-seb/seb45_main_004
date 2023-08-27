@@ -1,17 +1,27 @@
 package com.party.auth.fliter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.party.auth.dto.LoginDto;
 import com.party.auth.token.JwtTokenizer;
 import com.party.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 @RequiredArgsConstructor
 
-public class JwtAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
     private final JwtTokenizer jwtTokenizer;
+    private final AuthenticationManager authenticationManager;
 
     private String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
@@ -37,4 +47,22 @@ public class JwtAuthenticationFilter {
 
         return refreshToken;
     }
+
+    @SneakyThrows
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request,
+                                                HttpServletResponse response) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        LoginDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.class);
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(
+                        loginDto.getUsername(), loginDto.getPassword());
+
+        return authenticationManager.authenticate(authenticationToken);
+    }
+
+
+
 }
