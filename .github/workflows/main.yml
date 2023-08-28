@@ -1,11 +1,13 @@
-name: Java CI with Gradle
+name: Server Deploy
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'server/**'
 
 jobs:
-  build:
+  server:
 
     runs-on: ubuntu-latest
 
