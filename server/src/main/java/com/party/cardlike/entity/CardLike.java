@@ -27,7 +27,7 @@ public class CardLike {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "CARD_ID")
     private Card card;
 }
