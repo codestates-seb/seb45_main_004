@@ -30,14 +30,17 @@ public class MemberCard {
     private Card card;
 
     public enum CardType {
-        HISTORY("나의 모임"),
-        STORE("찜");
+        HISTORY("나의 모임", 0),
+        STORE("찜", 1);
 
         @Getter
         private String status;
+        @Getter
+        private int num;
 
-        CardType(String status) {
+        CardType(String status, int num) {
             this.status = status;
+            this.num = num;
         }
     }
 }
