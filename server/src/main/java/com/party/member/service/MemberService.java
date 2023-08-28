@@ -40,6 +40,7 @@ public class MemberService {
         if (findMember.isPresent()) throw new BusinessLogicException(ExceptionCode.MEMBER_EXIST);
     }
 
+    /*
     public void verifyMemberOwnership(String nickname) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
@@ -53,6 +54,7 @@ public class MemberService {
         if (!nickname.equals(principal.toString())) {
             throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
         }
-
     }
+    수정필요
+     */
 }
