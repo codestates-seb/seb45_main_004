@@ -8,6 +8,7 @@ import com.party.cardlike.repository.CardLikeRepository;
 import com.party.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +25,9 @@ public class CardLikeService {
     private final CardRepository cardRepository;
     private final MemberRepository memberRepository;
 
+
     public boolean isCardLikedByMember(Long cardId, Long memberId) {
-        List<CardLike> cardlikes = cardLikeRepository.findByCard_CardIdAndMember_MemberId(cardId, memberId);
-        return !cardlikes.isEmpty();
+        return cardLikeRepository.existsByCard_CardIdAndMember_MemberId(cardId, memberId);
     }
 
     public long getCardLikesCount(Long cardId) {
@@ -34,8 +35,7 @@ public class CardLikeService {
     }
 
     public ResponseEntity<CardLikeResponseDto> createCardLike(Long cardId, Long memberId, boolean isLiked) {
-        boolean checkLiked = cardLikeRepository.existsByCard_CardIdAndMember_MemberId(cardId, memberId);
-        if (checkLiked) {
+        if (isCardLikedByMember(cardId, memberId)) {
             throw new IllegalArgumentException("YOU ALREADY LIKED");
         }
 
@@ -49,10 +49,10 @@ public class CardLikeService {
         updateCardLikeCount(cardId);
 
         long likeCount = cardLikeRepository.countByCard_CardId(cardId);
-        boolean updatedIsLiked = cardLikeRepository.existsByCard_CardIdAndMember_MemberId(cardId, memberId);
+        boolean updatedIsLiked = true;
         CardLikeResponseDto responseDto = new CardLikeResponseDto(likeCount, updatedIsLiked);
 
-        return ResponseEntity.ok(responseDto);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     public ResponseEntity<CardLikeResponseDto> cancelCardLike(Long cardId, Long memberId) {
@@ -64,15 +64,15 @@ public class CardLikeService {
             updateCardLikeCount(cardId);
 
             long likeCount = cardLikeRepository.countByCard_CardId(cardId);
-            boolean isLiked = cardLikeRepository.existsByCard_CardIdAndMember_MemberId(cardId, memberId);
+            boolean isLiked = false;
             CardLikeResponseDto responseDto = new CardLikeResponseDto(likeCount, isLiked);
 
-            return ResponseEntity.ok(responseDto);
+            return new ResponseEntity<>(responseDto, HttpStatus.OK);
+
         } else {
-            return ResponseEntity.notFound().build();
+            throw new IllegalArgumentException("Like Does Not Exist");
         }
     }
-
     private void updateCardLikeCount(Long cardId) {
 
         long likeCount = cardLikeRepository.countByCard_CardId(cardId);
