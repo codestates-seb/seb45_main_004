@@ -32,7 +32,6 @@ public class Card {
     @Column(nullable = false)
     private int cardPerson;
 
-    @Column(nullable = false)
     private Date cardDate;
 
     @Column(nullable = false)
