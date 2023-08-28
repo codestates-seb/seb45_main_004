@@ -18,6 +18,15 @@ public class Follow {
     private Long followId;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member;
+    @JoinColumn(name = "FROM_MEMBER")
+    private Member fromMember;
+
+    @ManyToOne
+    @JoinColumn(name = "TO_MEMBER")
+    private Member toMember;
+
+    public Follow(Member fromMember, Member toMember) {
+        this.fromMember = fromMember;
+        this.toMember = toMember;
+    }
 }

@@ -34,9 +34,6 @@ public class Card {
 
     private long cardMap;
 
-    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<CardCategory> cardCategories;
-
     @Enumerated(value = EnumType.STRING)
     private CardStatus cardStatus = CardStatus.CARD_RECRUITING;
 
