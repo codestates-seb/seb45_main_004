@@ -3,28 +3,27 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'client/**'
 
 env:
   working-directory: ./client #root 폴더 설정
-  S3_BUCKET_NAME : celebee-bucket
 
 jobs:
-  build:
+  client:
     runs-on: ubuntu-latest #배포 실행될 환경
     steps: 
       - name: Checkout source code.
         uses: actions/checkout@v3
 
-      - name: Set up Node 
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
+          npm install -g npm@latest
+          npx create-react-app my-app
         working-directory: ./client #디렉토리명
+
+      - name: Install @babel/plugin-proposal-private-property-in-object
+        run: npm install --save-dev @babel/plugin-proposal-private-property-in-object
+        working-directory: ./client
 
       - name: Build
         run: npm run build
@@ -32,16 +31,16 @@ jobs:
 
       - name: SHOW AWS CLI VERSION
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_EC2_METADATA_DISABLED: true
         run: |
           aws --version
 
       - name: Sync Bucket
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY}}
+          AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           AWS_EC2_METADATA_DISABLED: true
         run: |
           aws s3 sync \
