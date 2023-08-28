@@ -1,6 +1,7 @@
 package com.party.card.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
@@ -9,11 +10,18 @@ public class CardDto {
 
     @Getter
     @Setter
-    @NotBlank
+    @NoArgsConstructor
     public static class Post{
+        private long memberId;
+
         @NotBlank
-        private String title;
+        private String cardTitle;
+
         @NotBlank
-        private String body;
+        private String cardBody;
+
+        private int cardPerson;
+
+        private int cardMoney;
     }
 }
