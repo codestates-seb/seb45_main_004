@@ -18,6 +18,7 @@ public class CardLikeController {
     private final CardLikeRepository cardLikeRepository;
 
 
+    //좋아요 post
     @PostMapping("/{cardId}/{memberId}")
     public ResponseEntity postCardLike(@PathVariable Long cardId,
                                        @PathVariable Long memberId,
@@ -32,19 +33,14 @@ public class CardLikeController {
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
+    // 특정글에 대한 좋아요 수 조회
     @GetMapping("/{cardId}")
     public ResponseEntity getCardLikeCount(@PathVariable Long cardId) {
         long likeCount = cardLikeService.getCardLikesCount(cardId);
         return new ResponseEntity<>(likeCount,HttpStatus.OK);
     }
 
-    @GetMapping("/{cardId}/{memberId}")
-    public ResponseEntity CardLikedByMember(@PathVariable Long cardId,
-                                            @PathVariable Long memberId) {
-        boolean isLiked = cardLikeService.isCardLikedByMember(cardId, memberId);
-        return new ResponseEntity<>(isLiked, HttpStatus.OK);
-    }
-
+    // 좋아요 delete
     @DeleteMapping("/{cardId}/{memberId}")
     public ResponseEntity deleteCardLike(@PathVariable Long cardId,
                                          @PathVariable Long memberId) {

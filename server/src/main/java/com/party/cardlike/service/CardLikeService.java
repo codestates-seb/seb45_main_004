@@ -34,6 +34,7 @@ public class CardLikeService {
         return cardLikeRepository.countByCard_CardId(cardId);
     }
 
+    // 좋아요 생성
     public ResponseEntity<CardLikeResponseDto> createCardLike(Long cardId, Long memberId, boolean isLiked) {
         if (isCardLikedByMember(cardId, memberId)) {
             throw new IllegalArgumentException("YOU ALREADY LIKED");
@@ -55,6 +56,7 @@ public class CardLikeService {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    //좋아요 취소
     public ResponseEntity<CardLikeResponseDto> cancelCardLike(Long cardId, Long memberId) {
         List<CardLike> cardLikes = cardLikeRepository.findByCard_CardIdAndMember_MemberId(cardId, memberId);
         if (!cardLikes.isEmpty()) {

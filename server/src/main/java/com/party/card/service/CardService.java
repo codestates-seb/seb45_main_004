@@ -30,6 +30,7 @@ public class CardService {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
+    // 모임글 등록
     public Card createCard(CardDto.Post postDto) {
         /* member 검증
         Member member = card.getMember();
@@ -41,6 +42,7 @@ public class CardService {
 
          */
 //        Object memberId = memberService.extractMemberInfo().get("memberId");
+
         Card card = new Card();
 
         String day = postDto.getCardDate();
@@ -51,7 +53,6 @@ public class CardService {
         card.setCardBody(postDto.getCardBody());
         card.setCardPerson(postDto.getCardPerson());
         card.setCardMoney(postDto.getCardMoney());
-        card.setCardImageUrl(postDto.getCardImageUrl());
 
         return cardRepository.save(card);
     }
