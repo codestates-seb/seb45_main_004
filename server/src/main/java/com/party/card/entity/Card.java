@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +35,7 @@ public class Card {
     private int cardPerson;
 
     @Column(nullable = false)
-    private String cardDate;
+    private LocalDate cardDate;
 
     private String cardImageUrl;
 
