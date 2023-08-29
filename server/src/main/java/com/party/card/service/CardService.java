@@ -9,12 +9,16 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.orm.hibernate5.SpringSessionContext;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -28,6 +32,16 @@ public class CardService {
 
     // 모임글 등록
     public Card createCard(CardDto.Post postDto) {
+        /* member 검증
+        Member member = card.getMember();
+        Optional<Member> verifiedMember = memberRepository.findById(member.getMemberId());
+        if (!verifiedMember.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }
+        card.setMember(member);
+
+         */
+//        Object memberId = memberService.extractMemberInfo().get("memberId");
 
         Card card = new Card();
 
