@@ -58,6 +58,9 @@ public class MemberService {
     // 사용조건은 Access 토큰이 헤더에 포함되어 있어야함 그렇지 않으면 오류발생
     public Map<String, Object> extractMemberInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }
         Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
         return principal;
     }

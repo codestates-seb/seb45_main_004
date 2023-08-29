@@ -16,7 +16,6 @@ public interface MemberMapper {
 
     @Mapping(source = "card.cardId", target = "cardId")
     @Mapping(source = "card.cardTitle", target = "cardTitle")
-    @Mapping(source = "card.cardImageUrl", target = "cardImageUrl")
     @Mapping(source = "card.cardLikesCount", target = "cardLikesCount")
     MemberCardResponseDto memberCardToMemberCardResponseDto(MemberCard memberCard);
 }
