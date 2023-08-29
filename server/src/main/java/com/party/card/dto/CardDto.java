@@ -27,6 +27,5 @@ public class CardDto {
 
         private int cardMoney;
 
-        private String cardImageUrl;
     }
 }

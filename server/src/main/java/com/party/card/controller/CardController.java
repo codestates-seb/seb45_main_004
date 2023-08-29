@@ -26,7 +26,7 @@ public class CardController {
     private final CardService cardService;
     private final CardMapper mapper;
 
-
+    // 모임글 Post
     @PostMapping("/new-cards")
     public ResponseEntity postCard(@Valid @RequestBody CardDto.Post postDto) {
 

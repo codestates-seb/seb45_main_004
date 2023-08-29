@@ -37,8 +37,6 @@ public class Card {
     @Column(nullable = false)
     private LocalDate cardDate;
 
-    private String cardImageUrl;
-
     @Column(nullable = false)
     private int cardMoney;
 
