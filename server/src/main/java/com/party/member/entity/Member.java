@@ -34,6 +34,8 @@ public class Member {
     @Column(nullable = false)
     private String memberPassword;
 
+    private String memberIntroduce;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Card> cardList = new ArrayList<>();
 
