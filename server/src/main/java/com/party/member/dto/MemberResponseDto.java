@@ -15,6 +15,6 @@ public class MemberResponseDto {
     private String memberNickname;
     private String memberEmail;
     private String memberGender;
-    private List<MemberCard> memberCards = new ArrayList<>();
-    private List<ProfileImage> profileImages = new ArrayList<>();
+    private ProfileImage profileImage;
+    private List<MemberCardResponseDto> memberCards = new ArrayList<>();
 }
