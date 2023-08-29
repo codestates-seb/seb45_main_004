@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @NoArgsConstructor
 @Getter
@@ -17,6 +18,7 @@ public class MemberCard {
     private Long memberCardId;
 
     @Enumerated(value = EnumType.STRING)
+    @NotNull
     private CardType cardType;
 
     @ManyToOne
