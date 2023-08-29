@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -48,6 +49,17 @@ public class MemberService {
     public void verifyExistsEmail(String email) {
         Optional<Member> findMember = memberRepository.findByMemberEmail(email);
         if (findMember.isPresent()) throw new BusinessLogicException(ExceptionCode.MEMBER_EXIST);
+    }
+
+    // SpringSecurityContextHolder에 저장된 Authentication에서 사용자 정보를 빼옵니다
+    // memberId, memberEmail, memberNickname 키에 해당 유저의 정보가 할당 되어있습니다
+    // Object memberId = memberService.extractMemberInfo().get("memberId");
+    // 위와 같이 사용하면 memberId가 반환됨!
+    // 사용조건은 Access 토큰이 헤더에 포함되어 있어야함 그렇지 않으면 오류발생
+    public Map<String, Object> extractMemberInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
+        return principal;
     }
 
     /*
