@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    width: 1728px;
+    height: 1117px;
+    background: linear-gradient(135deg, rgba(18, 194, 233, 0.6), rgba(196, 113, 237, 0.6), rgba(246, 79, 89, 0.6));
+}
