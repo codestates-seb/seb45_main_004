@@ -29,10 +29,9 @@ public class CardController {
 
     @PostMapping("/new-cards")
     public ResponseEntity postCard(@Valid @RequestBody CardDto.Post postDto) {
-        Card card = mapper.CardPostDtoToCard(postDto);
-        Card createCard = cardService.createCard(card);
+
+        Card createCard = cardService.createCard(postDto);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
-
     }
 }

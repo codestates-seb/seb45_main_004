@@ -1,5 +1,6 @@
 package com.party.member.entity;
 
+import com.party.card.entity.Card;
 import com.party.image.entity.ProfileImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class Member {
 
     @Column(nullable = false)
     private String memberPassword;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Card> cardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private List<MemberCard> memberCards = new ArrayList<>();

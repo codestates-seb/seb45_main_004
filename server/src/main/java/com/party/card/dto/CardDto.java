@@ -18,10 +18,15 @@ public class CardDto {
         private String cardTitle;
 
         @NotBlank
+        private String cardDate;
+
+        @NotBlank
         private String cardBody;
 
         private int cardPerson;
 
         private int cardMoney;
+
+        private String cardImageUrl;
     }
 }
