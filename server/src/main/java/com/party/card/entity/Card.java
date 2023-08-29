@@ -4,11 +4,13 @@ import com.party.cardlike.entity.CardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.image.entity.CardImage;
 import com.party.member.entity.MemberCard;
+import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,7 +34,10 @@ public class Card {
     @Column(nullable = false)
     private int cardPerson;
 
-    private Date cardDate;
+    @Column(nullable = false)
+    private LocalDate cardDate;
+
+    private String cardImageUrl;
 
     @Column(nullable = false)
     private int cardMoney;
@@ -48,9 +53,13 @@ public class Card {
     @Enumerated(value = EnumType.STRING)
     private CardStatus cardStatus = CardStatus.CARD_RECRUITING;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     private long cardLikesCount;
+
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     @OneToOne
     @JoinColumn(name = "CHATTING_ID")
@@ -67,12 +76,12 @@ public class Card {
 
 
     public enum CardCategory {
-        CATEGORY_LEISURE("레저"),
-        CATEGORY_TRAVEL("여행"),
-        CATEGORY_GAME("게임"),
-        CATEGORY_CULTURE("공연,문화,축제"),
-        CATEGORY_EDUCATION("교육"),
-        CATEGORY_ETC("기타");
+        CATEGORY_LEISURE("LEISURE"),
+        CATEGORY_TRAVEL("TRAVEL"),
+        CATEGORY_GAME("GAME"),
+        CATEGORY_CULTURE("CULTURE"),
+        CATEGORY_EDUCATION("EDUCATION"),
+        CATEGORY_ETC("ETC");
 
         @Getter
         private String category;
