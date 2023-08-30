@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Space+Grotesk:wght@300&display=swap');
 
 * {
@@ -5,7 +6,9 @@
 }
 
 body {
-    margin: 0;
+    box-sizing: border-box;
+    list-style: none;
+    margin:  0px 320px;
     padding: 0;
     display: flex;
     justify-content: center;

@@ -1,33 +1,16 @@
 import './App.css';
-
 //COMPONENTS
 import Footer from './components/Footer';
 import Header from './components/Header';
-
 import Homepage from './pages/HomePage';
+import InvitePage from './pages/InvitePage';
 
 function App() {
   return (
     <>
       <Header />
       <Homepage />
-      <div className="content-body">
-        <div>
-          <h2>Hello World!</h2>
-        </div>
-        <div>
-          <a href="/">HOME</a>
-        </div>
-        <div>
-          <a href="/login">LOGIN</a>
-        </div>
-        <div>
-          <a href="/users/new-user">SIGNUP</a>
-        </div>
-        <div>
-          <a href="/posts/1">1st Post</a>
-        </div>
-      </div>
+     <InvitePage />;
       <Footer />
     </>
   );
