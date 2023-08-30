@@ -6,16 +6,19 @@ const CatgegoryBtnWrapper = styled.li`
   button {
     width: 120px;
     height: 40px;
-    background-color: white;
+    background-color: ${(props) => props.color || 'white'};
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    padding: 0px;
+    // 특정 버튼에만 마진값 안주기
+    margin-right: ${(props) => (props.isETC ? '0px' : '20px')};
   }
 `;
 
-export default function CategoryBtn({ text }) {
+export default function CategoryBtn({ text, color }) {
   return (
-    <CatgegoryBtnWrapper>
+    <CatgegoryBtnWrapper isETC={text === 'ETC'} color={color}>
       <button>{text}</button>
     </CatgegoryBtnWrapper>
   );
@@ -23,4 +26,5 @@ export default function CategoryBtn({ text }) {
 
 CategoryBtn.propTypes = {
   text: PropTypes.string.isRequired, // text prop의 유효성을 검사합니다.
+  color: PropTypes.string.isRequired,
 };

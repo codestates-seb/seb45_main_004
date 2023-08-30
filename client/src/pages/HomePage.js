@@ -44,8 +44,6 @@ const HomePage = styled.div`
   }
 `;
 
-// const CategoryBtn = styled.div``;
-
 export default function Homepage() {
   return (
     <HomePage>
@@ -57,13 +55,13 @@ export default function Homepage() {
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
-            <CategoryBtn text="All" />
-            <CategoryBtn text="Leisure" />
-            <CategoryBtn text="Travel" />
-            <CategoryBtn text="Game" />
-            <CategoryBtn text="Culture" />
-            <CategoryBtn text="Education" />
-            <CategoryBtn text="ETC" />
+            <CategoryBtn text="All" color="#C471ED" />
+            <CategoryBtn text="Leisure" color="#FF6AC6" />
+            <CategoryBtn text="Travel" color="#FF7D99" />
+            <CategoryBtn text="Game" color="#FFA472" />
+            <CategoryBtn text="Culture" color="#FFD05F" />
+            <CategoryBtn text="Education" color="#4CA899" />
+            <CategoryBtn text="ETC" color="#F9F871" />
           </ul>
         </div>
         <div className="search-container">
