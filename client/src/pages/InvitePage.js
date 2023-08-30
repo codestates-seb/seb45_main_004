@@ -3,7 +3,7 @@ import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import categoryMappings from '../components/CategoryMappings';
-
+// ㅇㅇ,,,ㅇㅇㄴㄴss
 function InvitePage() {
   // 카드 데이터 상태변수
   const [eventData, setEventData] = useState({

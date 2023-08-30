@@ -8,7 +8,7 @@
 body {
     box-sizing: border-box;
     list-style: none;
-    margin:  0px 320px;
+    margin:  0px;
     padding: 0;
     display: flex;
     justify-content: center;
