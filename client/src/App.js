@@ -1,9 +1,19 @@
 import './App.css';
-// import HomePage from './pages/HomePage';
+//COMPONENTS
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Homepage from './pages/HomePage';
 import InvitePage from './pages/InvitePage';
 
 function App() {
-  return <InvitePage />;
+  return (
+    <>
+      <Header />
+      <Homepage />
+     <InvitePage />;
+      <Footer />
+    </>
+  );
 }
 
 export default App;
