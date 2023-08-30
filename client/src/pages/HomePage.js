@@ -21,8 +21,8 @@ const HomePage = styled.div`
   }
   .search {
     display: flex;
-    width: 600px;
-    height: 55px;
+    width: 500px;
+    height: 40px;
     border: solid 1px black;
     border-radius: 10px;
     align-items: center;
