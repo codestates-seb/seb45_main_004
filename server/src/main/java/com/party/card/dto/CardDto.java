@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class CardDto {
 
@@ -23,6 +24,10 @@ public class CardDto {
         @NotBlank
         private String cardBody;
 
+        @NotBlank
+        private String cardCategory;
+
+        @NotNull
         private int cardPerson;
 
         private int cardMoney;

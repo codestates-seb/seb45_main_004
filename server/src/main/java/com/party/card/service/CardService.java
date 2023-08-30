@@ -10,17 +10,12 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.orm.hibernate5.SpringSessionContext;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.swing.text.DateFormatter;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -52,8 +47,9 @@ public class CardService {
         if (!memberOptional.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
-
         Member member = memberOptional.get();
+
+        Card.CardCategory cardCategoryEnum = Card.CardCategory.valueOf(postDto.getCardCategory());
 
         Card card = new Card();
 
@@ -66,6 +62,7 @@ public class CardService {
         card.setCardPerson(postDto.getCardPerson());
         card.setCardMoney(postDto.getCardMoney());
         card.setMember(member);
+        card.setCardCategory(cardCategoryEnum);
 
         return cardRepository.save(card);
     }
