@@ -23,6 +23,7 @@ public interface CardMapper {
         cardResponseDto.setTotalPerson(card.getCardPerson());
         cardResponseDto.setCardMoney(card.getCardMoney());
         cardResponseDto.setCardStatus(card.getCardStatus());
+        cardResponseDto.setCardLikesCount(card.getCardLikesCount());
         return cardResponseDto;
     }
     List<CardResponseDto> cardsToCardResponse(List<Card> cards);

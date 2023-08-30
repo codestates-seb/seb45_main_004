@@ -19,6 +19,7 @@ public class CardResponseDto {
     private int currentPerson;
     private int totalPerson;
     private int cardMoney;
+    private long cardLikesCount;
     private Card.CardStatus cardStatus;
 
     public Member getMember() {
