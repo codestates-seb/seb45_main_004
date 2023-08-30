@@ -1,12 +1,16 @@
 import './App.css';
+
 //COMPONENTS
 import Footer from './components/Footer';
 import Header from './components/Header';
+
+import Homepage from './pages/HomePage';
 
 function App() {
   return (
     <>
       <Header />
+      <Homepage />
       <div className="content-body">
         <div>
           <h2>Hello World!</h2>
