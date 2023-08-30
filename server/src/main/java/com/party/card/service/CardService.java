@@ -5,6 +5,7 @@ import com.party.card.entity.Card;
 import com.party.card.repository.CardRepository;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,16 +35,25 @@ public class CardService {
 
     // 모임글 등록
     public Card createCard(CardDto.Post postDto) {
-        /* member 검증
-        Member member = card.getMember();
-        Optional<Member> verifiedMember = memberRepository.findById(member.getMemberId());
-        if (!verifiedMember.isPresent()) {
+        Object memberIdObject  = memberService.extractMemberInfo().get("memberId");
+
+        // card 등록 시 memberid 값 저장
+        Long memberId;
+        if (memberIdObject instanceof Long) {
+            memberId = (Long) memberIdObject;
+        } else if (memberIdObject instanceof Integer) {
+            memberId = ((Integer) memberIdObject).longValue();
+        } else {
+            // memberId가 올바른 형태로 추출되지 않은 경우 예외 처리
+            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
+        }
+
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
-        card.setMember(member);
 
-         */
-//        Object memberId = memberService.extractMemberInfo().get("memberId");
+        Member member = memberOptional.get();
 
         Card card = new Card();
 
@@ -53,6 +65,7 @@ public class CardService {
         card.setCardBody(postDto.getCardBody());
         card.setCardPerson(postDto.getCardPerson());
         card.setCardMoney(postDto.getCardMoney());
+        card.setMember(member);
 
         return cardRepository.save(card);
     }

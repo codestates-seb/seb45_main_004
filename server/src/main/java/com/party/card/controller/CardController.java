@@ -31,7 +31,8 @@ public class CardController {
     public ResponseEntity postCard(@Valid @RequestBody CardDto.Post postDto) {
 
         Card createCard = cardService.createCard(postDto);
+        CardDto.ResponsePost responsePostDto = new CardDto.ResponsePost(createCard);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(responsePostDto,HttpStatus.CREATED);
     }
 }
