@@ -24,8 +24,8 @@ public class CardResponseDto {
 
     public Member getMember() {
         Member member = new Member();
-        member.setMemberId(memberId);
-        member.setMemberNickname(memberNickname);
+        member.setId(memberId);
+        member.setNickname(memberNickname);
         return member;
     }
 

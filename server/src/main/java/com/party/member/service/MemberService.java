@@ -26,11 +26,11 @@ public class MemberService {
     private final CustomAuthorityUtils authorityUtils;
 
     public Member createMember(Member member) {
-        verifyExistsEmail(member.getMemberEmail());
-        String encryptedPassword = passwordEncoder.encode(member.getMemberPassword());
-        member.setMemberPassword(encryptedPassword);
+        verifyExistsEmail(member.getEmail());
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
 
-        List<String> roles = authorityUtils.createRoles(member.getMemberEmail());
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
 
         return memberRepository.save(member);
@@ -47,7 +47,7 @@ public class MemberService {
     }
 
     public void verifyExistsEmail(String email) {
-        Optional<Member> findMember = memberRepository.findByMemberEmail(email);
+        Optional<Member> findMember = memberRepository.findByEmail(email);
         if (findMember.isPresent()) throw new BusinessLogicException(ExceptionCode.MEMBER_EXIST);
     }
 

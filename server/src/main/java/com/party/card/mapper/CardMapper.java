@@ -13,8 +13,8 @@ public interface CardMapper {
 
     default CardResponseDto cardToCardResponse(Card card) {
         CardResponseDto cardResponseDto = new CardResponseDto();
-        cardResponseDto.setMemberId(card.getMember().getMemberId());
-        cardResponseDto.setMemberNickname(card.getMember().getMemberNickname());
+        cardResponseDto.setMemberId(card.getMember().getId());
+        cardResponseDto.setMemberNickname(card.getMember().getNickname());
         cardResponseDto.setCardId(card.getCardId());
         cardResponseDto.setCardTitle(card.getCardTitle());
         cardResponseDto.setCardDate(String.valueOf(card.getCardDate()));

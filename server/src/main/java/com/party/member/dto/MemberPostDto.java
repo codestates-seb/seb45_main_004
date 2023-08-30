@@ -9,14 +9,14 @@ import javax.validation.constraints.NotBlank;
 public class MemberPostDto {
     @Email
     @NotBlank
-    private String memberEmail;
+    private String email;
 
     @NotBlank
-    private String memberNickname;
+    private String nickname;
 
     @NotBlank
-    private String memberGender;
+    private String gender;
 
     @NotBlank
-    private String memberPassword;
+    private String password;
 }
