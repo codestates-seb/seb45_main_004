@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -72,5 +73,16 @@ public class CardService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate date = LocalDate.parse(dateString, formatter);
         return date;
+    }
+
+    //모임글 상세 조회
+    public Card findCard(long cardId) {
+        return cardRepository.findByIdWithAll(cardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CARD_NOT_FOUND));
+    }
+
+    //모임글 전체 조회
+    public List<Card> findCards() {
+        return cardRepository.findAll();
     }
 }
