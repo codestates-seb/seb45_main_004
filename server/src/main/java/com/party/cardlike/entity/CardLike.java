@@ -21,7 +21,6 @@ public class CardLike {
 
     @Column
     private boolean isLiked;
-    private long cardLikeCount;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
