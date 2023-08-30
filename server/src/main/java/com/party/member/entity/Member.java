@@ -19,28 +19,28 @@ import java.util.List;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
     @Email
     @Column(nullable = false, unique = true)
-    private String memberEmail;
+    private String email;
 
     @Column(nullable = false, unique = true)
-    private String memberNickname;
+    private String nickname;
 
     @Column(nullable = false)
-    private String memberGender;
+    private String gender;
 
     @Column(nullable = false)
-    private String memberPassword;
+    private String password;
 
-    private String memberIntroduce;
+    private String introduce;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Card> cardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
-    private List<MemberCard> memberCards = new ArrayList<>();
+    private List<Applicant> applicants = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ProfileImage> profileImages = new ArrayList<>();

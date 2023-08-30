@@ -7,5 +7,5 @@ import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    Optional<Member> findByMemberEmail(String email);
+    Optional<Member> findByEmail(String email);
 }

@@ -3,7 +3,7 @@ package com.party.card.entity;
 import com.party.cardlike.entity.CardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.image.entity.CardImage;
-import com.party.member.entity.MemberCard;
+import com.party.member.entity.Applicant;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
@@ -67,7 +66,7 @@ public class Card {
     private List<CardImage> images = new ArrayList<>();
 
     @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
-    private List<MemberCard> memberCards = new ArrayList<>();
+    private List<Applicant> memberCards = new ArrayList<>();
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
     private List<CardLike> cardLikes = new ArrayList<>();
