@@ -1,9 +1,7 @@
-package com.party.card.entity;
+package com.party.board.entity;
 
-import com.party.cardlike.entity.CardLike;
+import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
-import com.party.image.entity.CardImage;
-import com.party.member.entity.MemberCard;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,47 +11,48 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @NoArgsConstructor
 @Entity
 @Getter
 @Setter
-public class Card {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cardId;
+    private Long id;
 
     @Column(nullable = false)
-    private String cardTitle;
+    private String title;
 
     @Column(nullable = false)
-    private String cardBody;
+    private String body;
 
     @Column(nullable = false)
-    private int cardPerson;
+    private int person;
 
     @Column(nullable = false)
-    private LocalDate cardDate;
+    private LocalDate date;
 
     @Column(nullable = false)
-    private int cardMoney;
+    private int money;
 
     @Column(nullable = false)
-    private long cardMap;
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private CardCategory cardCategory = CardCategory.CATEGORY_ETC;
+    private long map;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private CardStatus cardStatus = CardStatus.CARD_RECRUITING;
+    private BoardCategory category = BoardCategory.CATEGORY_ETC;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private BoardStatus status = BoardStatus.BOARD_RECRUITING;
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    private long cardLikesCount;
+    private long boardLikesCount;
+
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -63,17 +62,13 @@ public class Card {
     @JoinColumn(name = "CHATTING_ID")
     private Chatting chatting;
 
-    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
-    private List<CardImage> images = new ArrayList<>();
+//    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
+//    private List<MemberCard> memberCards = new ArrayList<>();
 
-    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
-    private List<MemberCard> memberCards = new ArrayList<>();
+    @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+    private List<BoardLike> boardLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "card", cascade = CascadeType.REMOVE)
-    private List<CardLike> cardLikes = new ArrayList<>();
-
-
-    public enum CardCategory {
+    public enum BoardCategory {
         CATEGORY_LEISURE("LEISURE"),
         CATEGORY_TRAVEL("TRAVEL"),
         CATEGORY_GAME("GAME"),
@@ -84,19 +79,19 @@ public class Card {
         @Getter
         private String category;
 
-        CardCategory(String category) {
+        BoardCategory(String category) {
             this.category = category;
         }
     }
-    public enum CardStatus {
-        CARD_RECRUITING("모집 중"),
-        CARD_ClOSED("모집 마감"),
+    public enum BoardStatus {
+        BOARD_RECRUITING("모집 중"),
+        BOARD_STATUS("모집 마감"),
         ;
 
         @Getter
         private String status;
 
-        CardStatus(String status) {
+        BoardStatus(String status) {
             this.status = status;
         }
     }

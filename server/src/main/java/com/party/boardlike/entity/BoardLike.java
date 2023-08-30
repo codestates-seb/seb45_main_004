@@ -1,6 +1,6 @@
-package com.party.cardlike.entity;
+package com.party.boardlike.entity;
 
-import com.party.card.entity.Card;
+import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +14,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class CardLike {
+public class BoardLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cardLikeId;
-
-    @Column
-    private boolean isLiked;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -28,5 +25,5 @@ public class CardLike {
 
     @ManyToOne
     @JoinColumn(name = "CARD_ID")
-    private Card card;
+    private Board board;
 }

@@ -1,8 +1,8 @@
-package com.party.card.service;
+package com.party.board.service;
 
-import com.party.card.dto.CardDto;
-import com.party.card.entity.Card;
-import com.party.card.repository.CardRepository;
+import com.party.board.dto.BoardDto;
+import com.party.board.entity.Board;
+import com.party.board.repository.BoardRepository;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
 import com.party.member.entity.Member;
@@ -23,17 +23,19 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CardService {
+public class BoardService {
 
-    private final CardRepository cardRepository;
+    private final BoardRepository boardRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
 
     // 모임글 등록
-    public Card createCard(CardDto.Post postDto) {
+    public Board createBoard(BoardDto.Post postDto) {
+        /* member 관련 주석
+
         Object memberIdObject  = memberService.extractMemberInfo().get("memberId");
 
-        // card 등록 시 memberid 값 저장
+        // Board 등록 시 memberid 값 저장
         Long memberId;
         if (memberIdObject instanceof Long) {
             memberId = (Long) memberIdObject;
@@ -50,22 +52,24 @@ public class CardService {
         }
         Member member = memberOptional.get();
 
-        Card.CardCategory cardCategoryEnum = Card.CardCategory.valueOf(postDto.getCardCategory());
+         */
 
-        Card card = new Card();
+        Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
 
-        String day = postDto.getCardDate();
+        Board board = new Board();
+
+        String day = postDto.getDate();
         LocalDate date = stringToDateConverter(day);
 
-        card.setCardTitle(postDto.getCardTitle());
-        card.setCardDate(date);
-        card.setCardBody(postDto.getCardBody());
-        card.setCardPerson(postDto.getCardPerson());
-        card.setCardMoney(postDto.getCardMoney());
-        card.setMember(member);
-        card.setCardCategory(cardCategoryEnum);
+        board.setTitle(postDto.getTitle());
+        board.setDate(date);
+        board.setBody(postDto.getBody());
+        board.setPerson(postDto.getPerson());
+        board.setMoney(postDto.getMoney());
+//        board.setMember(member);
+        board.setCategory(boardCategoryEnum);
 
-        return cardRepository.save(card);
+        return boardRepository.save(board);
     }
 
     private LocalDate stringToDateConverter(String dateString) {
@@ -76,13 +80,13 @@ public class CardService {
     }
 
     //모임글 상세 조회
-    public Card findCard(long cardId) {
-        return cardRepository.findByIdWithAll(cardId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CARD_NOT_FOUND));
+    public Board findBoard(long boardId) {
+        return boardRepository.findByIdWithAll(boardId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
     //모임글 전체 조회
-    public List<Card> findCards() {
-        return cardRepository.findAll();
+    public List<Board> findBoards() {
+        return boardRepository.findAll();
     }
 }

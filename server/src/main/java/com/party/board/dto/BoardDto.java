@@ -1,6 +1,6 @@
-package com.party.card.dto;
+package com.party.board.dto;
 
-import com.party.card.entity.Card;
+import com.party.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class CardDto {
+public class BoardDto {
 
     @Getter
     @Setter
@@ -16,32 +16,32 @@ public class CardDto {
     public static class Post{
 
         @NotBlank
-        private String cardTitle;
+        private String title;
 
         @NotBlank
-        private String cardDate;
+        private String date;
 
         @NotBlank
-        private String cardBody;
+        private String body;
 
         @NotBlank
-        private String cardCategory;
+        private String category;
 
         @NotNull
-        private int cardPerson;
+        private int person;
 
-        private int cardMoney;
+        private int money;
     }
 
     @Getter
     @Setter
     @NoArgsConstructor
     public static class ResponsePost extends Post {
-        private long cardId;
+        private long boardId;
 
-        public ResponsePost(Card createdCard) {
+        public ResponsePost(Board createdBoard) {
             super();
-            this.cardId = createdCard.getCardId();
+            this.boardId = createdBoard.getId();
         }
     }
 }
