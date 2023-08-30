@@ -1,22 +1,9 @@
-/* styles.css (예시 파일명)
-@keyframes waveAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-  
-  body {
-    background: linear-gradient(95deg, rgba(18, 104, 233, 0.8), rgba(196, 113, 237, 0.8), rgba(246, 79, 89, 0.8));
-    transform-style: preserve-3d;
-    background-size: 200% 200%;
-    animation: waveAnimation 5s linear infinite;
-    margin: 0px 320px;
-    height: 100vh;
-  }
-   */
+body {
+box-sizing: border-box;
+list-style: none;
+margin:  0px 320px;
+height: 100vh;
+width: 100%;
+padding: 0;
+
+}
