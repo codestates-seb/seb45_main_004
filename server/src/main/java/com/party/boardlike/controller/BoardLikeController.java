@@ -1,7 +1,11 @@
 package com.party.boardlike.controller;
 
+import com.party.boardlike.dto.BoardLikeDto;
+import com.party.boardlike.dto.BoardLikeResponseDto;
 import com.party.boardlike.repository.BoardLikeRepository;
 import com.party.boardlike.service.BoardLikeService;
+import com.party.exception.BusinessLogicException;
+import com.party.exception.ExceptionCode;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,22 +22,22 @@ public class BoardLikeController {
     private final MemberService memberService;
 
 
-    //좋아요 post
-//        @PostMapping("/{board-id}")
-//        public ResponseEntity postBoardLike(@PathVariable("board-id") Long boardId,
-//                                           @RequestBody BoardLikeDto.Post postDto) {
-//
-//            boolean isLiked = postDto.isLiked();
-//            Long memberId = extractMemberId();
-//
-//            boardLikeService.createBoardLike(boardId,isLiked);
-//
-//            long likeCount = boardLikeService.getBoardLikesCount(boardId);
-//            boolean updateIsLiked = boardLikeRepository.existsByBoard_BoardIdAndMember_MemberId(boardId, memberId);
-//            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, updateIsLiked);
-//
-//            return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-//        }
+//    좋아요 post
+        @PostMapping("/{board-id}")
+        public ResponseEntity postBoardLike(@PathVariable("board-id") Long boardId,
+                                           @RequestBody BoardLikeDto.Post postDto) {
+
+            boolean isLiked = postDto.isLiked();
+            Long memberId = extractMemberId();
+
+            boardLikeService.createBoardLike(boardId,isLiked);
+
+            long likeCount = boardLikeService.getBoardLikesCount(boardId);
+            boolean updateIsLiked = boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
+            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, updateIsLiked);
+
+            return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
+        }
 
     // 특정글에 대한 좋아요 수 조회
     @GetMapping("/{board-id}")
@@ -43,19 +47,17 @@ public class BoardLikeController {
     }
 
     // 좋아요 delete
-//    @DeleteMapping("/{board-id}")
-//    public ResponseEntity deleteBoardLike(@PathVariable("board-id") Long boardId) {
-//        boardLikeService.cancelBoardLike(boardId);
-//
-//        Long memberId = extractMemberId();
-//        long likeCount = boardIdLikeRepository.countByBoard_BoardId(boardId);
-//        boolean isLiked = boardIdLikeRepository.existsByBoard_BoardIdAndMember_MemberId(boardId, memberId);
-//
-//        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, isLiked);
-//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-//    }
+    @DeleteMapping("/{board-id}")
+    public ResponseEntity deleteBoardLike(@PathVariable("board-id") Long boardId) {
+        boardLikeService.cancelBoardLike(boardId);
 
-    /* 멤버 주석
+        Long memberId = extractMemberId();
+        long likeCount = boardLikeRepository.countByBoard_id(boardId);
+        boolean isLiked = boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
+
+        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, isLiked);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
 
     //memberId 추출
     private Long extractMemberId() {
@@ -69,6 +71,4 @@ public class BoardLikeController {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
     }
-
-     */
 }

@@ -1,6 +1,6 @@
 package com.party.alram.entity;
 
-import com.party.board.entity.Card;
+import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +25,8 @@ public class Alarm {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "CARD_ID")
-    private Card card;
+    @JoinColumn(name = "Board_ID")
+    private Board board;
 
     /* 알람 온 시간 표시?
     private LocalDateTime timestamp = LocalDateTime.now();

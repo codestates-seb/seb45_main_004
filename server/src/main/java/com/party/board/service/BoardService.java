@@ -31,7 +31,6 @@ public class BoardService {
 
     // 모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
-        /* member 관련 주석
 
         Object memberIdObject  = memberService.extractMemberInfo().get("memberId");
 
@@ -52,8 +51,6 @@ public class BoardService {
         }
         Member member = memberOptional.get();
 
-         */
-
         Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
 
         Board board = new Board();
@@ -66,7 +63,7 @@ public class BoardService {
         board.setBody(postDto.getBody());
         board.setPerson(postDto.getPerson());
         board.setMoney(postDto.getMoney());
-//        board.setMember(member);
+        board.setMember(member);
         board.setCategory(boardCategoryEnum);
 
         return boardRepository.save(board);

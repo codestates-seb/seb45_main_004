@@ -1,6 +1,6 @@
 package com.party.image.entity;
 
-import com.party.board.entity.Card;
+import com.party.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +17,6 @@ public class CardImage {
     private Long cardImageId;
 
     @ManyToOne
-    @JoinColumn(name = "CARD_ID")
-    private Card card;
+    @JoinColumn(name = "Board_ID")
+    private Board board;
 }
