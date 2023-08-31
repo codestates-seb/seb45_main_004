@@ -31,7 +31,7 @@ public class BoardLikeService {
 
 
     public boolean isBoardLikedByMember(Long boardId, Long memberId) {
-        return boardLikeRepository.existsByBoard_idAndMember_MemberId(boardId, memberId);
+        return boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
     }
 
     public long getBoardLikesCount(Long boardId) {

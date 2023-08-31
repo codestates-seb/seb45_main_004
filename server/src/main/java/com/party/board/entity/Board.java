@@ -62,13 +62,10 @@ public class Board {
     @JoinColumn(name = "CHATTING_ID")
     private Chatting chatting;
 
-    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
-    private List<Applicant> memberCards = new ArrayList<>();
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
     private List<Applicant> applicants = new ArrayList<>();
 
     public enum BoardCategory {

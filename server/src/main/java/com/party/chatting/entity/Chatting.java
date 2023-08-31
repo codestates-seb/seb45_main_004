@@ -1,6 +1,6 @@
 package com.party.chatting.entity;
 
-import com.party.board.entity.Card;
+import com.party.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,5 +19,5 @@ public class Chatting {
     private int chattingUnread;
 
     @OneToOne(mappedBy = "chatting")
-    private Card card;
+    private Board board;
 }
