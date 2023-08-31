@@ -1,13 +1,15 @@
-package com.party.board.entity;
+package com.party.card.entity;
 
 import com.party.boardlike.entity.BoardLike;
+import com.party.cardlike.entity.CardLike;
 import com.party.chatting.entity.Chatting;
+import com.party.image.entity.CardImage;
+import com.party.member.entity.MemberCard;
 import com.party.member.entity.Applicant;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,7 +20,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Board {
+public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
