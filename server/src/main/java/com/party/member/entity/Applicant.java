@@ -1,6 +1,6 @@
 package com.party.member.entity;
 
-import com.party.card.entity.Card;
+import com.party.board.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +21,6 @@ public class Applicant {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "CARD_ID")
-    private Card card;
+    @JoinColumn(name = "Board_ID")
+    private Board board;
 }

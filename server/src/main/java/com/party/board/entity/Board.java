@@ -1,10 +1,7 @@
-package com.party.card.entity;
+package com.party.board.entity;
 
 import com.party.boardlike.entity.BoardLike;
-import com.party.cardlike.entity.CardLike;
 import com.party.chatting.entity.Chatting;
-import com.party.image.entity.CardImage;
-import com.party.member.entity.MemberCard;
 import com.party.member.entity.Applicant;
 import com.party.member.entity.Member;
 import lombok.Getter;
@@ -20,7 +17,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Card {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -70,6 +67,9 @@ public class Card {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
+    private List<Applicant> applicants = new ArrayList<>();
 
     public enum BoardCategory {
         CATEGORY_LEISURE("LEISURE"),

@@ -1,7 +1,7 @@
 package com.party.member.entity;
 
-//import com.party.board.entity.Card;
-//import com.party.cardlike.entity.CardLike;
+import com.party.board.entity.Board;
+import com.party.boardlike.entity.BoardLike;
 import com.party.image.entity.ProfileImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,34 +19,34 @@ import java.util.List;
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long memberId;
+    private Long id;
 
     @Email
     @Column(nullable = false, unique = true)
-    private String memberEmail;
+    private String email;
 
     @Column(nullable = false, unique = true)
-    private String memberNickname;
+    private String nickname;
 
     @Column(nullable = false)
-    private String memberGender;
+    private String gender;
 
     @Column(nullable = false)
-    private String memberPassword;
+    private String password;
 
-    private String memberIntroduce;
+    private String introduce;
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-//    private List<Card> cardList = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
-    private List<MemberCard> memberCards = new ArrayList<>();
+    private List<Applicant> applicants = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ProfileImage> profileImages = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-//    private List<CardLike> cardLikes = new ArrayList<>();
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<BoardLike> boardLikes = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
