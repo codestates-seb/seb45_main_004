@@ -45,6 +45,17 @@ const HomePage = styled.div`
     padding: 0;
     margin: 20px 0px;
   }
+  .invitiation-container {
+    display: grid;
+    flex-direction: row;
+    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .invitation-item {
+    display: flex;
+    justify-content: center;
+    height: 200px;
+  }
 `;
 
 export default function Homepage() {
@@ -55,9 +66,13 @@ export default function Homepage() {
       .get('http://3.39.76.109:8080/boards')
 
       .then((response) => {
-        const json = response.data;
-        setInvitiation(json);
-        console.log(json);
+        const newData = response.data;
+        setInvitiation(newData);
+        console.log(newData);
+      })
+
+      .catch((error) => {
+        console.log('error', error);
       });
   }, []);
 
