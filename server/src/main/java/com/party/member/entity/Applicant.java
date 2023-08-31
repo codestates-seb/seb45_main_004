@@ -1,7 +1,6 @@
-package com.party.alram.entity;
+package com.party.member.entity;
 
 import com.party.board.entity.Board;
-import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,16 +8,15 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Entity
 @Getter
 @Setter
-public class Alarm {
+@Entity
+public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    @Enumerated
-    private AlarmStatus alarmStatus;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
@@ -27,8 +25,4 @@ public class Alarm {
     @ManyToOne
     @JoinColumn(name = "Board_ID")
     private Board board;
-
-    public enum AlarmStatus {
-
-    }
 }
