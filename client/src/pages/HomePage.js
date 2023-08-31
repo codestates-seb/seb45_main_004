@@ -1,6 +1,9 @@
 import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import CategoryBtn from '../components/CategoryBtn';
+import categoryMappings from '../components/categoryMappings';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const HomePage = styled.div`
   display: flex;
@@ -45,6 +48,19 @@ const HomePage = styled.div`
 `;
 
 export default function Homepage() {
+  const [invitiation, setInvitiation] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://3.39.76.109:8080/boards')
+
+      .then((response) => {
+        const json = response.data;
+        setInvitiation(json);
+        console.log(json);
+      });
+  }, []);
+
   return (
     <HomePage>
       <div className="main-container">
@@ -55,13 +71,16 @@ export default function Homepage() {
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
-            <CategoryBtn text="All" color="#C471ED" />
-            <CategoryBtn text="Leisure" color="#FF6AC6" />
-            <CategoryBtn text="Travel" color="#FF7D99" />
-            <CategoryBtn text="Game" color="#FFA472" />
-            <CategoryBtn text="Culture" color="#FFD05F" />
-            <CategoryBtn text="Education" color="#4CA899" />
-            <CategoryBtn text="ETC" color="#F9F871" />
+            {Object.keys(categoryMappings).map((key) => (
+              <CategoryBtn
+                key={key}
+                text={categoryMappings[key]?.label}
+                color={
+                  categoryMappings[key]?.backgroundColor ||
+                  categoryMappings[key]?.color
+                }
+              />
+            ))}
           </ul>
         </div>
         <div className="search-container">
@@ -72,7 +91,13 @@ export default function Homepage() {
             </div>
           </div>
         </div>
-        <div className="invitiation-container">{/* 초대장 컴포넌트 */}</div>
+        <div className="invitiation-container">
+          {invitiation.map((item) => (
+            <div key={item.boardId} className="invitation-item">
+              <h2>{item.title}</h2>
+            </div>
+          ))}
+        </div>
       </div>
     </HomePage>
   );

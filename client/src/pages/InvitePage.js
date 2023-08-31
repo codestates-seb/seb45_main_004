@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
-import categoryMappings from '../components/CategoryMappings';
+import categoryMappings from '../components/categoryMappings';
 // ㅇㅇ,,,ㅇㅇㄴㄴss
 function InvitePage() {
   // 카드 데이터 상태변수
