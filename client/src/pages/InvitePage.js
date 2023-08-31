@@ -3,18 +3,19 @@ import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import categoryMappings from '../components/CategoryMappings';
-// ㅇㅇ,,,ㅇㅇㄴㄴss
+import { VscHeartFilled } from 'react-icons/vsc';
+
 function InvitePage() {
   // 카드 데이터 상태변수
   const [eventData, setEventData] = useState({
     cardTitle: '', // 카드의 제목
     cardDate: '', // 카드의 날짜
     cardBody: '', // 카드의 본문 내용
-    cardCategory: '', // 카드의 카테고리
+    category: '', // 카드의 카테고리
     currentPerson: 0, // 현재 참여한 인원 수
     totalPerson: 0, // 전체 참여 가능한 인원 수
     cardMoney: 0, // 카드의 금액 정보
-    cardLikesCount: 0, // 카드에 대한 좋아요 수
+    boardLikesCount: 0, // 카드에 대한 좋아요 수
     cardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
     member: {
       memberId: 0, // 멤버의 아이디
@@ -23,12 +24,13 @@ function InvitePage() {
   });
 
   useEffect(() => {
-    const cardId = '2'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
+    const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
 
     axios
-      .get(`http://3.39.76.109:8080/cards/${cardId}`)
+      .get(`http://3.39.76.109:8080/boards/${boardId}`)
       .then((response) => {
         const eventData = response.data; // API 응답 데이터를 가져옴
+        console.log(eventData);
         setEventData(eventData);
       })
       .catch((error) => {
@@ -47,14 +49,14 @@ function InvitePage() {
   // 서버로 좋아요 상태 전송 post또는 delete요청을 함
   const sendLikeStatus = (isLiked) => {
     const token =
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm1lbWJlck5pY2tuYW1lIjoi7ZWY66Oo7IK07J20IiwibWVtYmVyRW1haWwiOiJPbmVkYXlAZ21haWwuY29tIiwibWVtYmVySWQiOjEsInN1YiI6Ik9uZWRheUBnbWFpbC5jb20iLCJpYXQiOjE2OTM0MDM3MzEsImV4cCI6MTY5MzcwMzczMX0.odNWLGXItsR0hDFvZIqXJL57Waq-sYoWM61Oj67XDFckMA73XqMB4I92rr9gGoq-'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
-    const cardId = '2'; // 카드생성페이지 구현전이라 카드 id값 임시로 넣어줌
+      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7ZWY66Oo7IK07J20IiwiaWQiOjEsImVtYWlsIjoiT25lZGF5QGdtYWlsLmNvbSIsInN1YiI6Ik9uZWRheUBnbWFpbC5jb20iLCJpYXQiOjE2OTM0Njg3NTgsImV4cCI6MTY5Mzc2ODc1OH0.Inn_duS30xQbTvC6s5VF5Kd1uM4eauq8LDDBiwpOqCQjmaFo1zLkC9GIwGZXaY1E'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+    const boardId = '7'; // 카드생성페이지 구현전이라 카드 id값 임시로 넣어줌
 
     // 서버로 좋아요 상태 전송
     axios
       .request({
         method: isLiked ? 'post' : 'delete', // isLiked 값에 따라 POST 또는 DELETE 요청을 함(true면 post(좋아요추가) false면 delete(좋아요취소))
-        url: `http://3.39.76.109:8080/likes/${cardId}`,
+        url: `http://3.39.76.109:8080/likes/${boardId}`,
         data: { isLiked }, // isLiked 상태값을 서버에 요청값으로 보내줌
         headers: {
           Authorization: token,
@@ -68,9 +70,9 @@ function InvitePage() {
           //prevData는 이전 상태의 eventData 객체를 가리키는 변수임
           ...prevData, // 기존의 eventData를 복사하여 새로운 객체를 생성
           isLiked: isLiked, // 새로운 객체에 새로운 좋아요 상태 값을 업데이트
-          cardLikesCount: isLiked // 좋아요 추가 시 좋아요 전체 카운트를 증가 또는 감소함
-            ? prevData.cardLikesCount + 1
-            : prevData.cardLikesCount - 1,
+          boardLikesCount: isLiked // 좋아요 추가 시 좋아요 전체 카운트를 증가 또는 감소함
+            ? prevData.boardLikesCount + 1
+            : prevData.boardLikesCount - 1,
         }));
       })
       .catch((error) => {
@@ -83,29 +85,33 @@ function InvitePage() {
       <section>
         <article>
           <div className="card-container">
-            <img
-              src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-              alt="cardImage"
-            />
-            {/* <div>{clickCount}</div> */}
-            <button onClick={handleLikeClick}>❤️</button>
+            <div className="image-container">
+              <img
+                src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
+                alt="cardImage"
+              />
+              {/* <div>{clickCount}</div> */}
+              <button className="heart-button" onClick={handleLikeClick}>
+                <VscHeartFilled className="heart-icon" />
+              </button>
+              <div className="likes-count">{eventData.boardLikesCount}</div>
+            </div>
             <button>카카오 공유버튼</button>
-            <div>좋아요: {eventData.cardLikesCount}</div>
           </div>
           <div className="host-container">
-            <button>
-              <img // 유저이미지 표시
-                src={eventData.img}
+            <button className="host-btn">
+              <img
+                className="host-img" // 유저이미지 표시
+                src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
                 /*{멤버id로 받아올 호스트 이미지}*/ alt="hostImage"
               />
             </button>
-            <div>금액: {eventData.cardMoney}</div>
-            <button>카카오 송금 버튼</button>
+            <div>금액: {eventData.money}</div>
             <button>카카오 오픈톡 버튼</button>
           </div>
           <div className="user-container">
             <img // 참여이미지 표시
-              src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-d ccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
+              src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
               /*{참여버튼 눌렀을 시 멤버id?로 받아올 이미지}*/ alt="userImage"
             />
             {/* 참여자 표시 */}
@@ -116,16 +122,16 @@ function InvitePage() {
           </div>
         </article>
         <article>
-          <h1>{eventData.cardTitle}</h1>
-          <div>{eventData.cardDate}</div>
+          <h1>{eventData.title}</h1>
+          <div>{eventData.date}</div>
           <div>
-            <div>{eventData.cardBody}</div>
+            <div>{eventData.body}</div>
           </div>
           <div>
             {/* // Object.keys로 categoryMappings 객체의 키들을 배열로 바꿈,map사용해서 각 카테고리 키를 순회함 */}
             {Object.keys(categoryMappings).map((key) => {
               // 사용자가 선택한 카테고리와 일치하는 키값을 찾아서 그에 해당하는 ui 렌더링
-              if (eventData.cardCategory === key) {
+              if (eventData.category === key) {
                 return (
                   <CategoryBtn // 조건이 만족하면, CategoryBtn 컴포넌트를 생성하여 렌더링
                     key={key}
@@ -157,11 +163,36 @@ const EventDetailsContainer = styled.div`
     gap: 80px;
   }
 
+  article {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
   img {
     width: 400px;
     height: 400px;
   }
-
+  .image-container {
+    position: relative;
+  }
+  .heart-button {
+    position: absolute;
+    top: 360px;
+    left: 355px;
+    border: none;
+  }
+  .heart-icon {
+    font-size: 32px;
+    color: red;
+  }
+  .likes-count {
+    position: absolute;
+    color: #ffffff;
+    font-size: 14px;
+    top: 367px; /* 상단 기준으로 중앙 정렬 */
+    left: 373px; /* 좌측 기준으로 중앙 정렬 */
+    cursor: pointer;
+  }
   .host-container {
     display: flex;
     align-items: center;
@@ -180,6 +211,16 @@ const EventDetailsContainer = styled.div`
   }
 
   .user-container > img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+  }
+  .host-btn {
+    border: none;
+    padding: 0px;
+  }
+
+  .host-img {
     width: 40px;
     height: 40px;
     border-radius: 50px;
