@@ -1,5 +1,7 @@
 package com.party.member.mapper;
 
+import com.party.board.entity.Board;
+import com.party.member.dto.BoardSimpleResponseDto;
 import com.party.member.dto.MemberPostDto;
 import com.party.member.dto.MemberResponseDto;
 import com.party.member.entity.Applicant;
@@ -13,4 +15,6 @@ public interface MemberMapper {
     Member memberPostDtoToMember(MemberPostDto memberPostDto);
 
     MemberResponseDto memberToMemberResponseDto(Member member);
+
+    BoardSimpleResponseDto boardToBoardSimpleResponseDto(Board board);
 }
