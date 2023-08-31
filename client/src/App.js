@@ -1,20 +1,16 @@
-import './App.css';
-//COMPONENTS
-// import Footer from './components/Footer';
-// import Header from './components/Header';
-// import Homepage from './pages/HomePage';
+// App.js
+import { BrowserRouter, Route, Routes } from 'react-router-dom'; // BrowserRouter 등의 라우터 컴포넌트 임포트
+import HomePage from './pages/HomePage';
 import InvitePage from './pages/InvitePage';
-// import InviteWritePage from './pages/InviteWritePage';
 
 function App() {
   return (
-    <>
-      {/* <Header />
-      <Homepage /> */}
-      <InvitePage />
-      {/* <InviteWritePage /> */}
-      {/* <Footer /> */}
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/boards/:boardId" element={<InvitePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
