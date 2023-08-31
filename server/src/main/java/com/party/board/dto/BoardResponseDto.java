@@ -15,6 +15,9 @@ public class BoardResponseDto {
     private String date;
     private String body;
     private String category;
+    private String latitude;
+    private String longitude;
+    private String address;
     private int currentPerson;
     private int totalPerson;
     private int money;

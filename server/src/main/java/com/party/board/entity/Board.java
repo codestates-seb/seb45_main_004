@@ -37,8 +37,14 @@ public class Board {
     @Column(nullable = false)
     private int money;
 
-    @Column(nullable = false)
-    private long map;
+    @Column
+    private String longitude; //경도
+
+    @Column
+    private String latitude; //위도
+
+    @Column
+    private String address;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

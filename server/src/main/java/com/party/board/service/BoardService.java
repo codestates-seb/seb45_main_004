@@ -64,6 +64,9 @@ public class BoardService {
         board.setMoney(postDto.getMoney());
         board.setMember(member);
         board.setCategory(boardCategoryEnum);
+        board.setLatitude(postDto.getLatitude());
+        board.setLongitude(postDto.getLongitude());
+        board.setAddress(postDto.getAddress());
 
         return boardRepository.save(board);
     }
