@@ -27,6 +27,12 @@ public class BoardDto {
         @NotBlank
         private String category;
 
+        private String latitude;
+
+        private String longitude;
+
+        private String address;
+
         @NotNull
         private int person;
 
@@ -38,10 +44,14 @@ public class BoardDto {
     @NoArgsConstructor
     public static class ResponsePost extends Post {
         private long boardId;
+        private String latitude;
+        private String longitude;
 
         public ResponsePost(Board createdBoard) {
             super();
             this.boardId = createdBoard.getId();
+            this.latitude = createdBoard.getLatitude();
+            this.longitude = createdBoard.getLongitude();
         }
     }
 }

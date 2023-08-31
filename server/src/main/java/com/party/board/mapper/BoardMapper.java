@@ -23,6 +23,9 @@ public interface BoardMapper {
         boardResponseDto.setMoney(board.getMoney());
         boardResponseDto.setBoardStatus(board.getStatus());
         boardResponseDto.setBoardLikesCount(board.getBoardLikesCount());
+        boardResponseDto.setAddress(board.getAddress());
+        boardResponseDto.setLatitude(board.getLatitude());
+        boardResponseDto.setLongitude(board.getLongitude());
         return boardResponseDto;
     }
     List<BoardResponseDto> boardsToBoardResponse(List<Board> boards);
