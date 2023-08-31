@@ -1,6 +1,6 @@
 package com.party.image.entity;
 
-import com.party.card.entity.Card;
+import com.party.board.entity.Card;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

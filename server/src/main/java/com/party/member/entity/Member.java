@@ -1,7 +1,7 @@
 package com.party.member.entity;
 
-import com.party.card.entity.Card;
-import com.party.cardlike.entity.CardLike;
+import com.party.board.entity.Board;
+import com.party.boardlike.entity.BoardLike;
 import com.party.image.entity.ProfileImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,7 +37,7 @@ public class Member {
     private String introduce;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Card> cardList = new ArrayList<>();
+    private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private List<Applicant> applicants = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Member {
     private List<ProfileImage> profileImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<CardLike> cardLikes = new ArrayList<>();
+    private List<BoardLike> boardLikes = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();

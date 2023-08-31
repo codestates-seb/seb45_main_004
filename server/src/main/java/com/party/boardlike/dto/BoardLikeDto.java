@@ -1,10 +1,10 @@
-package com.party.cardlike.dto;
+package com.party.boardlike.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-public class CardLikeDto {
+public class BoardLikeDto {
 
     @Getter @Setter
     @NoArgsConstructor
