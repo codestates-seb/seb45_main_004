@@ -1,5 +1,6 @@
 package com.party.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.member.entity.Applicant;
@@ -62,6 +63,7 @@ public class Board {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
+    @JsonBackReference
     private Member member;
 
     @OneToOne

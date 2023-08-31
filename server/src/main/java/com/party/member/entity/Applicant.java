@@ -16,8 +16,6 @@ public class Applicant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String imageUrl;
-
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
