@@ -36,7 +36,7 @@ function InviteWritePage() {
       })
       .then((response) => {
         // 성공적으로 생성되었을 때 처리할 로직
-        console.log('Card created successfully:', response.data);
+        console.log('Card created successfully:/', response.data);
       })
       .catch((error) => {
         console.error('Error creating card:', error);
