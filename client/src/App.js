@@ -6,8 +6,6 @@ import InvitePage from './pages/InvitePage';
 function App() {
   return (
     <BrowserRouter>
-      {' '}
-      {/* BrowserRouter로 앱 전체 감싸기 */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/boards/:boardId" element={<InvitePage />} />
