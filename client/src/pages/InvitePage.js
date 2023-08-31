@@ -8,18 +8,19 @@ import { VscHeartFilled } from 'react-icons/vsc';
 function InvitePage() {
   // 카드 데이터 상태변수
   const [eventData, setEventData] = useState({
-    cardTitle: '', // 카드의 제목
-    cardDate: '', // 카드의 날짜
-    cardBody: '', // 카드의 본문 내용
+    title: '', // 카드의 제목
+    date: '', // 카드의 날짜
+    body: '', // 카드의 본문 내용
     category: '', // 카드의 카테고리
     currentPerson: 0, // 현재 참여한 인원 수
     totalPerson: 0, // 전체 참여 가능한 인원 수
-    cardMoney: 0, // 카드의 금액 정보
+    money: 0, // 카드의 금액 정보
     boardLikesCount: 0, // 카드에 대한 좋아요 수
-    cardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
+    boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
     member: {
       memberId: 0, // 멤버의 아이디
       memberNickname: '', // 멤버의 닉네임
+      imageUrl: null,
     },
   });
 
