@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import Profile from '../components/Profile';
-import Mytab from '../components/Mytab';
+import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -32,10 +32,12 @@ const MyPage = () => {
     fetchMyInfo();
   }, []);
 
+  //const [tabState, setTabState] = useState('');
+
   return (
     <MyPageSection>
       <Profile user={user} />
-      <Mytab />
+      <MyPageTab />
     </MyPageSection>
   );
 };

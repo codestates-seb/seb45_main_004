@@ -76,6 +76,9 @@ const UserInfoContainer = styled.div`
 `;
 
 const Profile = ({ user }) => {
+  const { email, gender, imageUrl, introduce, nickname } = user;
+  console.log(imageUrl);
+
   return (
     <ProfileContainer>
       <AvatarContainer>
@@ -84,11 +87,11 @@ const Profile = ({ user }) => {
       <UserInfoContainer>
         {/* 로그인 정보의 닉네임과 이메일이 표시됨 */}
         <div className="info-box">
-          <b className="nickname">{user.nickname}</b>
-          <p className="address-box">{user.email}</p>
+          <b className="nickname">{nickname}</b>
+          <p className="address-box">{email}</p>
           {/* 로그인 정보의 젠더 정보에 따라 다른 아이콘이 렌더링 */}
           <span>
-            {user.genger === 'male' ? (
+            {gender === 'male' ? (
               <Icon icon="emojione-v1:boy" className="gender-sign" />
             ) : (
               <Icon icon="emojione-v1:girl" className="gender-sign" />
@@ -106,7 +109,7 @@ const Profile = ({ user }) => {
         </div>
         {/* 유저 정보의 자기소개내용 표시 */}
         <div className="introduction-box">
-          <p>{user.introduce}</p>
+          <p>{introduce}</p>
         </div>
       </UserInfoContainer>
     </ProfileContainer>
