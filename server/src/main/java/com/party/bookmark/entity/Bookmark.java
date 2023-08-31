@@ -1,5 +1,6 @@
-package com.party.image.entity;
+package com.party.bookmark.entity;
 
+import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +12,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class ProfileImage {
+public class Bookmark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long ProfileImage;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    @ManyToOne
+    @JoinColumn(name = "Board_ID")
+    private Board board;
 }

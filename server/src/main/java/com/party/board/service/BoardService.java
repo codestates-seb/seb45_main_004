@@ -32,7 +32,7 @@ public class BoardService {
     // 모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
 
-        Object memberIdObject  = memberService.extractMemberInfo().get("memberId");
+        Object memberIdObject  = memberService.extractMemberInfo().get("id");
 
         // Board 등록 시 memberid 값 저장
         Long memberId;
@@ -41,7 +41,6 @@ public class BoardService {
         } else if (memberIdObject instanceof Integer) {
             memberId = ((Integer) memberIdObject).longValue();
         } else {
-            // memberId가 올바른 형태로 추출되지 않은 경우 예외 처리
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
 

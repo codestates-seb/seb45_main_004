@@ -48,7 +48,7 @@ public class MemberDetailsService implements UserDetailsService {
 
         @Override
         public String getPassword() {
-            return getPassword();
+            return super.getPassword();
         }
 
         @Override
