@@ -1,12 +1,17 @@
 import './App.css';
-// import Homepage from './pages/HomePage';
-import Signuppage from './pages/SignupPage';
+//COMPONENTS
+import Footer from './components/Footer';
+import Header from './components/Header';
+import Homepage from './pages/HomePage';
+import InvitePage from './pages/InvitePage';
 
 function App() {
   return (
     <>
-      {/* <Homepage /> */}
-      <Signuppage />
+      <Header />
+      <Homepage />
+     <InvitePage />;
+      <Footer />
     </>
   );
 }
