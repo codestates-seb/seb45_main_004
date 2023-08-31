@@ -4,8 +4,11 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import categoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
+import { BsFillShareFill } from 'react-icons/bs';
+import { useParams } from 'react-router-dom';
 
 function InvitePage() {
+  const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 데이터 상태변수
   const [eventData, setEventData] = useState({
     title: '', // 카드의 제목
@@ -25,7 +28,7 @@ function InvitePage() {
   });
 
   useEffect(() => {
-    const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
+    // const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
 
     axios
       .get(`http://3.39.76.109:8080/boards/${boardId}`)
@@ -39,6 +42,10 @@ function InvitePage() {
       });
   }, []);
 
+  if (eventData === null) {
+    return null; // 데이터가 아직 불러와지지 않은 경우 렌더링하지 않음
+  }
+
   // 좋아요 버튼을 클릭했을 때 호출
   const handleLikeClick = () => {
     const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
@@ -51,7 +58,6 @@ function InvitePage() {
   const sendLikeStatus = (isLiked) => {
     const token =
       'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7ZWY66Oo7IK07J20IiwiaWQiOjEsImVtYWlsIjoiT25lZGF5QGdtYWlsLmNvbSIsInN1YiI6Ik9uZWRheUBnbWFpbC5jb20iLCJpYXQiOjE2OTM0Njg3NTgsImV4cCI6MTY5Mzc2ODc1OH0.Inn_duS30xQbTvC6s5VF5Kd1uM4eauq8LDDBiwpOqCQjmaFo1zLkC9GIwGZXaY1E'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
-    const boardId = '7'; // 카드생성페이지 구현전이라 카드 id값 임시로 넣어줌
 
     // 서버로 좋아요 상태 전송
     axios
@@ -97,7 +103,9 @@ function InvitePage() {
               </button>
               <div className="likes-count">{eventData.boardLikesCount}</div>
             </div>
-            <button>카카오 공유버튼</button>
+            <button>
+              <BsFillShareFill />
+            </button>
           </div>
           <div className="host-container">
             <button className="host-btn">
@@ -108,7 +116,6 @@ function InvitePage() {
               />
             </button>
             <div>금액: {eventData.money}</div>
-            <button>카카오 오픈톡 버튼</button>
           </div>
           <div className="user-container">
             <img // 참여이미지 표시
