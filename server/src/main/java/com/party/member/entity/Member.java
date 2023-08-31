@@ -1,5 +1,6 @@
 package com.party.member.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
 import lombok.Getter;
@@ -38,7 +39,8 @@ public class Member {
     private String imageUrl;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Board> boardList = new ArrayList<>();
+    @JsonManagedReference
+    private List<Board> boards = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private List<Applicant> applicants = new ArrayList<>();

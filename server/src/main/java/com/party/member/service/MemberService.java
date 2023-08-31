@@ -3,7 +3,6 @@ package com.party.member.service;
 import com.party.auth.util.CustomAuthorityUtils;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
-import com.party.member.controller.MemberController;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +36,7 @@ public class MemberService {
     }
 
     public Member findMember(long memberId) {
+        findVerifiedMember(memberId);
         return findVerifiedMember(memberId);
     }
 
