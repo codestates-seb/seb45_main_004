@@ -7,9 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MemberCardResponseDto {
+public class ApplicantResponseDto {
     private long id;
     private String title;
     private String imageUrl;
-    private long cardLikesCount;
+    private long boardLikesCount;
 }

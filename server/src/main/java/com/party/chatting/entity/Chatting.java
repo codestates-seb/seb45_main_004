@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Chatting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chattingId;
+    private Long id;
 
     private int chattingUnread;
 

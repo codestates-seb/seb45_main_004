@@ -2,7 +2,6 @@ package com.party.member.entity;
 
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
-import com.party.image.entity.ProfileImage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,14 +35,13 @@ public class Member {
 
     private String introduce;
 
+    private String imageUrl;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<Board> boardList = new ArrayList<>();
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private List<Applicant> applicants = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ProfileImage> profileImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();

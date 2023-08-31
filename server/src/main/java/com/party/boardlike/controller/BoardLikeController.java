@@ -61,7 +61,7 @@ public class BoardLikeController {
 
     //memberId 추출
     private Long extractMemberId() {
-        Object memberIdObject  = memberService.extractMemberInfo().get("memberId");
+        Object memberIdObject  = memberService.extractMemberInfo().get("id");
 
         if (memberIdObject instanceof Long) {
             return (Long) memberIdObject;

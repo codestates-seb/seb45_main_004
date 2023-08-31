@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Alarm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long alarmId;
+    private Long id;
 
     @Enumerated
     private AlarmStatus alarmStatus;
@@ -28,9 +28,6 @@ public class Alarm {
     @JoinColumn(name = "Board_ID")
     private Board board;
 
-    /* 알람 온 시간 표시?
-    private LocalDateTime timestamp = LocalDateTime.now();
-     */
     public enum AlarmStatus {
 
     }

@@ -75,7 +75,7 @@ public class BoardLikeService {
 
     //멤버 검증 및 memberId 타입 변환
     private Long extractMemberId() {
-        Object memberIdObject = memberService.extractMemberInfo().get("memberId");
+        Object memberIdObject = memberService.extractMemberInfo().get("id");
         if (memberIdObject instanceof Long) {
             return (Long) memberIdObject;
         } else if (memberIdObject instanceof Integer) {
