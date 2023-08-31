@@ -13,8 +13,8 @@ public interface BoardMapper {
 
     default BoardResponseDto boardToBoardResponse(Board board) {
         BoardResponseDto boardResponseDto = new BoardResponseDto();
-        boardResponseDto.setMemberId(board.getMember().getMemberId());
-//        boardResponseDto.setMemberNickname(board.getMember().getMemberNickname());
+        boardResponseDto.setMemberId(board.getMember().getId());
+        boardResponseDto.setMemberNickname(board.getMember().getNickname());
         boardResponseDto.setBoardId(board.getId());
         boardResponseDto.setTitle(board.getTitle());
         boardResponseDto.setDate(String.valueOf(board.getDate()));

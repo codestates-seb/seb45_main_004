@@ -2,6 +2,7 @@ package com.party.board.entity;
 
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
+import com.party.member.entity.Applicant;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,8 +63,8 @@ public class Board {
     @JoinColumn(name = "CHATTING_ID")
     private Chatting chatting;
 
-//    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
-//    private List<MemberCard> memberCards = new ArrayList<>();
+    @OneToMany(mappedBy = "card",cascade = CascadeType.REMOVE)
+    private List<Applicant> memberCards = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();

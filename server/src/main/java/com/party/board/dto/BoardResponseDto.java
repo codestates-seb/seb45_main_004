@@ -22,12 +22,12 @@ public class BoardResponseDto {
     private long boardLikesCount;
     private Board.BoardStatus boardStatus;
 
-//    public Member getMember() {
-//        Member member = new Member();
-//        member.setMemberId(memberId);
-//        member.setMemberNickname(memberNickname);
-//        return member;
-//    }
+    public Member getMember() {
+        Member member = new Member();
+        member.setId(memberId);
+        member.setNickname(memberNickname);
+        return member;
+    }
 
     public String  getCardStatus() {
         return boardStatus.getStatus();
