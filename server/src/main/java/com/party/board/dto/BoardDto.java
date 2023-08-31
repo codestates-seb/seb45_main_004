@@ -44,12 +44,14 @@ public class BoardDto {
     @NoArgsConstructor
     public static class ResponsePost extends Post {
         private long boardId;
+        private String address;
         private String latitude;
         private String longitude;
 
         public ResponsePost(Board createdBoard) {
             super();
             this.boardId = createdBoard.getId();
+            this.address = createdBoard.getAddress();
             this.latitude = createdBoard.getLatitude();
             this.longitude = createdBoard.getLongitude();
         }
