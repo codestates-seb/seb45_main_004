@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 public class BoardDto {
 
@@ -18,8 +19,8 @@ public class BoardDto {
         @NotBlank
         private String title;
 
-        @NotBlank
-        private String date;
+        @NotNull
+        private LocalDate date;
 
         @NotBlank
         private String body;

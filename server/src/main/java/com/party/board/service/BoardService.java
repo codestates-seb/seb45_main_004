@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -54,11 +53,8 @@ public class BoardService {
 
         Board board = new Board();
 
-        String day = postDto.getDate();
-        LocalDate date = stringToDateConverter(day);
-
         board.setTitle(postDto.getTitle());
-        board.setDate(date);
+        board.setDate(postDto.getDate());
         board.setBody(postDto.getBody());
         board.setPerson(postDto.getPerson());
         board.setMoney(postDto.getMoney());
@@ -69,13 +65,6 @@ public class BoardService {
         board.setAddress(postDto.getAddress());
 
         return boardRepository.save(board);
-    }
-
-    private LocalDate stringToDateConverter(String dateString) {
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(dateString, formatter);
-        return date;
     }
 
     //모임글 상세 조회
