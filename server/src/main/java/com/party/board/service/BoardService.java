@@ -52,6 +52,11 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+    //모임글 카테고리 별 조회
+    public List<Board> findBoardsByCategory(Board.BoardCategory category) {
+        return boardRepository.findByCategory(category);
+    }
+
     //모임글 생성 로직
     private Board processCreateBoard(BoardDto.Post postDto, Member member) {
         Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
