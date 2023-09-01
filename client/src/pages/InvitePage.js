@@ -16,7 +16,7 @@ function InvitePage() {
     body: '', // 카드의 본문 내용
     category: '', // 카드의 카테고리
     currentPerson: 0, // 현재 참여한 인원 수
-    totalPerson: 0, // 전체 참여 가능한 인원 수
+    totalNum: 0, // 전체 참여 가능한 인원 수
     money: 0, // 카드의 금액 정보
     boardLikesCount: 0, // 카드에 대한 좋아요 수
     boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
@@ -124,7 +124,7 @@ function InvitePage() {
             />
             {/* 참여자 표시 */}
             <div>
-              {eventData.currentPerson}/{eventData.totalPerson}
+              {eventData.currentPerson}/{eventData.totalNum}
             </div>
             <button>참여 버튼</button>
           </div>
