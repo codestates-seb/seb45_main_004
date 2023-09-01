@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
-// ㅇㅇ,,,ㅇㅇㄴㄴss
-
 import categoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
@@ -132,9 +130,13 @@ function InvitePage() {
           </div>
         </article>
         <article>
-          <h1>{eventData.title}</h1>
-          <div>{eventData.date}</div>
-          <div>
+          <div className="title-box">
+            <h1>{eventData.title}</h1>
+          </div>
+          <div className="title-date">
+            <div>{eventData.date}</div>
+          </div>
+          <div className="title-body">
             <div>{eventData.body}</div>
           </div>
           <div>
@@ -155,7 +157,7 @@ function InvitePage() {
               return null; // 선택된 카테고리와 일치하지 않는 경우 null 반환하여 렌더링하지 않음
             })}
           </div>
-          <div>map 표시 {eventData.location}</div>
+          <div className="map-box">map 표시 {eventData.location}</div>
         </article>
       </section>
     </EventDetailsContainer>
@@ -163,20 +165,20 @@ function InvitePage() {
 }
 
 const EventDetailsContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0px 320px;
 
   section {
     display: flex;
-    gap: 80px;
+    align-items: center;
+    justify-content: space-around;
+    height: 100vh;
   }
 
   article {
+    width: 433px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
   img {
     width: 400px;
@@ -199,8 +201,8 @@ const EventDetailsContainer = styled.div`
     position: absolute;
     color: #ffffff;
     font-size: 14px;
-    top: 367px; /* 상단 기준으로 중앙 정렬 */
-    left: 373px; /* 좌측 기준으로 중앙 정렬 */
+    top: 367px;
+    left: 373px;
     cursor: pointer;
   }
   .host-container {
@@ -234,6 +236,34 @@ const EventDetailsContainer = styled.div`
     width: 40px;
     height: 40px;
     border-radius: 50px;
+  }
+
+  .title-box {
+    background-color: white;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title-date {
+    background-color: white;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title-body {
+    background-color: white;
+    height: 100px;
+    overflow: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .map-box {
+    height: 300px;
+    border: 1px solid;
   }
 `;
 export default InvitePage;
