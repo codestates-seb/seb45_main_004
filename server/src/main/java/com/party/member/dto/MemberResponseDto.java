@@ -19,8 +19,5 @@ public class MemberResponseDto {
     private String gender;
     private String introduce;
     private String imageUrl;
-//    private List<Board> boards = new ArrayList<>();
-    private List<BoardSimpleResponseDto> boards = new ArrayList<>();
     private List<Bookmark> bookmarks = new ArrayList<>();
-    private List<Applicant> applicants = new ArrayList<>();
 }

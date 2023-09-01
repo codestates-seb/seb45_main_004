@@ -23,27 +23,24 @@ public class Member {
     private Long id;
 
     @Email
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
-    @Column(nullable = false)
+    @Column()
     private String gender;
 
-    @Column(nullable = false)
+    @Column()
     private String password;
 
     private String introduce;
 
     private String imageUrl;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    @JsonManagedReference
-    private List<Board> boards = new ArrayList<>();
-
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
