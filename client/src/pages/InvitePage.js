@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 //
 function InvitePage() {
   const { boardId } = useParams(); // URL 파라미터 가져오기
-  // 카드 데이터 상태변수
+  // 카드 데이터 상태변수 //
   const [eventData, setEventData] = useState({
     title: '', // 카드의 제목
     date: '', // 카드의 날짜
