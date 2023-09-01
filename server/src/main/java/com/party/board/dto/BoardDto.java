@@ -35,7 +35,7 @@ public class BoardDto {
         private String address;
 
         @NotNull
-        private int person;
+        private int totalNum;
 
         private int money;
     }

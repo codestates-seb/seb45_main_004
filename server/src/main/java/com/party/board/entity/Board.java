@@ -3,7 +3,6 @@ package com.party.board.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
-import com.party.member.entity.Applicant;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,7 +29,10 @@ public class Board {
     private String body;
 
     @Column(nullable = false)
-    private int person;
+    private int totalNum; //총 인원수 (작성자가 설정)
+
+    @Column(nullable = false)
+    private int currentNum = 1; //현재 인원수
 
     @Column(nullable = false)
     private LocalDate date;

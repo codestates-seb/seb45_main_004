@@ -1,8 +1,7 @@
 package com.party.member.dto;
 
-import com.party.board.entity.Board;
+import com.party.board.entity.Applicant;
 import com.party.bookmark.entity.Bookmark;
-import com.party.member.entity.Applicant;
 import lombok.Getter;
 import lombok.Setter;
 

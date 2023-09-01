@@ -1,6 +1,6 @@
-package com.party.member.entity;
+package com.party.board.entity;
 
-import com.party.board.entity.Board;
+import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +15,10 @@ public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
+    private String imageUrl;
+
+    private boolean isJoin;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
