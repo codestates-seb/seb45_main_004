@@ -6,7 +6,7 @@ import categoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
-
+//
 function InvitePage() {
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 데이터 상태변수
