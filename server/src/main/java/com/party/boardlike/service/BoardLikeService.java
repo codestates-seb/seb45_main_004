@@ -48,7 +48,7 @@ public class BoardLikeService {
 
         createBoardLikeEntry(boardId, memberId, true);
         long likeCount = getBoardLikesCount(boardId);
-        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, true);
+        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
 
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -65,7 +65,7 @@ public class BoardLikeService {
             updateBoardLikeCount(boardId);
 
             long likeCount = getBoardLikesCount(boardId);
-            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, false);
+            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
 
             return new ResponseEntity<>(responseDto, HttpStatus.OK);
         } else {

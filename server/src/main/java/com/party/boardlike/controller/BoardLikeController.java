@@ -34,7 +34,7 @@ public class BoardLikeController {
 
             long likeCount = boardLikeService.getBoardLikesCount(boardId);
             boolean updateIsLiked = boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
-            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, updateIsLiked);
+            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
 
             return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
         }
@@ -55,7 +55,7 @@ public class BoardLikeController {
         long likeCount = boardLikeRepository.countByBoard_id(boardId);
         boolean isLiked = boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
 
-        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount, isLiked);
+        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
