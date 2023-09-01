@@ -2,7 +2,6 @@ package com.party.boardlike.service;
 
 import com.party.board.entity.Board;
 import com.party.board.repository.BoardRepository;
-import com.party.boardlike.dto.BoardLikeResponseDto;
 import com.party.boardlike.entity.BoardLike;
 import com.party.boardlike.repository.BoardLikeRepository;
 import com.party.exception.BusinessLogicException;
@@ -11,8 +10,6 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,47 +27,28 @@ public class BoardLikeService {
     private final MemberService memberService;
 
 
-    public boolean isBoardLikedByMember(Long boardId, Long memberId) {
-        return boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
-    }
-
-    public long getBoardLikesCount(Long boardId) {
-        return boardLikeRepository.countByBoard_id(boardId);
-    }
-
     // 좋아요 생성
-    public ResponseEntity<BoardLikeResponseDto> createBoardLike(Long boardId, boolean isLiked) {
+    public Board createBoardLike(Long boardId) {
         Long memberId = extractMemberId();
 
         if (isBoardLikedByMember(boardId, memberId)) {
             throw new IllegalArgumentException("YOU ALREADY LIKED");
         }
+        processCreateBoardLike(boardId, memberId);
 
-        createBoardLikeEntry(boardId, memberId, true);
-        long likeCount = getBoardLikesCount(boardId);
-        BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
-
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return boardRepository.getById(boardId);
     }
 
     //좋아요 취소
-    public ResponseEntity<BoardLikeResponseDto> cancelBoardLike(Long boardId) {
+    public Board cancelBoardLike(Long boardId) {
         Long memberId = extractMemberId();
+        processCancelBoardLike(boardId, memberId);
 
-        List<BoardLike> boardLikes = boardLikeRepository.findByBoard_idAndMember_id(boardId, memberId);
-        if (!boardLikes.isEmpty()) {
-            BoardLike boardLike = boardLikes.get(0);
-            boardLikeRepository.delete(boardLike);
+        return boardRepository.getById(boardId);
+    }
 
-            updateBoardLikeCount(boardId);
-
-            long likeCount = getBoardLikesCount(boardId);
-            BoardLikeResponseDto responseDto = new BoardLikeResponseDto(likeCount);
-
-            return new ResponseEntity<>(responseDto, HttpStatus.OK);
-        } else {
-            throw new IllegalArgumentException("Like Does Not Exist");
-        }
+    public boolean isBoardLikedByMember(Long boardId, Long memberId) {
+        return boardLikeRepository.existsByBoard_idAndMember_id(boardId, memberId);
     }
 
     //멤버 검증 및 memberId 타입 변환
@@ -86,7 +64,7 @@ public class BoardLikeService {
     }
 
     //좋아요 생성 로직
-    private void createBoardLikeEntry(Long boardId, Long memberId, boolean isLiked) {
+    private void processCreateBoardLike(Long boardId, Long memberId) {
         BoardLike boardLike = new BoardLike();
         Board board = boardRepository.getById(boardId);
         boardLike.setBoard(board);
@@ -94,6 +72,18 @@ public class BoardLikeService {
         boardLikeRepository.save(boardLike);
 
         updateBoardLikeCount(boardId);
+    }
+
+    //좋아요 취소 로직
+    private void processCancelBoardLike(Long boardId, Long memberId) {
+        List<BoardLike> boardLikes = boardLikeRepository.findByBoard_idAndMember_id(boardId, memberId);
+        if (!boardLikes.isEmpty()) {
+            BoardLike boardLike = boardLikes.get(0);
+            boardLikeRepository.delete(boardLike);
+            updateBoardLikeCount(boardId);
+        } else {
+            throw new IllegalArgumentException("Like Does Not Exist");
+        }
     }
 
     //좋아요 개수 업데이트
