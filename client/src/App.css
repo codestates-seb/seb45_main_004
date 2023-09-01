@@ -3,15 +3,13 @@
 
 * {
     font-family: Space Grotesk;
+    margin:  0px;
+    padding: 0px;
+    box-sizing: border-box;
+    list-style: none;
 }
 
 body {
-    box-sizing: border-box;
-    list-style: none;
-    margin:  0px;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
     width: 100%;
     height: 100vh;
     background:  linear-gradient(135deg, rgba(18, 104, 233, 0.60) 0%, rgba(196, 113, 237, 0.60) 50%, rgba(246, 79, 89, 0.60) 100%);
