@@ -19,4 +19,6 @@ public class MemberPostDto {
 
     @NotBlank
     private String password;
+
+    private String imageUrl;
 }

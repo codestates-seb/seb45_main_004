@@ -1,7 +1,9 @@
 package com.party.board.service;
 
 import com.party.board.dto.BoardDto;
+import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
+import com.party.board.repository.ApplicantRepository;
 import com.party.board.repository.BoardRepository;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
@@ -28,6 +30,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final ApplicantRepository applicantRepository;
 
     // 모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
@@ -60,13 +63,21 @@ public class BoardService {
         board.setTitle(postDto.getTitle());
         board.setDate(date);
         board.setBody(postDto.getBody());
-        board.setPerson(postDto.getPerson());
+        board.setTotalNum(postDto.getTotalNum());
         board.setMoney(postDto.getMoney());
         board.setMember(member);
         board.setCategory(boardCategoryEnum);
         board.setLatitude(postDto.getLatitude());
         board.setLongitude(postDto.getLongitude());
         board.setAddress(postDto.getAddress());
+
+        //작성한 모임 참여처리
+        Applicant applicant = new Applicant();
+        applicant.setBoard(board);
+        applicant.setJoin(true);
+        applicant.setMember(member);
+        applicant.setImageUrl(member.getImageUrl());
+        applicantRepository.save(applicant);
 
         return boardRepository.save(board);
     }
@@ -88,4 +99,5 @@ public class BoardService {
     public List<Board> findBoards() {
         return boardRepository.findAll();
     }
+
 }

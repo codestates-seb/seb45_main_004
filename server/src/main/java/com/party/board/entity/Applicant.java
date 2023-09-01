@@ -1,4 +1,4 @@
-package com.party.history.entity;
+package com.party.board.entity;
 
 import com.party.board.entity.Board;
 import com.party.member.entity.Member;
@@ -12,10 +12,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class History {
+public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
+
+    private String imageUrl;
+
+    private boolean isJoin;
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")

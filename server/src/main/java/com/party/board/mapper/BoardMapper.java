@@ -1,10 +1,14 @@
 package com.party.board.mapper;
 
+import com.party.board.dto.ApplicantResponseDto;
 import com.party.board.dto.BoardDto;
 import com.party.board.dto.BoardResponseDto;
+import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
 import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
@@ -19,7 +23,8 @@ public interface BoardMapper {
         boardResponseDto.setDate(String.valueOf(board.getDate()));
         boardResponseDto.setBody(board.getBody());
         boardResponseDto.setCategory(String.valueOf(board.getCategory()));
-        boardResponseDto.setTotalPerson(board.getPerson());
+        boardResponseDto.setTotalNum(board.getTotalNum());
+        boardResponseDto.setCurrentNum(board.getCurrentNum());
         boardResponseDto.setMoney(board.getMoney());
         boardResponseDto.setBoardStatus(board.getStatus());
         boardResponseDto.setBoardLikesCount(board.getBoardLikesCount());
@@ -29,4 +34,5 @@ public interface BoardMapper {
         return boardResponseDto;
     }
     List<BoardResponseDto> boardsToBoardResponse(List<Board> boards);
+
 }

@@ -1,5 +1,6 @@
 package com.party.member.entity;
 
+import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
 import lombok.Getter;

@@ -18,8 +18,8 @@ public class BoardResponseDto {
     private String latitude;
     private String longitude;
     private String address;
-    private int currentPerson;
-    private int totalPerson;
+    private int totalNum;
+    private int currentNum;
     private int money;
     private long boardLikesCount;
     private Board.BoardStatus boardStatus;

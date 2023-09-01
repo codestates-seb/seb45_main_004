@@ -1,6 +1,7 @@
 package com.party.board.controller;
 
 import com.party.board.dto.BoardDto;
+import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.board.mapper.BoardMapper;
 import com.party.board.service.BoardService;
@@ -47,4 +48,6 @@ public class BoardController {
         List<Board> boards = boardService.findBoards();
         return new ResponseEntity<>(mapper.boardsToBoardResponse(boards), HttpStatus.OK);
     }
+
+
 }
