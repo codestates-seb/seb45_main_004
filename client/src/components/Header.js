@@ -29,7 +29,7 @@ const ServieceHeader = styled.header`
     h1 {
       margin: 0;
       font-size: 2.5rem;
-      color: black;
+      color: white;
     }
   }
 `;
@@ -58,7 +58,7 @@ const Header = () => {
     <ServieceHeader>
       <div className="header-container">
         <LinkBox href="/" className="title-box">
-          <h1>CELEBEE</h1>
+          <h1>Celebee</h1>
         </LinkBox>
         {isLogin ? (
           <ButtonBox>

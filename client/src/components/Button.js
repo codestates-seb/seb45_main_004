@@ -37,15 +37,38 @@ const StyleButton = styled.button`
     padding: 0;
     margin-left: 20px;
   }
+
+  &.Button-like,
+  &.Button-participations {
+    width: 150px;
+    height: 50px;
+    background-color: ${(props) => props.color || 'white'};
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 0px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
 `;
 
-const Button = ({ type, text, onClick }) => {
-  const btnType = ['membership', 'newCard', 'notification'].includes(type)
+const Button = ({ type, text, onClick, color }) => {
+  const btnType = [
+    'membership',
+    'newCard',
+    'notification',
+    'like',
+    'participations',
+  ].includes(type)
     ? type
     : 'default';
 
   return (
-    <StyleButton className={`Button-${btnType}`} onClick={onClick}>
+    <StyleButton
+      className={`Button-${btnType}`}
+      color={color}
+      onClick={onClick}
+    >
       {text}
     </StyleButton>
   );
@@ -58,6 +81,7 @@ Button.defaultProps = {
 Button.propTypes = {
   type: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 
