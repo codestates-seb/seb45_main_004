@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
-import categoryMappings from '../components/CategoryMappings';
+import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
@@ -141,7 +141,7 @@ function InvitePage() {
           </div>
           <div>
             {/* // Object.keys로 categoryMappings 객체의 키들을 배열로 바꿈,map사용해서 각 카테고리 키를 순회함 */}
-            {Object.keys(categoryMappings).map((key) => {
+            {Object.keys(CategoryMappings).map((key) => {
               // 사용자가 선택한 카테고리와 일치하는 키값을 찾아서 그에 해당하는 ui 렌더링
               if (eventData.category === key) {
                 return (
@@ -149,8 +149,8 @@ function InvitePage() {
                     key={key}
                     // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
                     // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                    text={categoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                    color={categoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
+                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
                   />
                 );
               }

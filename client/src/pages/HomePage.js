@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import CategoryBtn from '../components/CategoryBtn';
-import categoryMappings from '../components/CategoryMappings';
+import CategoryMappings from '../components/CategoryMappings';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -106,13 +106,13 @@ export default function Homepage() {
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
-            {Object.keys(categoryMappings).map((key) => (
+            {Object.keys(CategoryMappings).map((key) => (
               <CategoryBtn
                 key={key}
-                text={categoryMappings[key]?.label}
+                text={CategoryMappings[key]?.label}
                 color={
-                  categoryMappings[key]?.backgroundColor ||
-                  categoryMappings[key]?.color
+                  CategoryMappings[key]?.backgroundColor ||
+                  CategoryMappings[key]?.color
                 }
               />
             ))}
