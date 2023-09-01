@@ -80,7 +80,7 @@ export default function Homepage() {
           setHasMore(false);
         } else {
           const sortedInvitation = newData.sort(
-            (a, b) => new Date(b.date) - new Date(a.date),
+            (a, b) => new Date(b.boardId) - new Date(a.boardId),
           );
           setInvitation(sortedInvitation);
           console.log(sortedInvitation);
