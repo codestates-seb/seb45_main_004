@@ -1,6 +1,7 @@
 package com.party.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
 import lombok.Getter;

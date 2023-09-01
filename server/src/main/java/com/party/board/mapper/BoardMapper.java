@@ -19,7 +19,8 @@ public interface BoardMapper {
         boardResponseDto.setDate(board.getDate());
         boardResponseDto.setBody(board.getBody());
         boardResponseDto.setCategory(String.valueOf(board.getCategory()));
-        boardResponseDto.setTotalPerson(board.getPerson());
+        boardResponseDto.setTotalNum(board.getTotalNum());
+        boardResponseDto.setCurrentNum(board.getCurrentNum());
         boardResponseDto.setMoney(board.getMoney());
         boardResponseDto.setBoardStatus(board.getStatus());
         boardResponseDto.setBoardLikesCount(board.getBoardLikesCount());
