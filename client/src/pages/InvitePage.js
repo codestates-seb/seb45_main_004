@@ -15,7 +15,7 @@ function InvitePage() {
     date: '', // 카드의 날짜
     body: '', // 카드의 본문 내용
     category: '', // 카드의 카테고리
-    currentPerson: 0, // 현재 참여한 인원 수
+    currentNum: 0, // 현재 참여한 인원 수
     totalNum: 0, // 전체 참여 가능한 인원 수 //
     money: 0, // 카드의 금액 정보
     boardLikesCount: 0, // 카드에 대한 좋아요 수
@@ -26,6 +26,9 @@ function InvitePage() {
       imageUrl: null,
     },
   });
+  const token =
+    // '  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5MzU3OTkyNCwiZXhwIjoxNjkzODc5OTI0fQ.z0jpTq0u-BVfMH4Qi5t0PRsAUwoVbQnOxqGnwJ9dn2_fO5PQHugleugMVYTpPSFU';
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzNTc5MDcyLCJleHAiOjE2OTM4NzkwNzJ9.nLzwBawEHcbWMBHOPnfGf16-lzuXm37r5FRhfPjj0VBjPFRte-NxxGwlvN-u4kI4'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
 
   useEffect(() => {
     // const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
@@ -34,7 +37,7 @@ function InvitePage() {
       .get(`http://3.39.76.109:8080/boards/${boardId}`)
       .then((response) => {
         const eventData = response.data; // API 응답 데이터를 가져옴
-        console.log(eventData);
+        // console.log(eventData);
         setEventData(eventData);
       })
       .catch((error) => {
@@ -49,16 +52,12 @@ function InvitePage() {
   // 좋아요 버튼을 클릭했을 때 호출
   const handleLikeClick = () => {
     const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
-
     // 서버에 좋아요 상태 전송 함수 호출
     sendLikeStatus(newIsLiked);
   };
 
   // 서버로 좋아요 상태 전송 post또는 delete요청을 함
   const sendLikeStatus = (isLiked) => {
-    const token =
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7ZWY66Oo7IK07J20IiwiaWQiOjEsImVtYWlsIjoiT25lZGF5QGdtYWlsLmNvbSIsInN1YiI6Ik9uZWRheUBnbWFpbC5jb20iLCJpYXQiOjE2OTM0Njg3NTgsImV4cCI6MTY5Mzc2ODc1OH0.Inn_duS30xQbTvC6s5VF5Kd1uM4eauq8LDDBiwpOqCQjmaFo1zLkC9GIwGZXaY1E'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
-
     // 서버로 좋아요 상태 전송
     axios
       .request({
@@ -72,6 +71,7 @@ function InvitePage() {
 
       .then((response) => {
         console.log(response.data);
+        console.log(response.data.currentNum);
         // 응답 받은 상태 업데이트
         setEventData((prevData) => ({
           //prevData는 이전 상태의 eventData 객체를 가리키는 변수임
@@ -87,6 +87,36 @@ function InvitePage() {
       });
   };
 
+  // 참여 버튼을 클릭했을 때 호출
+  const handleJoinClick = () => {
+    sendJoinStatus(); // 항상 false를 전달하여 참여 상태를 해제
+    // 서버에 참여 상태 전송 함수 호출
+  };
+
+  const sendJoinStatus = () => {
+    axios
+      .request({
+        method: 'post', // 항상 POST로 보내서 참여 상태를 해제
+        url: `http://3.39.76.109:8080/boards/${boardId}/join`,
+        data: { isJoin: false }, // 항상 false를 전달
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        // 응답 데이터에서 currentNum 값을 가져와서 정수로 변환하여 업데이트
+        setEventData((prevData) => ({
+          ...prevData,
+          isJoin: false, // 항상 false로 업데이트
+          currentNum: prevData.currentNum + 1,
+        }));
+      })
+      .catch((error) => {
+        console.error('Error sending join status:', error);
+      });
+  };
+
   return (
     <EventDetailsContainer>
       <section>
@@ -97,7 +127,6 @@ function InvitePage() {
                 src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
                 alt="cardImage"
               />
-              {/* <div>{clickCount}</div> */}
               <button className="heart-button" onClick={handleLikeClick}>
                 <VscHeartFilled className="heart-icon" />
               </button>
@@ -124,9 +153,9 @@ function InvitePage() {
             />
             {/* 참여자 표시 */}
             <div>
-              {eventData.currentPerson}/{eventData.totalNum}
+              {eventData.currentNum - 1}/{eventData.totalNum}
             </div>
-            <button>참여 버튼</button>
+            <button onClick={handleJoinClick}>참여 버튼</button>
           </div>
         </article>
         <article>
