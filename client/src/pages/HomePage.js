@@ -67,7 +67,10 @@ export default function Homepage() {
 
       .then((response) => {
         const newData = response.data;
-        setInvitiation(newData);
+        const sortedInvitation = newData.sort(
+          (a, b) => new Date(b.date) - new Date(a.date),
+        );
+        setInvitiation(sortedInvitation);
         console.log(newData);
       })
 
