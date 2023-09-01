@@ -57,11 +57,8 @@ public class BoardService {
 
         Board board = new Board();
 
-        String day = postDto.getDate();
-        LocalDate date = stringToDateConverter(day);
-
         board.setTitle(postDto.getTitle());
-        board.setDate(date);
+        board.setDate(postDto.getDate());
         board.setBody(postDto.getBody());
         board.setTotalNum(postDto.getTotalNum());
         board.setMoney(postDto.getMoney());

@@ -4,6 +4,9 @@ import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
+
 @Getter
 @Setter
 public class BoardResponseDto {
@@ -12,7 +15,7 @@ public class BoardResponseDto {
     private long memberId;
     private String memberNickname;
     private String title;
-    private String date;
+    private LocalDate date;
     private String body;
     private String category;
     private String latitude;

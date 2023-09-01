@@ -20,7 +20,7 @@ public interface BoardMapper {
         boardResponseDto.setMemberNickname(board.getMember().getNickname());
         boardResponseDto.setBoardId(board.getId());
         boardResponseDto.setTitle(board.getTitle());
-        boardResponseDto.setDate(String.valueOf(board.getDate()));
+        boardResponseDto.setDate(board.getDate());
         boardResponseDto.setBody(board.getBody());
         boardResponseDto.setCategory(String.valueOf(board.getCategory()));
         boardResponseDto.setTotalNum(board.getTotalNum());
