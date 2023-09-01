@@ -6,10 +6,12 @@ import InvitePage from './pages/InvitePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MyPage from './pages/MyPage';
+import MapKakao from './services/MapKakao';
 
 function App() {
   return (
     <BrowserRouter>
+      <MapKakao />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
