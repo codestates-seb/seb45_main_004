@@ -1,9 +1,10 @@
 import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import CategoryBtn from '../components/CategoryBtn';
-import categoryMappings from '../components/categoryMappings';
+import categoryMappings from '../components/CategoryMappings';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const HomePage = styled.div`
   display: flex;
@@ -111,9 +112,13 @@ export default function Homepage() {
         </div>
         <div className="invitiation-container">
           {invitiation.map((item) => (
-            <div key={item.boardId} className="invitation-item">
+            <Link
+              key={item.boardId}
+              to={`/boards/${item.boardId}`}
+              className="invitation-item"
+            >
               <h2>{item.title}</h2>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
