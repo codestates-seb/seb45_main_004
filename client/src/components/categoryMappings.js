@@ -1,4 +1,4 @@
-const categoryMappings = {
+const CategoryMappings = {
   CATEGORY_ALL: { label: 'ALL', backgroundColor: '#C471ED' },
   CATEGORY_LEISURE: { label: 'LEISURE', backgroundColor: '#FF6AC6' },
   CATEGORY_TRAVEL: { label: 'TRAVEL', backgroundColor: '#FF7D99' },
@@ -8,4 +8,4 @@ const categoryMappings = {
   CATEGORY_ETC: { label: 'ETC', backgroundColor: '#F9F871' },
 };
 
-export default categoryMappings;
+export default CategoryMappings;
