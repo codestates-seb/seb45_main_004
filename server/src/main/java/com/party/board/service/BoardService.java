@@ -34,46 +34,9 @@ public class BoardService {
     // 모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
 
-        Object memberIdObject  = memberService.extractMemberInfo().get("id");
-
-        // Board 등록 시 memberid 값 저장
-        Long memberId;
-        if (memberIdObject instanceof Long) {
-            memberId = (Long) memberIdObject;
-        } else if (memberIdObject instanceof Integer) {
-            memberId = ((Integer) memberIdObject).longValue();
-        } else {
-            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
-        }
-
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
-        if (!memberOptional.isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-        }
-        Member member = memberOptional.get();
-
-        Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
-
-        Board board = new Board();
-
-        board.setTitle(postDto.getTitle());
-        board.setDate(postDto.getDate());
-        board.setBody(postDto.getBody());
-        board.setTotalNum(postDto.getTotalNum());
-        board.setMoney(postDto.getMoney());
-        board.setMember(member);
-        board.setCategory(boardCategoryEnum);
-        board.setLatitude(postDto.getLatitude());
-        board.setLongitude(postDto.getLongitude());
-        board.setAddress(postDto.getAddress());
-
-        //작성한 모임 참여처리
-        Applicant applicant = new Applicant();
-        applicant.setBoard(board);
-        applicant.setJoin(true);
-        applicant.setMember(member);
-        applicant.setImageUrl(member.getImageUrl());
-        applicantRepository.save(applicant);
+        Member member = findMember(extractMemberId());
+        Board board = processCreateBoard(postDto, member);
+        saveApplicantForBoardCreat(board, member);
 
         return boardRepository.save(board);
     }
@@ -87,5 +50,54 @@ public class BoardService {
     //모임글 전체 조회
     public List<Board> findBoards() {
         return boardRepository.findAll();
+    }
+
+    //모임글 생성 로직
+    private Board processCreateBoard(BoardDto.Post postDto, Member member) {
+        Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
+        Board board = new Board();
+        board.setTitle(postDto.getTitle());
+        board.setDate(postDto.getDate());
+        board.setBody(postDto.getBody());
+        board.setTotalNum(postDto.getTotalNum());
+        board.setMoney(postDto.getMoney());
+        board.setMember(member);
+        board.setCategory(boardCategoryEnum);
+        board.setLatitude(postDto.getLatitude());
+        board.setLongitude(postDto.getLongitude());
+        board.setAddress(postDto.getAddress());
+        return board;
+    }
+
+    //작성한 모임 참여 처리
+    private void saveApplicantForBoardCreat(Board board, Member member) {
+        Applicant applicant = new Applicant();
+        applicant.setBoard(board);
+        applicant.setJoin(true);
+        applicant.setMember(member);
+        applicant.setImageUrl(member.getImageUrl());
+        applicantRepository.save(applicant);
+    }
+
+    //memberId 값 형변환
+    private Long extractMemberId() {
+        Object memberIdObject  = memberService.extractMemberInfo().get("id");
+
+        if (memberIdObject instanceof Long) {
+            return (Long) memberIdObject;
+        } else if (memberIdObject instanceof Integer) {
+            return ((Integer) memberIdObject).longValue();
+        } else {
+            throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
+        }
+    }
+
+    // member 조회
+    private Member findMember(Long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (!memberOptional.isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }
+        return memberOptional.get();
     }
 }
