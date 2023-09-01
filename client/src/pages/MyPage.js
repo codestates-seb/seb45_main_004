@@ -17,11 +17,13 @@ const MyPageSection = styled.section`
 //레이아웃 부터 잡기!
 const MyPage = () => {
   const [user, setUser] = useState({});
+  const [activetab, setActiveTab] = useState('tab1');
 
   const fetchMyInfo = async () => {
     try {
       const response = await axios.get(`http://3.39.76.109:8080/members/1`);
       const myInfo = response.data;
+      console.log(myInfo);
       setUser(myInfo);
     } catch (error) {
       console.error(error);
@@ -32,12 +34,14 @@ const MyPage = () => {
     fetchMyInfo();
   }, []);
 
-  //const [tabState, setTabState] = useState('');
+  const handleTabClick = (tabId) => {
+    setActiveTab(tabId);
+  };
 
   return (
     <MyPageSection>
       <Profile user={user} />
-      <MyPageTab />
+      <MyPageTab activetab={activetab} handleTabClick={handleTabClick} />
     </MyPageSection>
   );
 };

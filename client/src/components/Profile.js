@@ -76,8 +76,7 @@ const UserInfoContainer = styled.div`
 `;
 
 const Profile = ({ user }) => {
-  const { email, gender, imageUrl, introduce, nickname } = user;
-  console.log(imageUrl);
+  const { email, gender, introduce, nickname } = user;
 
   return (
     <ProfileContainer>
