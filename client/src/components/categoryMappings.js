@@ -7,5 +7,5 @@ const CategoryMappings = {
   CATEGORY_EDUCATION: { label: 'EDUCATION', backgroundColor: '#4CA899' },
   CATEGORY_ETC: { label: 'ETC', backgroundColor: '#F9F871' },
 };
-
+//
 export default CategoryMappings;
