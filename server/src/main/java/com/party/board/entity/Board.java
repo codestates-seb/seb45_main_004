@@ -81,18 +81,18 @@ public class Board {
     private List<Applicant> applicants = new ArrayList<>();
 
     public enum BoardCategory {
-        CATEGORY_LEISURE("LEISURE"),
-        CATEGORY_TRAVEL("TRAVEL"),
-        CATEGORY_GAME("GAME"),
-        CATEGORY_CULTURE("CULTURE"),
-        CATEGORY_EDUCATION("EDUCATION"),
-        CATEGORY_ETC("ETC");
+        CATEGORY_LEISURE(1),
+        CATEGORY_TRAVEL(2),
+        CATEGORY_GAME(3),
+        CATEGORY_CULTURE(4),
+        CATEGORY_EDUCATION(5),
+        CATEGORY_ETC(6);
 
         @Getter
-        private String category;
+        private int categoryCode;
 
-        BoardCategory(String category) {
-            this.category = category;
+        BoardCategory(int categoryCode) {
+            this.categoryCode = categoryCode;
         }
     }
     public enum BoardStatus {
