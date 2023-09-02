@@ -1,3 +1,15 @@
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: celebeeimage
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: 'false'
+
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
