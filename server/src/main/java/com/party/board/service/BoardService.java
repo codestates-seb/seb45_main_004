@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,14 +46,24 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    //모임글 전체 조회
+    //모임글 전체 조회(최신순)
     public List<Board> findBoards() {
         return boardRepository.findAll();
     }
 
-    //모임글 카테고리 별 조회
+    //모임글 전체 조회(좋아요순)
+    public List<Board> findBoardsByLikesCountDesc() {
+        return boardRepository.findAllByOrderByBoardLikesCountDesc();
+    }
+
+    //모임글 카테고리 별 조회(최신순)
     public List<Board> findBoardsByCategory(Board.BoardCategory category) {
         return boardRepository.findByCategory(category);
+    }
+
+    //모임글 카테고리 별 조회(좋아요순)
+    public List<Board> findByCategoryAndOrderByLikesDesc(Board.BoardCategory category) {
+        return boardRepository.findByCategoryOrderByBoardLikesCountDesc(category);
     }
 
     //모임글 생성 로직

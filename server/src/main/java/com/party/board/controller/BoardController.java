@@ -4,12 +4,8 @@ import com.party.board.dto.BoardDto;
 import com.party.board.entity.Board;
 import com.party.board.mapper.BoardMapper;
 import com.party.board.service.BoardService;
-import com.party.exception.BusinessLogicException;
-import com.party.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -48,14 +44,21 @@ public class BoardController {
         return new ResponseEntity<>(mapper.boardToBoardResponse(board),HttpStatus.OK);
     }
 
-    //모임글 전체 조회
+    //모임글 전체 조회(최신순)
     @GetMapping
     public ResponseEntity getBoards() {
         List<Board> boards = boardService.findBoards();
         return new ResponseEntity<>(mapper.boardsToBoardResponse(boards), HttpStatus.OK);
     }
 
-    //특정 카테고리 조회
+    //모임글 전체 조회(좋아요순)
+    @GetMapping("/likes")
+    public ResponseEntity getBoardsSortedByLikesCount() {
+        List<Board> boards = boardService.findBoardsByLikesCountDesc();
+        return new ResponseEntity(mapper.boardsToBoardResponse(boards), HttpStatus.OK);
+    }
+
+    //특정 카테고리별 조회(최신순)
     @GetMapping("/category/{categoryCode}")
     public ResponseEntity getBoardsByCategory(@PathVariable("categoryCode") int categoryCode) {
 
@@ -65,6 +68,20 @@ public class BoardController {
 
         if (selectedCategory.isPresent()) {
             List<Board> boards = boardService.findBoardsByCategory(selectedCategory.get());
+            return new ResponseEntity<>(mapper.boardsToBoardResponse(boards), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(("This categoryCode does not exist"),HttpStatus.BAD_REQUEST);
+        }
+    }
+    //특정 카테고리별 조회(좋아요순)
+    @GetMapping("/category/{categoryCode}/likes")
+    public ResponseEntity getBoardsByCategorySortedByLikesCount(@PathVariable("categoryCode") int categoryCode){
+        Optional<Board.BoardCategory> selectedCategory = Arrays.stream(Board.BoardCategory.values())
+                .filter(category -> category.getCategoryCode() == categoryCode)
+                .findFirst();
+
+        if (selectedCategory.isPresent()) {
+            List<Board> boards = boardService.findByCategoryAndOrderByLikesDesc(selectedCategory.get());
             return new ResponseEntity<>(mapper.boardsToBoardResponse(boards), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(("This categoryCode does not exist"),HttpStatus.BAD_REQUEST);
