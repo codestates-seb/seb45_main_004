@@ -84,6 +84,9 @@ export default function Homepage() {
           return !invitation.find(
             (existingItem) => existingItem.boardId === item.boardId,
           );
+          setInvitation(sortedInvitation);
+          console.log(sortedInvitation);
+        }
         });
 
         const updateInvitation = [...invitation, ...uniqueSortedInvitation];

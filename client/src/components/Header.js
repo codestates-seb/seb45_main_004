@@ -87,6 +87,9 @@ const Header = () => {
           </ButtonBox>
         ) : (
           <ButtonBox>
+            <LinkBox href="/boards/new-boards">
+              <Button type="membership" text="New Card" />
+            </LinkBox>
             <LinkBox href="/login">
               <Button
                 type="membership"

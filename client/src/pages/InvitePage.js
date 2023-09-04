@@ -6,6 +6,8 @@ import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
+import MapKakao from '../services/MapKakao';
+
 //
 function InvitePage() {
   const { boardId } = useParams(); // URL 파라미터 가져오기
@@ -25,10 +27,12 @@ function InvitePage() {
       memberNickname: '', // 멤버의 닉네임
       imageUrl: null,
     },
+    address: '',
+    longitude: '',
+    latitude: '',
   });
-  const token =
-    // '  Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5MzU3OTkyNCwiZXhwIjoxNjkzODc5OTI0fQ.z0jpTq0u-BVfMH4Qi5t0PRsAUwoVbQnOxqGnwJ9dn2_fO5PQHugleugMVYTpPSFU';
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzNTc5MDcyLCJleHAiOjE2OTM4NzkwNzJ9.nLzwBawEHcbWMBHOPnfGf16-lzuXm37r5FRhfPjj0VBjPFRte-NxxGwlvN-u4kI4'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+  const token = //join 아이디
+    'Bearer eyJhbGciOiJIUzM4NCJ9. eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzNjY0MjQ5LCJleHAiOjE2OTM5NjQyNDl9.h4Uqy0847zEl-PPfw4R4QUmLyI7d1aoXbTVYAKIOXRVe3GVnM06DQqGdHCHleP5b'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
 
   useEffect(() => {
     // const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
@@ -37,7 +41,7 @@ function InvitePage() {
       .get(`http://3.39.76.109:8080/boards/${boardId}`)
       .then((response) => {
         const eventData = response.data; // API 응답 데이터를 가져옴
-        // console.log(eventData);
+        console.log(eventData);
         setEventData(eventData);
       })
       .catch((error) => {
@@ -45,9 +49,9 @@ function InvitePage() {
       });
   }, []);
 
-  if (eventData === null) {
-    return null; // 데이터가 아직 불러와지지 않은 경우 렌더링하지 않음
-  }
+  // if (eventData === null) {
+  //   return null; // 데이터가 아직 불러와지지 않은 경우 렌더링하지 않음
+  // }
 
   // 좋아요 버튼을 클릭했을 때 호출
   const handleLikeClick = () => {
@@ -186,7 +190,12 @@ function InvitePage() {
               return null; // 선택된 카테고리와 일치하지 않는 경우 null 반환하여 렌더링하지 않음
             })}
           </div>
-          <div className="map-box">map 표시 {eventData.location}</div>
+          <MapKakao
+            latitude={eventData.latitude} // 좌표값을 props로 전달
+            longitude={eventData.longitude} // 좌표값을 props로 전달
+            showSearch={false}
+            showMarker={true}
+          />
         </article>
       </section>
     </EventDetailsContainer>
@@ -294,5 +303,9 @@ const EventDetailsContainer = styled.div`
     height: 300px;
     border: 1px solid;
   }
+
+  #map {
+  }
 `;
+
 export default InvitePage;
