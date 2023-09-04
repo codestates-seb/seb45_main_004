@@ -4,9 +4,9 @@ const SignupPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 430px;
   height: 100vh;
   font-size: 20px;
+  margin: 0px 320px;
   .signup-form-sex {
     display: flex;
     flex-direction: row;

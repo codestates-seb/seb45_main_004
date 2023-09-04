@@ -6,6 +6,7 @@ import InvitePage from './pages/InvitePage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import MyPage from './pages/MyPage';
+import SignupPage from './pages/SignupPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/boards/:boardId" element={<InvitePage />} />
         <Route path="/members/1" element={<MyPage />} />
+        <Route path="/members/" element={<SignupPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
