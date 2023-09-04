@@ -26,3 +26,15 @@ jwt:
   key: "asdjklhalsdjkhaljsdkhasdjkhasdjkalsdjkajsdkl123412344"
   access-token-expiration-minutes: 5000
   refresh-token-expiration-minutes: 4200
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    s3:
+      bucket: celebeeimage
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: 'false'

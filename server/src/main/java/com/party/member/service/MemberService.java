@@ -3,6 +3,8 @@ package com.party.member.service;
 import com.party.auth.util.CustomAuthorityUtils;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.image.config.AwsS3Config;
+import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final AwsService awsService;
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
@@ -31,6 +34,10 @@ public class MemberService {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+
+        //계정 생성 시 프로필 이미지 기본으로 설정
+        String imagePath = awsService.getThumbnailPath("profile/1.png");
+        member.setImageUrl(imagePath);
 
         return memberRepository.save(member);
     }
