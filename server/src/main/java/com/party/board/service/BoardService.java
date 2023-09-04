@@ -66,6 +66,29 @@ public class BoardService {
         return boardRepository.findByCategoryOrderByBoardLikesCountDesc(category);
     }
 
+    //제목으로 모임글 검색(전체글)
+    public List<Board> searchBoardsByTitle(String title) {
+        return boardRepository.findByTitleContaining(title);
+    }
+
+    //제목+내용으로 모임글 검색(전체글)
+    public List<Board> searchBoardsByTitleAndBody(String title,String body) {
+        return boardRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(title, body);
+    }
+
+    //제목으로 모임글 검색(카테고리별)
+    public List<Board> searchBoardsByCategoryAndTitle(Board.BoardCategory category, String title) {
+        return boardRepository.findByCategoryAndTitleContaining(category, title);
+    }
+
+    //제목+내용으로 모임글 검색(카테고리별)
+    public List<Board> searchBoardsByCategoryAndTitleAndBody(Board.BoardCategory category1,
+                                                             String title,
+                                                             Board.BoardCategory category2,
+                                                             String body) {
+        return boardRepository.findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(category1, title,category2, body);
+    }
+
     //모임글 생성 로직
     private Board processCreateBoard(BoardDto.Post postDto, Member member) {
         Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
