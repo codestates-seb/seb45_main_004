@@ -26,6 +26,7 @@ public class BoardResponseDto {
     private int money;
     private long boardLikesCount;
     private Board.BoardStatus boardStatus;
+    private String imageUrl;
 
     public Member getMember() {
         Member member = new Member();
