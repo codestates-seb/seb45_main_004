@@ -12,9 +12,7 @@ import SignupPage from './pages/SignupPage';
 function App() {
   return (
     <BrowserRouter>
-      <div>
-        <Header />
-      </div>
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="boards/new-boards" element={<InviteWritePage />} />
