@@ -7,14 +7,36 @@ const SignupPage = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  font-size: 20px;
+  font-size: 16px;
   margin: 0px 320px;
   .signup-form-sex {
     display: flex;
     flex-direction: row;
   }
-  .sex-men {
-    margin-right: 25px;
+  .singup-submit-btn {
+    width: 300px;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 15px;
+    background-color: #0a95ff;
+  }
+  .agree-text {
+    font-size: 15px;
+  }
+  .signup-form-agree {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .agree-text {
+    margin-left: 5px;
+  }
+  .agree-checkbox {
+    width: 13px;
+    height: 13px;
   }
 `;
 
@@ -22,16 +44,22 @@ const InputStyle = styled.input`
   border: none;
   border-bottom: 1px solid black;
   background: transparent;
-  font-size: 20px;
   width: 300px;
   height: 50px;
+  font-size: 15px;
   margin-bottom: 20px;
 `;
 
-const InputCheckbox = styled.input`
-  margin: 0px 5px 20px 0px;
-  width: 15px; /* 원하는 가로 크기 */
-  height: 15px;
+const GenderStylebox = styled.div`
+  margin-right: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  .sex-checkbox {
+    margin: 0px 5px 0px 0px;
+    width: 15px;
+    height: 15px;
+  }
 `;
 
 export default function Signuppage() {
@@ -103,24 +131,26 @@ export default function Signuppage() {
             />
           </div>
           <div className="signup-form-sex">
-            <div className="sex-men">
-              <InputCheckbox
+            <GenderStylebox className="sex-men">
+              <input
                 type="radio"
                 name="gender"
                 value="male"
                 onChange={handleGenderChange}
+                className="sex-checkbox"
               />
               <label htmlFor="option1">Men</label>
-            </div>
-            <div className="sex-women">
-              <InputCheckbox
+            </GenderStylebox>
+            <GenderStylebox className="sex-women">
+              <input
                 type="radio"
                 value="female"
                 name="gender"
                 onChange={handleGenderChange}
+                className="sex-checkbox"
               />
               <label htmlFor="option1">Women</label>
-            </div>
+            </GenderStylebox>
           </div>
           <div className="signup-form-email">
             <InputStyle
@@ -141,13 +171,16 @@ export default function Signuppage() {
             />
           </div>
           <div className="signup-form-agree">
-            <InputCheckbox
+            <input
               type="checkbox"
               id="checkbox"
               value={checkbox}
               onChange={(e) => setCheckbox(e.target.value)}
+              className="agree-checkbox"
             />
-            <span className="agree-text">개인 정보를 수집 및 이용합니다.</span>
+            <span className="agree-text">
+              Collect and use your personal information.
+            </span>
           </div>
           <div className="signup-form-submit">
             <button
