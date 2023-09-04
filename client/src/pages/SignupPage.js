@@ -21,6 +21,7 @@ const SignupPage = styled.div`
     color: white;
     font-size: 15px;
     background-color: #0a95ff;
+    cursor: pointer;
   }
   .agree-text {
     font-size: 15px;
@@ -74,6 +75,10 @@ export default function Signuppage() {
   };
 
   const handleSignup = async () => {
+    if (!checkbox) {
+      window.alert('개인정보 수집 동의란에 체크해주세요');
+      return;
+    }
     try {
       const userData = {
         email: email,
