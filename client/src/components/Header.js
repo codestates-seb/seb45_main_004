@@ -94,12 +94,8 @@ const Header = () => {
                 onClick={() => alert('로그인 페이지로 이동')}
               />
             </LinkBox>
-            <LinkBox href="/users/new-user">
-              <Button
-                type="membership"
-                text="Sign Up"
-                onClick={() => alert('회원가입 페이지로 이동')}
-              />
+            <LinkBox href="/members">
+              <Button type="membership" text="Sign Up" />
             </LinkBox>
           </ButtonBox>
         )}
