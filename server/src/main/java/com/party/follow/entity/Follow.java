@@ -4,7 +4,6 @@ import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 import javax.persistence.*;
 
@@ -17,16 +16,13 @@ public class Follow {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "FROM_MEMBER")
-    private Member fromMember;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FOLLWER_MEMBER")
+    private Member follwerMember;
 
-    @ManyToOne
-    @JoinColumn(name = "TO_MEMBER")
-    private Member toMember;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FOLLOWING_MEMBER")
+    private Member followingMember;
 
-    public Follow(Member fromMember, Member toMember) {
-        this.fromMember = fromMember;
-        this.toMember = toMember;
-    }
+
 }

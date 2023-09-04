@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
+import com.party.follow.entity.Follow;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,12 +40,19 @@ public class Member {
 
     private String imageUrl;
 
+    private int followerCount;
+
+    private int followingCount;
+
     @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Follow> follows;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
