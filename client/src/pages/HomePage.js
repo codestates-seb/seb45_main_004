@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -68,32 +68,34 @@ const HomePage = styled.div`
 
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]);
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
-  useEffect(() => {
+  const fetchMoreData = () => {
     axios
-      .get(`http://3.39.76.109:8080/boards?page=${page}`)
+
+      .get('http://3.39.76.109:8080/boards')
+
       .then((response) => {
         const newData = response.data;
-        if (newData.length === 0) {
-          setHasMore(false);
-        } else {
-          const sortedInvitation = newData.sort(
-            (a, b) => new Date(b.boardId) - new Date(a.boardId),
+        const sortedInvitation = newData.sort(
+          (a, b) => new Date(b.boardId) - new Date(a.boardId),
+        );
+
+        const uniqueSortedInvitation = sortedInvitation.filter((item) => {
+          return !invitation.find(
+            (existingItem) => existingItem.boardId === item.boardId,
           );
           setInvitation(sortedInvitation);
-          // console.log(sortedInvitation);
+          console.log(sortedInvitation);
         }
-      })
-      .catch((error) => {
-        console.log(('Error', error));
-      });
-  }, [page]);
+        });
 
-  const loadMore = () => {
-    setPage(page + 1); // 다음 페이지로 이동
-    console.log('페이지추가', setPage);
+        const updateInvitation = [...invitation, ...uniqueSortedInvitation];
+        setInvitation(updateInvitation);
+      })
+
+      .catch((error) => {
+        console.log('error', error);
+      });
   };
 
   return (
@@ -128,9 +130,9 @@ export default function Homepage() {
         </div>
         <InfiniteScroll
           dataLength={invitation.length}
-          next={loadMore}
-          hasMore={hasMore}
-          loader={hasMore && invitation.length > 0 ? null : <h4>Loading</h4>}
+          next={fetchMoreData}
+          hasMore={true}
+          loader={invitation.length > 0 ? null : <h4>Loading</h4>}
           className="invitation-container"
         >
           {invitation.map((item) => (

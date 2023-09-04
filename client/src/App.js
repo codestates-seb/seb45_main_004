@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import MyPage from './pages/MyPage';
 import InviteWritePage from './pages/InviteWritePage';
+import SignupPage from './pages/SignupPage';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="boards/new-boards" element={<InviteWritePage />} />
         <Route path="/boards/:boardId" element={<InvitePage />} />
         <Route path="/members/1" element={<MyPage />} />
+        <Route path="/members/" element={<SignupPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>
