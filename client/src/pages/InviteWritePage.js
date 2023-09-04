@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import MapKakao from '../services/MapKakao';
 
 function InviteWritePage() {
   // 사용자입력값 상태변수
@@ -8,24 +9,30 @@ function InviteWritePage() {
     date: '',
     body: '',
     category: '',
-    person: 0,
+    totalNum: 0,
     money: 0,
+    latitude: '',
+    longitude: '',
+    address: '',
   });
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // 오타 수정
+    event.preventDefault();
     // 서버로 보낼 데이터 생성
     const requestData = {
       title: formData.title,
       date: formData.date,
       body: formData.body,
       category: formData.category,
-      person: formData.person,
+      totalNum: formData.totalNum,
       money: formData.money,
+      latitude: formData.latitude,
+      longitude: formData.longitude,
+      address: formData.address,
     };
-
-    const token =
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7ZWY66Oo7IK07J20IiwiaWQiOjEsImVtYWlsIjoiT25lZGF5QGdtYWlsLmNvbSIsInN1YiI6Ik9uZWRheUBnbWFpbC5jb20iLCJpYXQiOjE2OTM0NjM5NzcsImV4cCI6MTY5Mzc2Mzk3N30.DAtiS54qosERLz0kcntjRvkLyNexO9ticAJDVhChJDD2vXpSvTOrZmldqzMAdzSv';
+    console.log(requestData);
+    const token = //tjs4114아이디
+      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5MzY2NDE2MSwiZXhwIjoxNjkzOTY0MTYxfQ.LIIkPYkkNoumD09XQOi-GuKiC9Zimz7HfaatUhasvHcuXA2i6RnePzeeJ_zkcoYN';
 
     // 서버로 POST 요청 보내기
     axios
@@ -48,6 +55,16 @@ function InviteWritePage() {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
+    }));
+  };
+
+  // 사용자가 지도에서 선택한 장소 정보를 업데이트하는 함수
+  const handleLocationSelect = (latitude, longitude, address) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      latitude,
+      longitude,
+      address,
     }));
   };
 
@@ -94,8 +111,8 @@ function InviteWritePage() {
           Person:
           <input
             type="number"
-            name="person"
-            value={formData.person}
+            name="totalNum"
+            value={formData.totalNum}
             onChange={handleInputChange}
           />
         </label>
@@ -108,6 +125,11 @@ function InviteWritePage() {
             onChange={handleInputChange}
           />
         </label>
+        <MapKakao
+          onSelectLocation={handleLocationSelect}
+          showSearch={true}
+          // showMarker={true}
+        />
         <button type="submit">Create Card</button>
       </form>
     </div>

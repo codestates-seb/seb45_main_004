@@ -83,7 +83,7 @@ export default function Homepage() {
             (a, b) => new Date(b.boardId) - new Date(a.boardId),
           );
           setInvitation(sortedInvitation);
-          console.log(sortedInvitation);
+          // console.log(sortedInvitation);
         }
       })
       .catch((error) => {
