@@ -39,11 +39,13 @@ const HomePage = styled.div`
     align-items: center;
     justify-content: space-between;
   }
-  .search {
-    padding-left: 30px;
-  }
-  .icon-search {
-    padding-right: 10px;
+  .search-text {
+    background: none;
+    border: none;
+    width: 500px;
+    height: 40px;
+    caret-color: black;
+    padding-left: 20px;
   }
   .categorys-container {
     display: flex;
@@ -64,6 +66,16 @@ const HomePage = styled.div`
     justify-content: center;
     height: 200px;
   }
+`;
+
+const SearchBtn = styled.button`
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
 `;
 
 export default function Homepage() {
@@ -119,10 +131,15 @@ export default function Homepage() {
         </div>
         <div className="search-container">
           <div className="search">
-            <span className="search-text">Search</span>
-            <div className="icon-search">
+            <input
+              type="text"
+              id="search"
+              placeholder="Search"
+              className="search-text"
+            />
+            <SearchBtn className="icon-search">
               <FaSearch />
-            </div>
+            </SearchBtn>
           </div>
         </div>
         <InfiniteScroll
