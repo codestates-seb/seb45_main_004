@@ -21,5 +21,5 @@ public class MemberResponseDto {
     private String gender;
     private String introduce;
     private String imageUrl;
-    private List<ApplicantResponseDto> applicants = new ArrayList<>();
+    private List<Applicant> applicants = new ArrayList<>();
 }

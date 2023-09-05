@@ -35,10 +35,10 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Member updateMember(Member member) {
-        findVerifiedMember(member.getId());
-
-    }
+//    public Member updateMember(Member member) {
+//        findVerifiedMember(member.getId());
+//
+//    }
 
     public Member findMember(long memberId) {
         findVerifiedMember(memberId);
