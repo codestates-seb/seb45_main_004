@@ -206,9 +206,9 @@ export const EventDetailsContainer = styled.div`
   margin: 0px 320px;
 
   section {
+    margin-top: 50px;
     display: flex;
-    align-items: center;
-    justify-content: space-around;
+    padding: 0px 200px;
     height: 100vh;
   }
 
@@ -246,7 +246,6 @@ export const EventDetailsContainer = styled.div`
   .host-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 400px;
     height: 40px;
   }
@@ -254,7 +253,6 @@ export const EventDetailsContainer = styled.div`
   .user-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 400px;
     height: 40px;
     margin-top: 10px;
@@ -282,29 +280,66 @@ export const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 20px;
   }
   .title-date {
     background-color: white;
-    height: 30px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 20px;
   }
 
   .title-body {
     background-color: white;
-    height: 100px;
+    height: 200px;
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
+    border: 1px solid;
+    border-radius: 20px;
   }
   .map-box {
     height: 300px;
     border: 1px solid;
   }
 
+  .date-box {
+    display: flex;
+    gap: 10px;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+  }
+
+  label {
+    width: 100%;
+  }
+
+  .search-box {
+    display: flex;
+  }
+  #address-input {
+    height: 30px;
+    flex: 1;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+
   #map {
+    margin-top: 10px;
   }
 `;
 

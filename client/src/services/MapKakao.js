@@ -93,7 +93,7 @@ function MapKakao({
   return (
     <div>
       {showSearch && ( // showSearch가 true일 때만 검색 입력란 및 버튼을 렌더링
-        <>
+        <div className="search-box">
           <input
             type="text"
             id="address-input"
@@ -101,9 +101,9 @@ function MapKakao({
             style={{ marginRight: '10px' }}
           />
           <button id="search-button">검색</button>
-        </>
+        </div>
       )}
-      <div id="map" style={{ width: '600px', height: '600px' }}></div>
+      <div id="map" style={{ height: '400px' }}></div>
     </div>
   );
 }
