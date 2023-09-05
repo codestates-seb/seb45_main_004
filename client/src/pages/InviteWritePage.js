@@ -165,23 +165,25 @@ function InviteWritePage() {
 
           {/*카테고리 구현중*/}
           <div className="category-btn">
-            {Object.keys(CategoryMappings).map((key) => {
-              const buttonId = key; // 버튼 ID 설정
-              // 선택된 버튼인지 여부를 확인하여 스타일 적용
-              const isButtonSelected = selectedButton === buttonId;
-              return (
-                <CategoryBtn
-                  key={key}
-                  className={isButtonSelected ? 'selected' : ''}
-                  // onClick={() => handleButtonClick(buttonId)}
-                  onClick={() => handleButtonClick(key)} // 클릭 이벤트 핸들러 전달
-                  // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
-                  // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                  text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                  color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
-                />
-              );
-            })}
+            {Object.keys(CategoryMappings)
+              .filter((key) => key !== 'CATEGORY_ALL') // 'All' 버튼 제외하고 렌더링
+              .map((key) => {
+                const buttonId = key; // 버튼 ID 설정
+                // 선택된 버튼인지 여부를 확인하여 스타일 적용
+                const isButtonSelected = selectedButton === buttonId;
+                return (
+                  <CategoryBtn
+                    key={key}
+                    isSelected={isButtonSelected}
+                    className={isButtonSelected ? 'selected' : ''}
+                    onClick={() => handleButtonClick(key)} // 클릭 이벤트 핸들러 전달
+                    // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
+                    // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
+                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
+                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                  />
+                );
+              })}
           </div>
           {/*카테고리 구현중*/}
 
@@ -257,18 +259,13 @@ const StyledWritePage = styled.div`
 
   button {
     width: 100%;
-    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
+    /* box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4); */
   }
 
-  button:active {
-    transform: translateY(2px); /* 클릭 시 버튼을 아래로 2px 이동 */
+  /* button:active {
+    transform: translateY(2px); // 클릭 시 버튼을 아래로 2px 이동
     box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
-  }
-  button .selected {
-    background-color: #007bff; /* 선택된 버튼의 배경색을 변경하세요 */
-    color: white; /* 선택된 버튼의 텍스트 색상을 변경하세요 */
-    /* 원하는 스타일을 여기에 추가하세요 */
-  }
+  } */
 
   .modal-btn {
     position: absolute;
