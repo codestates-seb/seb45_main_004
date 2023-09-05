@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -17,6 +15,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,4 +51,13 @@ public class Member {
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
+
+    public static Member createMember(String email, String password, String nickname) {
+        return Member.builder()
+                .email(email)
+                .password(password)
+                .nickname(nickname)
+                .roles(List.of("USER"))
+                .build();
+    }
 }
