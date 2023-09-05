@@ -30,9 +30,12 @@ function InvitePage() {
     address: '',
     longitude: '',
     latitude: '',
+    imageUrl:
+      'https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg',
   });
+
   const token = //join 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9. eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzNjY0MjQ5LCJleHAiOjE2OTM5NjQyNDl9.h4Uqy0847zEl-PPfw4R4QUmLyI7d1aoXbTVYAKIOXRVe3GVnM06DQqGdHCHleP5b'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzOTA2ODgxLCJleHAiOjE2OTQyMDY4ODF9.u88lDTgMZemf7tPdx0PNfJdSZbxT3IkHXIGxaPFZJdwCxVWC4YTs5AqorBiqCDjT'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
 
   useEffect(() => {
     // const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
@@ -78,7 +81,7 @@ function InvitePage() {
         console.log(response.data.currentNum);
         // 응답 받은 상태 업데이트
         setEventData((prevData) => ({
-          //prevData는 이전 상태의 eventData 객체를 가리키는 변수임
+          //prevData는 이전  상태의 eventData 객체를 가리키는 변수임
           ...prevData, // 기존의 eventData를 복사하여 새로운 객체를 생성
           isLiked: isLiked, // 새로운 객체에 새로운 좋아요 상태 값을 업데이트
           boardLikesCount: isLiked // 좋아요 추가 시 좋아요 전체 카운트를 증가 또는 감소함
@@ -202,11 +205,11 @@ function InvitePage() {
   );
 }
 
-export const EventDetailsContainer = styled.div`
+const EventDetailsContainer = styled.div`
   margin: 0px 320px;
 
   section {
-    margin-top: 50px;
+    margin: 50px 0px;
     display: flex;
     padding: 0px 200px;
     height: 100vh;
