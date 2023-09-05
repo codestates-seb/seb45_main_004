@@ -1,7 +1,6 @@
 package com.party.follow.entity;
 
 import com.party.follow.id.FollowId;
-import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +16,7 @@ public class Follow {
     @EmbeddedId
     private FollowId id;
 
-    public Follow(Long follower,Long following ) {
-        this.id = new FollowId(follower, following);
+    public Follow(Long toMember,Long fromMember ) {
+        this.id = new FollowId(toMember, fromMember);
     }
 }

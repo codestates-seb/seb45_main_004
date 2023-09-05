@@ -17,13 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FollowController {
 
     private final FollowService followService;
-    private final MemberRepository memberRepository;
 
-    @PostMapping("/{followerId}/{followingId}")
-    public ResponseEntity postFollow(@PathVariable Long followerId,
-                                     @PathVariable Long followingId) {
+    @PostMapping("/{fromMemberId}/{toMemberId}")
+    public ResponseEntity postFollow(@PathVariable Long fromMemberId,
+                                     @PathVariable Long toMemberId) {
 
-        followService.followMember(followerId, followingId);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Followed successfully");
+        followService.followMember(fromMemberId,toMemberId);
+        return new ResponseEntity<>("팔로우 성공!🎉", HttpStatus.OK);
     }
 }

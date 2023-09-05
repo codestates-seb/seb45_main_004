@@ -11,7 +11,8 @@ public enum ExceptionCode {
     COMMENT_EXISTS(400,"comment exists"),
     INVALID_MEMBER_ID(400,"Invalid memberId format"),
     OWN_MEMBER(400,"You can't follow your own account"),
-    ALREADY_FOLLOWING(400,"You already follow this account");
+    ALREADY_FOLLOWING(400,"You already follow this account"),
+    UNAUTHORIZED_OPERATION(400,"You need to Login");
 
 
     @Getter

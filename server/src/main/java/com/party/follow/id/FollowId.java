@@ -15,15 +15,14 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class FollowId implements Serializable {
 
+    @Column(name = "from_member")
+    private Long fromMember;
 
-    @Column(name = "follower_id")
-    private Long follower;
+    @Column(name = "to_member")
+    private Long toMember;
 
-    @Column(name = "following_id")
-    private Long following;
-
-    public FollowId(Long follower, Long following) {
-        this.follower = follower;
-        this.following = following;
+    public FollowId(Long fromMember, Long toMember) {
+        this.fromMember = fromMember;
+        this.toMember = toMember;
     }
 }
