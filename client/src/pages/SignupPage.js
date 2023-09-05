@@ -12,6 +12,8 @@ const SignupPage = styled.div`
   .signup-form-sex {
     display: flex;
     flex-direction: row;
+    padding-left: 5px;
+    margin-bottom: 10px;
   }
   .singup-submit-btn {
     width: 300px;
@@ -49,6 +51,9 @@ const InputStyle = styled.input`
   height: 50px;
   font-size: 15px;
   margin-bottom: 20px;
+  caret-color: black;
+  padding-left: 10px;
+  outline: none;
 `;
 
 const GenderStylebox = styled.div`
@@ -56,6 +61,7 @@ const GenderStylebox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  caret-color: black;
   .sex-checkbox {
     margin: 0px 5px 0px 0px;
     width: 15px;
@@ -86,19 +92,12 @@ export default function Signuppage() {
         gender: gender,
         password: password,
       };
-
-      const response = await axios.post(
-        `http://3.39.76.109:8080/members`,
-        userData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      await axios.post(`http://3.39.76.109:8080/members`, userData, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
-      const { token } = response.data;
-      localStorage.setItem('token', token);
       // const response = await fetch(`http://3.39.76.109:8080/members`, {
       //   method: 'POST',
       //   headers: {
