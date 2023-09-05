@@ -39,11 +39,11 @@ public class MemberController {
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 
-//    @PatchMapping("/{member-id}")
-//    public ResponseEntity patchMember(@PathVariable("member-id") long memberid) {
-//        Long id = (Long) memberService.extractMemberInfo().get("id");
-//        if(id != memberid) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
-//
-//
-//    }
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberid) {
+        Long id = (Long) memberService.extractMemberInfo().get("id");
+        if(id != memberid) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+
+
+    }
 }
