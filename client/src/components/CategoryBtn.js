@@ -16,10 +16,16 @@ const CatgegoryBtnWrapper = styled.li`
   }
 `;
 
-export default function CategoryBtn({ text, color }) {
+export default function CategoryBtn({ text, color, onClick }) {
+  const handleClick = () => {
+    // 클릭 이벤트 핸들러 실행 후, 부모 컴포넌트에서 전달한 onClick 함수 실행
+    if (onClick) {
+      onClick(text); // 클릭한 버튼의 텍스트 값을 부모 컴포넌트로 전달
+    }
+  };
   return (
     <CatgegoryBtnWrapper isETC={text === 'ETC'} color={color}>
-      <button>{text}</button>
+      <button onClick={handleClick}>{text}</button>
     </CatgegoryBtnWrapper>
   );
 }
@@ -27,4 +33,5 @@ export default function CategoryBtn({ text, color }) {
 CategoryBtn.propTypes = {
   text: PropTypes.string.isRequired, // text prop의 유효성을 검사합니다.
   color: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };

@@ -12,6 +12,7 @@ const StyleButton = styled.button`
   /* 버튼 조건부 스타일 &.{btnType} 
   예) 카테고리 버튼 : &.Button-category
   */
+
   &.Button-membership {
     font-weight: 700;
     padding: 2px 10px;

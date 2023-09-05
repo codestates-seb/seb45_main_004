@@ -2,22 +2,27 @@ import { useState } from 'react';
 import axios from 'axios';
 import MapKakao from '../services/MapKakao';
 import { styled } from 'styled-components';
-// import CategoryBtn from '../components/CategoryBtn';
-// import CategoryMappings from '../components/CategoryMappings';
+import CategoryBtn from '../components/CategoryBtn';
+import CategoryMappings from '../components/CategoryMappings';
 
 function InviteWritePage() {
+  const [selectedButton, setSelectedButton] = useState(null);
+
   // 사용자입력값 상태변수
   const [formData, setFormData] = useState({
     title: '',
     date: '',
     body: '',
-    category: '',
+    category: selectedButton,
     totalNum: 0,
     money: 0,
     latitude: '',
     longitude: '',
     address: '',
+    imageUrl: 'abc',
   });
+
+  console.log(formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,6 +43,18 @@ function InviteWritePage() {
       .catch((error) => {
         console.error('Error creating card:', error);
       });
+  };
+
+  // 카테고리 버튼 클릭 핸들러
+  const handleButtonClick = (buttonId) => {
+    // 선택된 버튼 업데이트
+    setSelectedButton(buttonId);
+    console.log('클릭한 버튼:', buttonId);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      category: buttonId,
+    }));
   };
 
   const handleInputChange = (event) => {
@@ -61,6 +78,8 @@ function InviteWritePage() {
   return (
     <StyledWritePage>
       <section>
+        <button className="modal-btn">모달클릭 !</button>
+
         <form onSubmit={handleSubmit}>
           <article>
             <div className="card-container">
@@ -71,7 +90,6 @@ function InviteWritePage() {
                 />
               </div>
               <div className="btn-box">
-                <button>모달클릭 !</button>
                 <button className="submit-btn" type="submit">
                   Create Card
                 </button>
@@ -133,7 +151,7 @@ function InviteWritePage() {
                   onChange={handleInputChange}
                 />
               </label>
-              <label>
+              {/* <label>
                 Category:
                 <input
                   type="text"
@@ -141,9 +159,32 @@ function InviteWritePage() {
                   value={formData.category}
                   onChange={handleInputChange}
                 />
-              </label>
+              </label> */}
             </article>
           </form>
+
+          {/*카테고리 구현중*/}
+          <div className="category-btn">
+            {Object.keys(CategoryMappings).map((key) => {
+              const buttonId = key; // 버튼 ID 설정
+              // 선택된 버튼인지 여부를 확인하여 스타일 적용
+              const isButtonSelected = selectedButton === buttonId;
+              return (
+                <CategoryBtn
+                  key={key}
+                  className={isButtonSelected ? 'selected' : ''}
+                  // onClick={() => handleButtonClick(buttonId)}
+                  onClick={() => handleButtonClick(key)} // 클릭 이벤트 핸들러 전달
+                  // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
+                  // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
+                  text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
+                  color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                />
+              );
+            })}
+          </div>
+          {/*카테고리 구현중*/}
+
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
@@ -155,6 +196,7 @@ const StyledWritePage = styled.div`
   margin: 0px 320px;
 
   section {
+    position: relative;
     margin: 50px 0px;
     display: flex;
     gap: 20px;
@@ -205,6 +247,37 @@ const StyledWritePage = styled.div`
   #search-button {
     height: 20px;
     flex: 1;
+  }
+  .category-btn {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
+    gap: 10px; // 버튼 사이의 간격을 조절할 수 있습니다.
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
+  }
+
+  button:active {
+    transform: translateY(2px); /* 클릭 시 버튼을 아래로 2px 이동 */
+    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
+  }
+  button .selected {
+    background-color: #007bff; /* 선택된 버튼의 배경색을 변경하세요 */
+    color: white; /* 선택된 버튼의 텍스트 색상을 변경하세요 */
+    /* 원하는 스타일을 여기에 추가하세요 */
+  }
+
+  .modal-btn {
+    position: absolute;
+    top: 377px;
+    left: 519px;
+    width: 80px;
+  }
+  .submit-btn {
+    width: 80px;
   }
 `;
 
