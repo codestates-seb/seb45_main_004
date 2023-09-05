@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import MapKakao from '../services/MapKakao';
+import { EventDetailsContainer } from './InvitePage';
 
 function InviteWritePage() {
   // 사용자입력값 상태변수
@@ -69,70 +70,90 @@ function InviteWritePage() {
   };
 
   return (
-    <div>
-      <h2>Create a New Card</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleInputChange}
+    <EventDetailsContainer>
+      <section>
+        <form onSubmit={handleSubmit}>
+          <article>
+            <div className="card-container">
+              <div className="image-container">
+                <img
+                  src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
+                  alt="cardImage"
+                />
+                <button>모달클릭 !</button>
+              </div>
+            </div>
+          </article>
+          <article></article>
+          <label>
+            Title:
+            <input
+              className="title-box"
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Date:
+            <input
+              className="title-date"
+              type="date"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Person:
+            <input
+              className="title-date"
+              type="number"
+              name="totalNum"
+              value={formData.totalNum}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Money:
+            <input
+              className="title-date"
+              type="number"
+              name="money"
+              value={formData.money}
+              onChange={handleInputChange}
+            />
+          </label>
+
+          <label>
+            Body:
+            <textarea
+              className="title-body"
+              name="body"
+              value={formData.body}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Category:
+            <input
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+            />
+          </label>
+
+          <MapKakao
+            onSelectLocation={handleLocationSelect}
+            showSearch={true}
+            // showMarker={true}
           />
-        </label>
-        <label>
-          Date:
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Body:
-          <textarea
-            name="body"
-            value={formData.body}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Category:
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Person:
-          <input
-            type="number"
-            name="totalNum"
-            value={formData.totalNum}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Money:
-          <input
-            type="number"
-            name="money"
-            value={formData.money}
-            onChange={handleInputChange}
-          />
-        </label>
-        <MapKakao
-          onSelectLocation={handleLocationSelect}
-          showSearch={true}
-          // showMarker={true}
-        />
-        <button type="submit">Create Card</button>
-      </form>
-    </div>
+          <button type="submit">Create Card</button>
+        </form>
+      </section>
+    </EventDetailsContainer>
   );
 }
 

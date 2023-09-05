@@ -202,7 +202,7 @@ function InvitePage() {
   );
 }
 
-const EventDetailsContainer = styled.div`
+export const EventDetailsContainer = styled.div`
   margin: 0px 320px;
 
   section {
