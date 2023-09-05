@@ -2,10 +2,9 @@ import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
   display: flex;
@@ -82,31 +81,37 @@ const SearchBtn = styled.button`
 
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]);
+  const [filteredInvitation, setFilteredInvitation] = useState([]);
 
-  const fetchMoreData = () => {
+  useEffect(() => {
     axios
-
       .get('http://3.39.76.109:8080/boards')
-
       .then((response) => {
         const newData = response.data;
         const sortedInvitation = newData.sort(
           (a, b) => new Date(b.boardId) - new Date(a.boardId),
         );
-
-        const uniqueSortedInvitation = sortedInvitation.filter((item) => {
-          return !invitation.find(
-            (existingItem) => existingItem.boardId === item.boardId,
-          );
-        });
-
-        const updateInvitation = [...invitation, ...uniqueSortedInvitation];
-        setInvitation(updateInvitation);
+        setInvitation(sortedInvitation);
+        setFilteredInvitation(sortedInvitation); // 최초 렌더링시 전체데이터가 보이게끔 구현하기 위해 넣음
       })
-
       .catch((error) => {
         console.log('error', error);
       });
+  }, []);
+
+  const handleCategoryClick = (category) => {
+    if (category === 'CATEGORY_ALL') {
+      // "ALL" 버튼을 누른 경우에는 전체 데이터를 필터링하지 않고 그대로 사용합니다.
+      setFilteredInvitation(invitation);
+      console.log('전체', invitation);
+    } else {
+      // 다른 카테고리 버튼을 누른 경우 해당 카테고리만 필터링하여 할당합니다.
+      const filteredData = invitation.filter(
+        (item) => item.category === category,
+      );
+      setFilteredInvitation(filteredData);
+      console.log('필터된 데이터', filteredData);
+    }
   };
 
   return (
@@ -127,6 +132,7 @@ export default function Homepage() {
                   CategoryMappings[key]?.backgroundColor ||
                   CategoryMappings[key]?.color
                 }
+                onClick={() => handleCategoryClick(CategoryMappings[key]?.name)}
               />
             ))}
           </ul>
@@ -144,14 +150,8 @@ export default function Homepage() {
             </SearchBtn>
           </div>
         </div>
-        <InfiniteScroll
-          dataLength={invitation.length}
-          next={fetchMoreData}
-          hasMore={true}
-          loader={invitation.length > 0 ? null : <h4>Loading</h4>}
-          className="invitation-container"
-        >
-          {invitation.map((item) => (
+        <div className="invitation-container">
+          {filteredInvitation.map((item) => (
             <Link
               key={item.boardId}
               to={`/boards/${item.boardId}`}
@@ -160,7 +160,7 @@ export default function Homepage() {
               <h2>{item.title}</h2>
             </Link>
           ))}
-        </InfiniteScroll>
+        </div>
       </div>
     </HomePage>
   );

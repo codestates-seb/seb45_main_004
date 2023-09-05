@@ -16,10 +16,10 @@ const CatgegoryBtnWrapper = styled.li`
   }
 `;
 
-export default function CategoryBtn({ text, color }) {
+export default function CategoryBtn({ text, color, onClick }) {
   return (
     <CatgegoryBtnWrapper isETC={text === 'ETC'} color={color}>
-      <button>{text}</button>
+      <button onClick={onClick}>{text}</button>
     </CatgegoryBtnWrapper>
   );
 }
@@ -27,4 +27,5 @@ export default function CategoryBtn({ text, color }) {
 CategoryBtn.propTypes = {
   text: PropTypes.string.isRequired, // text prop의 유효성을 검사합니다.
   color: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
