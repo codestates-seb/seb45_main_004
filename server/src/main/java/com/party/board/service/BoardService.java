@@ -103,6 +103,7 @@ public class BoardService {
         board.setLatitude(postDto.getLatitude());
         board.setLongitude(postDto.getLongitude());
         board.setAddress(postDto.getAddress());
+        board.setImageUrl(postDto.getImageUrl());
         return board;
     }
 

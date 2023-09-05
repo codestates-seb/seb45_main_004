@@ -27,6 +27,7 @@ public interface BoardMapper {
         boardResponseDto.setAddress(board.getAddress());
         boardResponseDto.setLatitude(board.getLatitude());
         boardResponseDto.setLongitude(board.getLongitude());
+        boardResponseDto.setImageUrl(board.getImageUrl());
         return boardResponseDto;
     }
     List<BoardResponseDto> boardsToBoardResponse(List<Board> boards);
