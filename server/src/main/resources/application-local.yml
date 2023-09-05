@@ -26,9 +26,9 @@ spring:
       client:
         registration:
           kakao:
-            client-id: eb12923acc7b9d1ba65322a7d3157a26
-            client-secret: NyD9dbw8wRnoTjPZaNvqRqCBXFONfHnv
-            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-id: 3900b85057673808b382401173a040e5
+            client-secret: EUVZk9z7eYbSiKw29aXQKAJNRp8qv61d
+            redirect-uri: https://www.naver.com
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
