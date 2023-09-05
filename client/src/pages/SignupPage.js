@@ -12,6 +12,8 @@ const SignupPage = styled.div`
   .signup-form-sex {
     display: flex;
     flex-direction: row;
+    padding-left: 5px;
+    margin-bottom: 10px;
   }
   .singup-submit-btn {
     width: 300px;
@@ -49,6 +51,9 @@ const InputStyle = styled.input`
   height: 50px;
   font-size: 15px;
   margin-bottom: 20px;
+  caret-color: black;
+  padding-left: 10px;
+  outline: none;
 `;
 
 const GenderStylebox = styled.div`
@@ -56,6 +61,7 @@ const GenderStylebox = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  caret-color: black;
   .sex-checkbox {
     margin: 0px 5px 0px 0px;
     width: 15px;
