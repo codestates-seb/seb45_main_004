@@ -44,8 +44,10 @@ const HomePage = styled.div`
     border: none;
     width: 500px;
     height: 40px;
-    caret-color: black;
+    caret-color: black; // 검색창 cursor 효과
     padding-left: 20px;
+    outline: none;
+    // 검색시 input ouline 없애주기
   }
   .categorys-container {
     display: flex;
