@@ -86,19 +86,12 @@ export default function Signuppage() {
         gender: gender,
         password: password,
       };
-
-      const response = await axios.post(
-        `http://3.39.76.109:8080/members`,
-        userData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      await axios.post(`http://3.39.76.109:8080/members`, userData, {
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
-      const { token } = response.data;
-      localStorage.setItem('token', token);
       // const response = await fetch(`http://3.39.76.109:8080/members`, {
       //   method: 'POST',
       //   headers: {
