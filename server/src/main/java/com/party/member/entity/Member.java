@@ -40,9 +40,6 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    private List<Board> boards = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
     private List<Applicant> applicants = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)

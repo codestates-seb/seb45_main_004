@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -47,9 +46,47 @@ public class BoardService {
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
-    //모임글 전체 조회
+    //모임글 전체 조회(최신순)
     public List<Board> findBoards() {
         return boardRepository.findAll();
+    }
+
+    //모임글 전체 조회(좋아요순)
+    public List<Board> findBoardsByLikesCountDesc() {
+        return boardRepository.findAllByOrderByBoardLikesCountDesc();
+    }
+
+    //모임글 카테고리 별 조회(최신순)
+    public List<Board> findBoardsByCategory(Board.BoardCategory category) {
+        return boardRepository.findByCategory(category);
+    }
+
+    //모임글 카테고리 별 조회(좋아요순)
+    public List<Board> findByCategoryAndOrderByLikesDesc(Board.BoardCategory category) {
+        return boardRepository.findByCategoryOrderByBoardLikesCountDesc(category);
+    }
+
+    //제목으로 모임글 검색(전체글)
+    public List<Board> searchBoardsByTitle(String title) {
+        return boardRepository.findByTitleContaining(title);
+    }
+
+    //제목+내용으로 모임글 검색(전체글)
+    public List<Board> searchBoardsByTitleAndBody(String title,String body) {
+        return boardRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(title, body);
+    }
+
+    //제목으로 모임글 검색(카테고리별)
+    public List<Board> searchBoardsByCategoryAndTitle(Board.BoardCategory category, String title) {
+        return boardRepository.findByCategoryAndTitleContaining(category, title);
+    }
+
+    //제목+내용으로 모임글 검색(카테고리별)
+    public List<Board> searchBoardsByCategoryAndTitleAndBody(Board.BoardCategory category1,
+                                                             String title,
+                                                             Board.BoardCategory category2,
+                                                             String body) {
+        return boardRepository.findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(category1, title,category2, body);
     }
 
     //모임글 생성 로직

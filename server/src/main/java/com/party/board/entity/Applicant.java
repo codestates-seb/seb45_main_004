@@ -1,5 +1,6 @@
 package com.party.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,7 @@ public class Applicant {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
+    @JsonBackReference
     private Member member;
 
     @ManyToOne
