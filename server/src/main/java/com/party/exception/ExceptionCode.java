@@ -9,7 +9,9 @@ public enum ExceptionCode {
     NOT_ALLOW_PARTICIPATE(405, "unable to participate"),
     PERMISSION_NOT_EXIST(409, "You don't have permission to access this resource."),
     COMMENT_EXISTS(400,"comment exists"),
-    INVALID_MEMBER_ID(400,"Invalid memberId format");
+    INVALID_MEMBER_ID(400,"Invalid memberId format"),
+    OWN_MEMBER(400,"You can't follow your own account"),
+    ALREADY_FOLLOWING(400,"You already follow this account");
 
 
     @Getter

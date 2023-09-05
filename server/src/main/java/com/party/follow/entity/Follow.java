@@ -15,9 +15,9 @@ import javax.persistence.*;
 public class Follow {
 
     @EmbeddedId
-    private FollowId followId;
+    private FollowId id;
 
-    public Follow(Member follow,Member following ) {
-        this.followId = new FollowId(follow, following);
+    public Follow(Long follower,Long following ) {
+        this.id = new FollowId(follower, following);
     }
 }
