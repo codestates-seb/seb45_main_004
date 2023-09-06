@@ -8,7 +8,6 @@
 > 
 
 ## 🌟 팀원 소개
-<div align=center>
 
 ### ✨ Back-end
 
@@ -73,7 +72,6 @@
     - 
   </td>
   </tr>
-  </div>
   </tbody>
 </table>
 
