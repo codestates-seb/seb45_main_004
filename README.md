@@ -15,8 +15,8 @@
 <table style="table-layout:fixed">
   <thead>
   <th align="center"><a href="https://github.com/yawning5"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/ad4ddbf3-9082-4a11-8ab0-38ae50f3cfd3" width="100" alt="yawning5"></a></th>
-  <th align="center"><a href="https://github.com/Donga1125"><img src="이미지_주소_2" width="100" alt="Donga1125"></a></th>
-  <th align="center"><a href="https://github.com/hseonghui"><img src="이미지_주소_3" width="100" alt="hseonghui"></a></th>
+  <th align="center"><a href="https://github.com/Donga1125"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/8d27dbde-d59b-4ee2-a42f-5c9d3e456fa5" width="100" alt="Donga1125"></a></th>
+  <th align="center"><a href="https://github.com/hseonghui"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/6375852d-9f99-457c-b3f0-d7ba9f6873a7" width="100" alt="hseonghui"></a></th>
   </thead>
   <tbody>
   <tr>
