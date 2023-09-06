@@ -12,8 +12,10 @@ public interface ApplicantMapper {
 
     @Mapping(source = "member.id", target = "memberId")
     @Mapping(source = "board.id", target = "boardId")
-    @Mapping(source = "member.imageUrl", target = "imageUrl")
+    @Mapping(source = "member.imageUrl", target = "memberImageUrl")
+    @Mapping(source = "board.imageUrl", target = "boardImageUrl")
     ApplicantResponseDto applicantToApplicantResponseDto (Applicant applicant);
+
 
     List<ApplicantResponseDto> applicantsToApplicantsResponseDto (List<Applicant> applicants);
 }

@@ -38,9 +38,10 @@ public class ApplicantService {
         Applicant applicant = new Applicant();
         Board board = boardRepository.getById(boardId); //보드 정보 가져오기
         applicant.setBoard(board);
+        applicant.setBoardImageUrl(board.getImageUrl());
         Member member = memberRepository.getById(memberId); //멤버 정보 가져오기
         applicant.setMember(member);
-        applicant.setImageUrl(member.getImageUrl());
+        applicant.setMemberImageUrl(member.getImageUrl());
 
         //현재 모임 참여 인원 수 업데이트
         int count = board.getCurrentNum();
@@ -62,6 +63,12 @@ public class ApplicantService {
     }
 
 
+    //조회한 모임의 참여인원 모두 조회
+    public List<Applicant> findJoinedMember(long boardId){
+        return applicantRepository.findByBoardId(boardId);
+    }
+
+
     //해당 모임에 참여했는지 검증
     private void isJoinAlready(Long boardId, Long memberId){
         boolean isJoinBord = applicantRepository.existsByBoardIdAndMemberId(boardId, memberId);
@@ -69,6 +76,7 @@ public class ApplicantService {
             throw new IllegalArgumentException("YOU ALREADY JOIN");
         }
     }
+
 
     //멤버 검증 및 memberId 타입 변환
     private Long extractMemberId() {

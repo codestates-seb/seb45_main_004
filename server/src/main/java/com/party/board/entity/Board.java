@@ -52,7 +52,7 @@ public class Board {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private BoardCategory category = BoardCategory.CATEGORY_ETC;
+    private BoardCategory category;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -81,18 +81,18 @@ public class Board {
     private List<Applicant> applicants = new ArrayList<>();
 
     public enum BoardCategory {
-        CATEGORY_LEISURE(1),
-        CATEGORY_TRAVEL(2),
-        CATEGORY_GAME(3),
-        CATEGORY_CULTURE(4),
-        CATEGORY_EDUCATION(5),
-        CATEGORY_ETC(6);
+        CATEGORY_LEISURE("CATEGORY_LEISURE"),
+        CATEGORY_TRAVEL("CATEGORY_TRAVEL"),
+        CATEGORY_GAME("CATEGORY_GAME"),
+        CATEGORY_CULTURE("CATEGORY_CULTURE"),
+        CATEGORY_EDUCATION("CATEGORY_EDUCATION"),
+        CATEGORY_ETC("CATEGORY_ETC");
 
         @Getter
-        private int categoryCode;
+        private String category;
 
-        BoardCategory(int categoryCode) {
-            this.categoryCode = categoryCode;
+        BoardCategory(String category) {
+            this.category = category;
         }
     }
     public enum BoardStatus {

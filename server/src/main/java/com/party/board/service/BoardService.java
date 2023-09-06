@@ -113,7 +113,8 @@ public class BoardService {
         applicant.setBoard(board);
         applicant.setJoin(true);
         applicant.setMember(member);
-        applicant.setImageUrl(member.getImageUrl());
+        applicant.setMemberImageUrl(member.getImageUrl());
+        applicant.setBoardImageUrl(board.getImageUrl());
         applicantRepository.save(applicant);
     }
 
