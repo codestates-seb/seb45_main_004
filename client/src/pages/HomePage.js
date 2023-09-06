@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
+import { FcLike } from 'react-icons/fc';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { useState, useEffect } from 'react';
@@ -29,7 +30,7 @@ const HomePage = styled.div`
   .search-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
   .search {
     display: flex;
@@ -68,6 +69,31 @@ const HomePage = styled.div`
     display: flex;
     justify-content: center;
     height: 200px;
+  }
+  .likes-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  .likes-sort {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    border: solid 1px #d9d9d9;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+  .likes-text {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 5px;
+    cursor: pointer;
   }
 `;
 
@@ -222,7 +248,8 @@ export default function Homepage() {
         </div>
         <div className="likes-container">
           <button className="likes-sort" onClick={handleLikeSortClick}>
-            좋아요순
+            <FcLike />
+            <span className="likes-text">Liked Order</span>
           </button>
         </div>
         <div className="invitation-container">
