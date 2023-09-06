@@ -85,17 +85,16 @@
 
 - 2023년 8월 24일(금) ~ 2023년 9월 22일(수)
 
-## 페이지
 <br>
 
 ## 페이지
 |메인페이지|일정등록페이지|
 |:---:|:---:|
-|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/6341a0f3-e248-4af3-9733-4846c1ae7c51)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/93dca001-e946-4665-8093-c50dcdb6aad0)|
+|마크다운이미지|마크다운이미지|
 |<b>커뮤니티페이지</b>|<b>마이페이지</b>|
-|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/fef65d05-d4b6-4462-9239-86b715b3789b)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/89573d57-166d-456d-ae5d-df5928d4d50b)|
+|마크다운이미지|마크다운이미지|
 |<b>설정페이지</b>|<b>랜딩페이지</b>|
-|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/a97df5fd-ebe5-4ab1-b93a-93d655772683)|![image](https://github.com/codestates-seb/seb44_main_006/assets/77836614/f757bcdb-6a4a-4594-ad92-f6a87ef8d6e3)|
+|마크다운이미지|마크다운이미지|
 
 <br>
 
