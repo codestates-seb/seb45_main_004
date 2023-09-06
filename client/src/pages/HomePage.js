@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const HomePage = styled.div`
   display: flex;
   justify-content: center;
-  height: 100vh;
+  /* height: 100vh; */
 
   .main-container {
     margin: 0px 320px;
@@ -83,6 +83,7 @@ const SearchBtn = styled.button`
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]);
   const [filteredInvitation, setFilteredInvitation] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   useEffect(() => {
     axios
@@ -101,6 +102,7 @@ export default function Homepage() {
   }, []);
 
   const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
     if (category === 'CATEGORY_ALL') {
       // "ALL" 버튼을 누른 경우에는 전체 데이터를 필터링하지 않고 그대로 사용합니다.
       setFilteredInvitation(invitation);
@@ -125,17 +127,22 @@ export default function Homepage() {
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
-            {Object.keys(CategoryMappings).map((key) => (
-              <CategoryBtn
-                key={key}
-                text={CategoryMappings[key]?.label}
-                color={
-                  CategoryMappings[key]?.backgroundColor ||
-                  CategoryMappings[key]?.color
-                }
-                onClick={() => handleCategoryClick(CategoryMappings[key]?.name)}
-              />
-            ))}
+            {Object.keys(CategoryMappings).map((key) => {
+              const categoryName = CategoryMappings[key]?.name;
+              const isSelected = selectedCategory === categoryName;
+              return (
+                <CategoryBtn
+                  key={key}
+                  text={CategoryMappings[key]?.label}
+                  color={
+                    CategoryMappings[key]?.backgroundColor ||
+                    CategoryMappings[key]?.color
+                  }
+                  isSelected={isSelected}
+                  onClick={() => handleCategoryClick(categoryName)}
+                />
+              );
+            })}
           </ul>
         </div>
         <div className="search-container">
