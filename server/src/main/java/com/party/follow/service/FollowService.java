@@ -13,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @Slf4j
@@ -26,71 +28,67 @@ public class FollowService {
 
     //팔로우 추가
     public void followMember(Long fromMemberId,Long toMemberId) {
-
-        //현재 로그인한 사용자의 ID 가져오기
+        //현재 로그인한 사용자 ID 가져오기
         Long loggedInMemberId = extractMemberId();
 
-        //해당 멤버 존재 여부 확인
-        Member fromMember = memberRepository.findById(fromMemberId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        Member toMember = memberRepository.findById(toMemberId)
+        //멤버 유효성 검사 및 존재 여부 확인
+        validateMemberIds(fromMemberId, toMemberId, loggedInMemberId);
 
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-
-        //자기 자신을 팔로우하지 못함
+        //자기 자신을 팔로우 하지 못함
         if (fromMemberId.equals(toMemberId)) {
             throw new BusinessLogicException(ExceptionCode.OWN_MEMBER);
         }
 
-        //요청한 사용자의 ID 가져오기
-        Long requestingMemberId = extractMemberId();
-
-        //요청한 사용자의 ID와 현재 로그인한 사용자의 ID가 다를 경우 예외 처리
-        if (!requestingMemberId.equals(fromMemberId)) {
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_FOLLOW);
-        }
-
         //이미 팔로우 관계가 있는지 확인
-        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, loggedInMemberId);
-        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(loggedInMemberId, toMemberId);
-
-        if (existingFollow1 != null || existingFollow2 != null) {
+        if (followExists(fromMemberId, toMemberId)) {
             throw new BusinessLogicException(ExceptionCode.ALREADY_FOLLOWING);
         }
 
-        Follow follow = new Follow(fromMemberId,toMemberId);
+        //팔로우 관계 생성
+        Follow follow = new Follow(fromMemberId, toMemberId);
         followRepository.save(follow);
     }
 
     //팔로우 취소
     public void unfollowMember(Long fromMemberId, Long toMemberId) {
-
-        //현재 로그인한 사용자의 ID 가져오기
+        //현재 로그인한 사용자 ID 가져오기
         Long loggedInMemberId = extractMemberId();
 
-        //해당 멤버 존재 여부 확인
-        Member fromMember = memberRepository.findById(fromMemberId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        Member toMember = memberRepository.findById(toMemberId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        //멤버 유효성 검사 및 존재 여부 확인
+        validateMemberIds(fromMemberId, toMemberId, loggedInMemberId);
 
-        //요청한 사용자의 ID 가져오기
-        Long requestingMemberId = extractMemberId();
-
-        //요청한 사용자의 ID와 현재 로그인한 사용자의 ID가 다를 경우 예외 처리
-        if (!requestingMemberId.equals(fromMemberId)) {
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_FOLLOW);
-        }
-
-        //팔로우 관계가 있는지 확인
-        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, loggedInMemberId);
-        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(loggedInMemberId, toMemberId);
-
-        if (existingFollow1 == null && existingFollow2 == null) {
+        //팔로우 관계가 있는지 확인 후 삭제
+        if (followExists(fromMemberId, toMemberId)) {
+            removeFollow(fromMemberId, toMemberId);
+        } else {
             throw new BusinessLogicException(ExceptionCode.FOLLOW_NOT_FOUND);
         }
+    }
 
-        //팔로우 관계 삭제
+    //멤버 ID 유효성 검사 및 존재 여부 확인
+    private void validateMemberIds(Long fromMemberId, Long toMemberId, Long loggedInMemberId) {
+        if (!fromMemberId.equals(loggedInMemberId)) {
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_FOLLOW);
+        }
+        Optional<Member> fromMemberOptional = memberRepository.findById(fromMemberId);
+        Optional<Member> toMemberOptional = memberRepository.findById(toMemberId);
+
+        fromMemberOptional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        toMemberOptional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    //팔로우 관계 여부 확인
+    private boolean followExists(Long fromMemberId, Long toMemberId) {
+        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, fromMemberId);
+        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(fromMemberId, toMemberId);
+        return existingFollow1 != null || existingFollow2 != null;
+    }
+
+    //팔로우 관계 삭제
+    private void removeFollow(Long fromMemberId, Long toMemberId) {
+        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, fromMemberId);
+        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(fromMemberId, toMemberId);
+
         if (existingFollow1 != null) {
             followRepository.delete(existingFollow1);
         }
