@@ -14,7 +14,7 @@
 
 <table style="table-layout:fixed">
   <thead>
-  <th align="center"><a href="https://github.com/yawning5">![스크린샷 2023-09-06 100716](https://github.com/codestates-seb/seb45_main_004/assets/130025554/4b333e09-bf5f-4d34-aa2a-9107c5be56c5)</a></th>
+  <th align="center"><a href="https://github.com/yawning5">이미지태그</a></th>
   <th align="center"><a href="https://github.com/Donga1125">이미지태그</a></th>
   <th align="center"><a href="https://github.com/hseonghui">이미지태그</a></th>
   </thead>
