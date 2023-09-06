@@ -52,9 +52,6 @@ public class ApplicantController {
     }
 
 
-
-
-
     //memberId 추출
     private Long extractMemberId() {
         Object memberIdObject  = memberService.extractMemberInfo().get("id");
