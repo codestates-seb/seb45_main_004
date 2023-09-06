@@ -120,23 +120,32 @@ export default function Homepage() {
   };
 
   // 검색 버튼클릭시 호출되는 함수
-  const titleSearch = () => {
+  const titleSearch = (category) => {
+    // 선택된 카테고리가 있으면
+    // if (selectedCategory) {
+    // 전체 검색창에서 검색되는 url과 선택된 카테고리에서만 검색되는 url
+    const searchApi =
+      category === 'CATEGORY_ALL'
+        ? `http://3.39.76.109:8080/boards/search/title/?title=${search}`
+        : `http://3.39.76.109:8080/boards/category/${category}/search/title/?title=${search}`;
     axios
-      .get(`http://3.39.76.109:8080/boards/search/title/?title=${search}`)
+      .get(searchApi)
       .then((response) => {
         const titleData = response.data;
-        setFilteredInvitation(titleData); // 검색창에 검색어와 동일한 내용만 필터
+        setFilteredInvitation(titleData);
+        console.log(titleData); // 검색창에 검색어와 동일한 내용만 필터
         setSearch('');
       })
       .catch((error) => {
         console.log('Error', error);
       });
+    // }
   };
   // 키 이벤트핸들러 함수
   // Enter를 쳤을때 tilteSearch 함수를 불러옴
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      titleSearch();
+      titleSearch(selectedCategory); // 선택된 카테고리에서만 tiltesearch함수가 실행
     }
   };
 
@@ -150,7 +159,7 @@ export default function Homepage() {
       .get(apiUrl)
       .then((response) => {
         const likeData = response.data;
-        //
+        // 좋아요 순서대로 보여주기 위한 구현
         const sortedData = likeData.sort(
           (a, b) => b.boardLikesCount - a.boardLikesCount,
         );
