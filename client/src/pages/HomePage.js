@@ -20,9 +20,17 @@ const HomePage = styled.div`
     display: flex;
     justify-content: center;
     height: 350px;
-    margin-top: 156px;
-    border: solid 1px black;
+    margin-top: 50px;
     align-items: center;
+    animation: slideTExt 10s linear infinite;
+  }
+  @keyframes slideTExt {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
   .service-introduction {
     color: white;
