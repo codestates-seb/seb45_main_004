@@ -28,6 +28,7 @@ const HomePage = styled.div`
   .search-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 40px;
   }
   .search {
     display: flex;
@@ -80,8 +81,10 @@ const SearchBtn = styled.button`
 `;
 
 export default function Homepage() {
-  const [invitation, setInvitation] = useState([]);
-  const [filteredInvitation, setFilteredInvitation] = useState([]);
+  const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
+  const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장
+  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리를 저장
+  const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
 
   useEffect(() => {
     axios
@@ -100,6 +103,7 @@ export default function Homepage() {
   }, []);
 
   const handleCategoryClick = (category) => {
+    setSelectedCategory(category); // 선택된 카테고리 상태를 설정
     if (category === 'CATEGORY_ALL') {
       // "ALL" 버튼을 누른 경우에는 전체 데이터를 필터링하지 않고 그대로 사용합니다.
       setFilteredInvitation(invitation);
@@ -114,6 +118,43 @@ export default function Homepage() {
     }
   };
 
+  // 검색 버튼클릭시 호출되는 함수
+  const titleSearch = () => {
+    axios
+      .get(`http://3.39.76.109:8080/boards/search/title/?title=${search}`)
+      .then((response) => {
+        const titleData = response.data;
+        setFilteredInvitation(titleData); // 검색창에 검색어와 동일한 내용만 필터
+        setSearch('');
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+  };
+  // 키 이벤트핸들러 함수
+  // Enter를 쳤을때 tilteSearch 함수를 불러옴
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      titleSearch();
+    }
+  };
+
+  const likesSort = () => {
+    axios
+      .get(`http://3.39.76.109:8080/boards/likes`)
+      .then((response) => {
+        const likeData = response.data;
+        const sortedData = likeData.sort(
+          (a, b) => b.boardLikesCount - a.boardLikesCount,
+        );
+        setFilteredInvitation(sortedData);
+        console.log(sortedData);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+  };
+
   return (
     <HomePage>
       <div className="main-container">
@@ -124,17 +165,22 @@ export default function Homepage() {
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
-            {Object.keys(CategoryMappings).map((key) => (
-              <CategoryBtn
-                key={key}
-                text={CategoryMappings[key]?.label}
-                color={
-                  CategoryMappings[key]?.backgroundColor ||
-                  CategoryMappings[key]?.color
-                }
-                onClick={() => handleCategoryClick(CategoryMappings[key]?.name)}
-              />
-            ))}
+            {Object.keys(CategoryMappings).map((key) => {
+              const categoryName = CategoryMappings[key]?.name;
+              const isSelected = selectedCategory === categoryName;
+              return (
+                <CategoryBtn
+                  key={key}
+                  text={CategoryMappings[key]?.label}
+                  color={
+                    CategoryMappings[key]?.backgroundColor ||
+                    CategoryMappings[key]?.color
+                  }
+                  isSelected={isSelected}
+                  onClick={() => handleCategoryClick(categoryName)}
+                />
+              );
+            })}
           </ul>
         </div>
         <div className="search-container">
@@ -144,11 +190,19 @@ export default function Homepage() {
               id="search"
               placeholder="Search"
               className="search-text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
-            <SearchBtn className="icon-search">
+            <SearchBtn className="icon-search" onClick={titleSearch}>
               <FaSearch />
             </SearchBtn>
           </div>
+        </div>
+        <div className="likes-container">
+          <button className="likes-sort" onClick={likesSort}>
+            좋아요순
+          </button>
         </div>
         <div className="invitation-container">
           {filteredInvitation.map((item) => (
