@@ -39,8 +39,9 @@
   </tr>
   </tbody>
 </table>
+</div>
 ### ✨ Front-end
-
+<div align="center">
 <table style="display:grid">
   <thead>
   <th align="center"><a href="https://github.com/YongILTree1"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/2fba010f-1fe8-4d85-ad0f-d7aa8ba9d8ff" width="100" alt="YongILTree1"></a></th>
@@ -72,7 +73,6 @@
   </tbody>
 </table>
 </div>
-
 ## 🎯프로젝트 명
 
 - Celebee
