@@ -140,11 +140,17 @@ export default function Homepage() {
     }
   };
 
-  const likesSort = () => {
+  // 전체 초대글 좋아요 순
+  const likesSort = (category) => {
+    const apiUrl =
+      category === 'CATEGORY_ALL'
+        ? `http://3.39.76.109:8080/boards/likes`
+        : `http://3.39.76.109:8080/boards/category/${category}/likes`;
     axios
-      .get(`http://3.39.76.109:8080/boards/likes`)
+      .get(apiUrl)
       .then((response) => {
         const likeData = response.data;
+        //
         const sortedData = likeData.sort(
           (a, b) => b.boardLikesCount - a.boardLikesCount,
         );
@@ -154,6 +160,11 @@ export default function Homepage() {
       .catch((error) => {
         console.log('Error', error);
       });
+  };
+
+  // 좋아요순을 위한 클릭 함수
+  const handleLikeSortClick = () => {
+    likesSort(selectedCategory);
   };
 
   return (
@@ -201,7 +212,7 @@ export default function Homepage() {
           </div>
         </div>
         <div className="likes-container">
-          <button className="likes-sort" onClick={likesSort}>
+          <button className="likes-sort" onClick={handleLikeSortClick}>
             좋아요순
           </button>
         </div>
