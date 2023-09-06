@@ -27,11 +27,13 @@ public class BoardResponseDto {
     private long boardLikesCount;
     private Board.BoardStatus boardStatus;
     private String imageUrl;
+    private String memberImageUrl;
 
     public Member getMember() {
         Member member = new Member();
         member.setId(memberId);
         member.setNickname(memberNickname);
+        member.setImageUrl(memberImageUrl);
         return member;
     }
 
