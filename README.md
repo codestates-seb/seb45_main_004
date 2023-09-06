@@ -97,14 +97,6 @@
 <br>
 
 ## 🗂️프로젝트 핵심기술 및 기능
-<br>
-<h2><a href="https://www.notion.so/codestates/ERD-146a70115df14c63bbb7295364e11703">테이블 명세서</a></h2>
-<br>
-<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142250/API.pdf" rel="nofollow">API 명세서</a></h2>
-<br>
-<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142259/_compressed.pdf" rel="nofollow">화면 정의서</a></h2>
-<br>
-<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142255/default.pdf" rel="nofollow">서비스 메뉴얼</a></h2>
 
 ### ✨ Back-end
 ![Spring](https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
@@ -131,3 +123,12 @@
 ![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)
 ![Notion](https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white)
 ![Zoom](https://img.shields.io/badge/zoom-2D8CFF?style=for-the-badge&logo=zoom&logoColor=white)
+
+<br>
+<h2><a href="https://www.notion.so/codestates/ERD-146a70115df14c63bbb7295364e11703">테이블 명세서</a></h2>
+<br>
+<h2><a href="https://documenter.getpostman.com/view/27566438/2s9Y5YT3fE" rel="nofollow">API 명세서</a></h2>
+<br>
+<h2><a href="https://www.figma.com/file/5YjNE0j5GAdezRox3xQtSg/%EB%A9%94%EC%9D%B8%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1---%ED%95%98%EB%A3%A8-%EB%AA%A8%EC%9E%84?type=design&node-id=0-1&mode=design&t=6Chc3WTDrrTtTp2e-0" rel="nofollow">피그마</a></h2>
+<br>
+<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142255/default.pdf" rel="nofollow">서비스 메뉴얼</a></h2>
