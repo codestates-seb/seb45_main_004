@@ -97,9 +97,8 @@
 <br>
 
 ## 🗂️프로젝트 핵심기술 및 기능
-
 <br>
-<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142253/%2BERD.pdf" rel="nofollow">테이블 명세서</a></h2>
+<h2><a href="https://www.notion.so/codestates/ERD-146a70115df14c63bbb7295364e11703">테이블 명세서</a></h2>
 <br>
 <h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142250/API.pdf" rel="nofollow">API 명세서</a></h2>
 <br>
