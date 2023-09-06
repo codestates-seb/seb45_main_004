@@ -1,7 +1,6 @@
 package com.party.follow.controller;
 
 import com.party.follow.service.FollowService;
-import com.party.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

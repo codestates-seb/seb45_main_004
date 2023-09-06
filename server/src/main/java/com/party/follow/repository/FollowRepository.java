@@ -12,7 +12,9 @@ import java.util.List;
 
 public interface FollowRepository extends JpaRepository<Follow, FollowId> {
 
+    //팔로우 관계 확인
     Follow findById_ToMemberAndId_FromMember(Long toMemberId, Long fromMemberId);
+    Follow findById_FromMemberAndId_ToMember(Long fromMemberId, Long toMemberId);
 
     //나를 몇명이 팔로우 하는지
     Long countById_ToMember(Long memberId);
@@ -25,9 +27,10 @@ public interface FollowRepository extends JpaRepository<Follow, FollowId> {
     List<Member> findAllByFromMember(@Param("memberId") Long memberId);
 
     //나를 팔로우한 계정 목록
-    @Query("SELECT m FROM Member m INNER JOIN Follow f ON f.id.toMember = m.id WHERE f.id.fromMember = :memberId")
+    @Query("SELECT m FROM Member m INNER JOIN Follow f ON f.id.fromMember = m.id WHERE f.id.toMember = :memberId")
     List<Member> findAllByToMember(@Param("memberId") Long memberId);
 
+    //언팔로우
     void deleteAllById_ToMember(Long memberId);
 
     void deleteAllById_FromMember(Long memberId);

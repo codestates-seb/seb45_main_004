@@ -12,7 +12,7 @@ public enum ExceptionCode {
     INVALID_MEMBER_ID(400,"Invalid memberId format"),
     OWN_MEMBER(400,"You can't follow your own account"),
     ALREADY_FOLLOWING(400,"You already follow this account"),
-    UNAUTHORIZED_OPERATION(400,"You need to Login");
+    UNAUTHORIZED_FOLLOW(400,"You don't have permission to follow");
 
 
     @Getter
