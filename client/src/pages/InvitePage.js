@@ -10,8 +10,10 @@ import MapKakao from '../services/MapKakao';
 
 //
 function InvitePage() {
+  const token = //img 아이디
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjkzOTg2MDYxLCJleHAiOjE2OTQyODYwNjF9.OkPQsqYNJCBAC6hWJRFnDWJMRpjD4eKb0JKX2ccuJni-3xaU5ON0PPHvSF4cNGKL'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
-  // 카드 데이터 상태변수 //
+  // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     title: '', // 카드의 제목
     date: '', // 카드의 날짜
@@ -22,29 +24,47 @@ function InvitePage() {
     money: 0, // 카드의 금액 정보
     boardLikesCount: 0, // 카드에 대한 좋아요 수
     boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
+    imageUrl: '', // 카드의 이미지
     member: {
       memberId: 0, // 멤버의 아이디
       memberNickname: '', // 멤버의 닉네임
-      imageUrl: null,
+      imageUrl: '', // 호스트의 이미지
     },
     address: '',
     longitude: '',
     latitude: '',
-    imageUrl:
-      'https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg',
   });
 
-  const token = //join 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzOTA2ODgxLCJleHAiOjE2OTQyMDY4ODF9.u88lDTgMZemf7tPdx0PNfJdSZbxT3IkHXIGxaPFZJdwCxVWC4YTs5AqorBiqCDjT'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+  const [participants, setParticipants] = useState([]);
+
+  // 참여자 목록을 가져오는 함수
+  const fetchParticipants = async () => {
+    try {
+      const response = await axios.get(
+        `http://3.39.76.109:8080/boards/${boardId}/join`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        },
+      );
+      setParticipants(response.data); // 참여자 목록을 상태에 저장
+      console.log(participants);
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+    }
+  };
 
   useEffect(() => {
-    // const boardId = '7'; // 예시로 아이디값 지정 (카드생성 페이지 구현 완료시 응답값에서 받아올 것)
+    fetchParticipants(); // 참여자 목록을 가져옵니다.
+  }, [eventData]); // boardId나 userData가 변경되면 참여자 목록을 다시 가져옵니다.
 
+  // 카드 조회 요청
+  useEffect(() => {
     axios
       .get(`http://3.39.76.109:8080/boards/${boardId}`)
       .then((response) => {
         const eventData = response.data; // API 응답 데이터를 가져옴
-        console.log(eventData);
         setEventData(eventData);
       })
       .catch((error) => {
@@ -52,9 +72,34 @@ function InvitePage() {
       });
   }, []);
 
-  // if (eventData === null) {
-  //   return null; // 데이터가 아직 불러와지지 않은 경우 렌더링하지 않음
-  // }
+  // 참여 버튼을 클릭했을 때 호출
+  const handleJoinClick = () => {
+    sendJoinStatus();
+  };
+
+  //참여요청
+  const sendJoinStatus = () => {
+    axios
+      .request({
+        method: 'post',
+        url: `http://3.39.76.109:8080/boards/${boardId}/join`,
+        data: { isJoin: true },
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        // currentNum 값을 1 증가시킴
+        setEventData((prevData) => ({
+          ...prevData,
+          currentNum: prevData.currentNum + 1,
+        }));
+      })
+      .catch((error) => {
+        console.error('Error sending join status:', error);
+      });
+  };
 
   // 좋아요 버튼을 클릭했을 때 호출
   const handleLikeClick = () => {
@@ -94,42 +139,13 @@ function InvitePage() {
       });
   };
 
-  // 참여 버튼을 클릭했을 때 호출
-  const handleJoinClick = () => {
-    sendJoinStatus(); // 항상 false를 전달하여 참여 상태를 해제
-    // 서버에 참여 상태 전송 함수 호출
-  };
-
-  const sendJoinStatus = () => {
-    axios
-      .request({
-        method: 'post', // 항상 POST로 보내서 참여 상태를 해제
-        url: `http://3.39.76.109:8080/boards/${boardId}/join`,
-        data: { isJoin: false }, // 항상 false를 전달
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        // 응답 데이터에서 currentNum 값을 가져와서 정수로 변환하여 업데이트
-        setEventData((prevData) => ({
-          ...prevData,
-          isJoin: false, // 항상 false로 업데이트
-          currentNum: prevData.currentNum + 1,
-        }));
-      })
-      .catch((error) => {
-        console.error('Error sending join status:', error);
-      });
-  };
-
   return (
     <EventDetailsContainer>
       <section>
         <article>
           <div className="card-container">
             <div className="image-container">
+              {/* <img src={eventData.imageUrl} alt="카드 이미지" /> */}
               <img
                 src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
                 alt="cardImage"
@@ -146,18 +162,26 @@ function InvitePage() {
           <div className="host-container">
             <button className="host-btn">
               <img
-                className="host-img" // 유저이미지 표시
-                src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-                /*{멤버id로 받아올 호스트 이미지}*/ alt="hostImage"
+                className="host-img" // 호스트 이미지 표시
+                src={eventData.member.imageUrl}
+                alt="host-img"
+                style={{ width: '50px', height: '50px' }}
               />
             </button>
             <div>금액: {eventData.money}</div>
           </div>
           <div className="user-container">
-            <img // 참여이미지 표시
-              src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-              /*{참여버튼 눌렀을 시 멤버id?로 받아올 이미지}*/ alt="userImage"
-            />
+            {/* 참여자 표시 */}
+            {participants.map((participant, index) =>
+              index !== 0 ? (
+                <img
+                  key={index}
+                  src={participant.memberImageUrl}
+                  alt="user-img"
+                  style={{ width: '50px', height: '50px' }}
+                />
+              ) : null,
+            )}
             {/* 참여자 표시 */}
             <div>
               {eventData.currentNum - 1}/{eventData.totalNum}
@@ -269,6 +293,7 @@ const EventDetailsContainer = styled.div`
   .host-btn {
     border: none;
     padding: 0px;
+    background-color: transparent;
   }
 
   .host-img {

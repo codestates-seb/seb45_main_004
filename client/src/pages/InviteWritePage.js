@@ -20,14 +20,16 @@ function InviteWritePage() {
     longitude: '',
     address: '',
     imageUrl: 'abc',
+    member: {
+      imageUrl: '', // 호스트 이미지
+    },
   });
-
   console.log(formData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const token = //tjs4114아이디
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5MzkwNjg2MCwiZXhwIjoxNjk0MjA2ODYwfQ.uF6iBqduhjsjzSHWIWs5mhdnG96Dku1GK99665jf1HpsHWN-rzVVyglCV1xu1y_3';
+      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5Mzk3MjEwOSwiZXhwIjoxNjk0MjcyMTA5fQ.0SmCxV3cQ6G3i5rlwpFuNSc3JxgTyt9-DkoX97q-VPXMXjesZbUhfiC16VQe_8fQ';
 
     // 서버로 POST 요청 보내기
     axios
@@ -78,7 +80,7 @@ function InviteWritePage() {
   return (
     <StyledWritePage>
       <section>
-        <button className="modal-btn">모달클릭 !</button>
+        <button className="modal-btn">모달클릭!</button>
 
         <form onSubmit={handleSubmit}>
           <article>

@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 const HomePage = styled.div`
   display: flex;
   justify-content: center;
-  /* height: 100vh; */
 
   .main-container {
     margin: 0px 320px;
