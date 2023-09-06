@@ -14,9 +14,9 @@
 
 <table style="table-layout:fixed">
   <thead>
-  <th align="center"><a href="https://github.com/yawning5">이미지태그</a></th>
-  <th align="center"><a href="https://github.com/Donga1125">이미지태그</a></th>
-  <th align="center"><a href="https://github.com/hseonghui">이미지태그</a></th>
+  <th align="center"><a href="https://github.com/yawning5"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/ad4ddbf3-9082-4a11-8ab0-38ae50f3cfd3" width="100" alt="yawning5"></a></th>
+  <th align="center"><a href="https://github.com/Donga1125"><img src="이미지_주소_2" width="100" alt="Donga1125"></a></th>
+  <th align="center"><a href="https://github.com/hseonghui"><img src="이미지_주소_3" width="100" alt="hseonghui"></a></th>
   </thead>
   <tbody>
   <tr>
