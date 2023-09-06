@@ -39,7 +39,6 @@
   </tr>
   </tbody>
 </table>
-</div>
 ### ✨ Front-end
 
 <table style="display:grid">
@@ -72,7 +71,7 @@
   </tr>
   </tbody>
 </table>
-
+</div>
 
 ## 🎯프로젝트 명
 
