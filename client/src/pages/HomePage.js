@@ -104,7 +104,7 @@ export default function Homepage() {
   }, []);
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+    setSelectedCategory(category); // 선택된 카테고리 상태를 설정
     if (category === 'CATEGORY_ALL') {
       // "ALL" 버튼을 누른 경우에는 전체 데이터를 필터링하지 않고 그대로 사용합니다.
       setFilteredInvitation(invitation);
@@ -138,6 +138,22 @@ export default function Homepage() {
     if (e.key === 'Enter') {
       titleSearch();
     }
+  };
+
+  const likesSort = () => {
+    axios
+      .get(`http://3.39.76.109:8080/boards/likes`)
+      .then((response) => {
+        const likeData = response.data;
+        const sortedData = likeData.sort(
+          (a, b) => b.boardLikesCount - a.boardLikesCount,
+        );
+        setFilteredInvitation(sortedData);
+        console.log(sortedData);
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
   };
 
   return (
@@ -183,6 +199,11 @@ export default function Homepage() {
               <FaSearch />
             </SearchBtn>
           </div>
+        </div>
+        <div className="likes-container">
+          <button className="likes-sort" onClick={likesSort}>
+            좋아요순
+          </button>
         </div>
         <div className="invitation-container">
           {filteredInvitation.map((item) => (
