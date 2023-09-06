@@ -4,7 +4,6 @@ import com.party.board.dto.BoardDto;
 import com.party.board.entity.Board;
 import com.party.board.mapper.BoardMapper;
 import com.party.board.service.BoardService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,7 +27,7 @@ public class BoardController {
     private final BoardMapper mapper;
 
 
-    // 모임글 등록
+    //모임글 등록
     @PostMapping("/new-boards")
     public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post postDto) {
 
@@ -60,11 +59,11 @@ public class BoardController {
     }
 
     //특정 카테고리별 조회(최신순)
-    @GetMapping("/category/{categoryCode}")
-    public ResponseEntity getBoardsByCategory(@PathVariable("categoryCode") int categoryCode) {
+    @GetMapping("/category/{category}")
+    public ResponseEntity getBoardsByCategory(@PathVariable("category") String category) {
 
         Optional<Board.BoardCategory> selectedCategory = Arrays.stream(Board.BoardCategory.values())
-                .filter(category -> category.getCategoryCode() == categoryCode)
+                .filter(boardCategory -> boardCategory.name().equalsIgnoreCase(category))
                 .findFirst();
 
         if (selectedCategory.isPresent()) {
@@ -76,10 +75,11 @@ public class BoardController {
     }
 
     //특정 카테고리별 조회(좋아요순)
-    @GetMapping("/category/{categoryCode}/likes")
-    public ResponseEntity getBoardsByCategorySortedByLikesCount(@PathVariable("categoryCode") int categoryCode) {
+    @GetMapping("/category/{category}/likes")
+    public ResponseEntity getBoardsByCategorySortedByLikesCount(@PathVariable("category") String category) {
+
         Optional<Board.BoardCategory> selectedCategory = Arrays.stream(Board.BoardCategory.values())
-                .filter(category -> category.getCategoryCode() == categoryCode)
+                .filter(boardCategory -> boardCategory.name().equalsIgnoreCase(category))
                 .findFirst();
 
         if (selectedCategory.isPresent()) {
@@ -105,11 +105,11 @@ public class BoardController {
     }
 
     //모임글 제목으로 검색(카테고리별)
-    @GetMapping("/category/{categoryCode}/search/title")
-    public ResponseEntity searchBoardsByCategoryAndTitle(@PathVariable("categoryCode") int categoryCode,
+    @GetMapping("/category/{category}/search/title")
+    public ResponseEntity searchBoardsByCategoryAndTitle(@PathVariable("category") String category,
                                                          @RequestParam("title") String title) {
         Optional<Board.BoardCategory> selectedCategory = Arrays.stream(Board.BoardCategory.values())
-                .filter(category -> category.getCategoryCode() == categoryCode)
+                .filter(boardCategory -> boardCategory.name().equalsIgnoreCase(category))
                 .findFirst();
 
         if (selectedCategory.isPresent()) {
@@ -121,11 +121,11 @@ public class BoardController {
     }
 
     //모임글 제목+내용으로 검색(카테고리별)
-    @GetMapping("/category/{categoryCode}/search")
-    public ResponseEntity searchBoardsByCategoryAndTitleAndBody(@PathVariable("categoryCode") int categoryCode,
+    @GetMapping("/category/{category}/search")
+    public ResponseEntity searchBoardsByCategoryAndTitleAndBody(@PathVariable("category") String category,
                                                                 @RequestParam("keyword") String keyword) {
         Optional<Board.BoardCategory> selectedCategory = Arrays.stream(Board.BoardCategory.values())
-                .filter(category -> category.getCategoryCode() == categoryCode)
+                .filter(boardCategory -> boardCategory.name().equalsIgnoreCase(category))
                 .findFirst();
 
         if (selectedCategory.isPresent()) {
