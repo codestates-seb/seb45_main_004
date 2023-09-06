@@ -34,6 +34,14 @@ public class ApplicantController {
         return new ResponseEntity<>(mapper.applicantToApplicantResponseDto(join), HttpStatus.OK);
     }
 
+    //조회한 모임의 참여인원 조회
+    @GetMapping("boards/{board-id}/join")
+    public ResponseEntity getJoinMember(@PathVariable("board-id") long boardId){
+        List<Applicant> applicantList = applicantService.findJoinedMember(boardId);
+
+        return new ResponseEntity<>(mapper.applicantsToApplicantsResponseDto(applicantList),HttpStatus.OK);
+    }
+
     //내가 참여한 모임 조회
     @GetMapping("members/join")
     public ResponseEntity getJoinAll (){
@@ -42,6 +50,8 @@ public class ApplicantController {
 
         return new ResponseEntity<>(mapper.applicantsToApplicantsResponseDto(applicants), HttpStatus.OK);
     }
+
+
 
 
 

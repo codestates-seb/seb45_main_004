@@ -39,7 +39,7 @@ public class BoardDto {
 
         private int money;
 
-        //@NotBlank //카드 이미지 선택 안하면 글 생성 안되게하기 위해
+        @NotBlank //카드 이미지 선택 안하면 글 생성 안되게하기 위해
         private String imageUrl;
     }
 
