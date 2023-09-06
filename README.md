@@ -1,6 +1,6 @@
 # seb45_pre_001
 
-<img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/078d0451-289b-447d-a693-eeb6e1cab114" width="800" height="300"/>
+<img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/078d0451-289b-447d-a693-eeb6e1cab114" width="700" height="300"/>
 
 ## 
 
