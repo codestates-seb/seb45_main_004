@@ -11,20 +11,22 @@ import lombok.Setter;
 public class ApplicantResponseDto {
 
     private Long id;
-    private String imageUrl;
+    private String memberImageUrl;
     private Long memberId;
     private Long boardId;
+    private String boardImageUrl;
 
     public Member getMember(){
         Member member = new Member();
         member.setId(memberId);
-        member.setImageUrl(imageUrl);
+        member.setImageUrl(memberImageUrl);
         return member;
     }
 
     public Board getBoard(){
         Board board = new Board();
         board.setId(boardId);
+        board.setImageUrl(boardImageUrl);
         return board;
     }
 }

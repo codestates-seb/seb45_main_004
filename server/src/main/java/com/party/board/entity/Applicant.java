@@ -17,7 +17,9 @@ public class Applicant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    private String imageUrl;
+    private String memberImageUrl;
+
+    private String boardImageUrl;
 
     private boolean isJoin;
 
