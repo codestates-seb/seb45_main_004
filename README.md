@@ -24,17 +24,17 @@
   <td align="center"><a href="https://github.com/hseonghui">한성희<br>(@hseonghui)</a></td>
   </tr>
   <tr>
-  <td align="left">
+  <td align="center">
     - 로그인/회원가입 기능<br/>    
-    - 
+    -
   </td>
-  <td align="left">
+  <td align="center">
     - server 환경 구축<br/> 
-    - 
+    -
   </td>
-  <td align="left">
+  <td align="center">
     - 게시글 목록 조회<br/>    
-    - 
+    -
   </td>
   </tr>
   </tbody>
@@ -42,13 +42,11 @@
 
 ### ✨ Front-end
 
-<table style="display:grid" >
+<table style="display:grid">
   <thead>
   <th align="center"><a href="https://github.com/YongILTree1"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/2fba010f-1fe8-4d85-ad0f-d7aa8ba9d8ff" width="100" alt="YongILTree1"></a></th>
   <th align="center"><a href="https://github.com/27Lia"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/936bcab5-808a-4b2b-a61c-42e5fec81b70" width="100" alt="27Lia"></a></th>
   <th align="center"><a href="https://github.com/JIAHLEE0213"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/e49f5c51-0dfa-422a-b9c9-75dc392fe22c" width="100" alt="JIAHLEE0213"></a></th>
-
-  
   </thead>
   <tbody>
   <tr>
@@ -57,23 +55,24 @@
   <td align="center"><a href="https://github.com/JIAHLEE0213">이지아<br>(@JIAHLEE0213)</a></td>
   </tr>
   <tr>
-  <td align="left">
+  <td align="center">
     - <br/>    
     - <br/>
-    - 
+    -
   </td>
-  <td align="left">
+  <td align="center">
     - <br/>    
-    - 
+    -
   </td>
-  <td align="left">
+  <td align="center">
     - <br/>
     - <br/>    
-    - 
+    -
   </td>
   </tr>
   </tbody>
 </table>
+
 
 ## 🎯프로젝트 명
 
