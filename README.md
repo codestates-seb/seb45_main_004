@@ -98,6 +98,15 @@
 
 ## 🗂️프로젝트 핵심기술 및 기능
 
+<br>
+<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142253/%2BERD.pdf" rel="nofollow">테이블 명세서</a></h2>
+<br>
+<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142250/API.pdf" rel="nofollow">API 명세서</a></h2>
+<br>
+<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142259/_compressed.pdf" rel="nofollow">화면 정의서</a></h2>
+<br>
+<h2><a href="https://github.com/codestates-seb/seb44_main_006/files/12142255/default.pdf" rel="nofollow">서비스 메뉴얼</a></h2>
+
 ### ✨ Back-end
 ![Spring](https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/spring_boot_jpa-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
