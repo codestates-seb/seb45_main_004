@@ -10,7 +10,7 @@
 ## 🌟 팀원 소개
 
 ### ✨ Back-end
-
+<div align="center">
 <table style="table-layout:fixed">
   <thead>
   <th align="center"><a href="https://github.com/yawning5"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/ad4ddbf3-9082-4a11-8ab0-38ae50f3cfd3" width="100" alt="yawning5"></a></th>
@@ -39,7 +39,7 @@
   </tr>
   </tbody>
 </table>
-
+</div>
 ### ✨ Front-end
 
 <table style="display:grid">
