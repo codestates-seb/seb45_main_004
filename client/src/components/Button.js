@@ -6,12 +6,21 @@ const StyleButton = styled.button`
   width: 100px;
   height: 42px;
   border-radius: 10px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
 
   /* 버튼 조건부 스타일 &.{btnType} 
   예) 카테고리 버튼 : &.Button-category
   */
+
+  &.Button-login {
+    width: 430px;
+    height: 50px;
+    border: 0;
+    color: white;
+    font-weight: 600;
+    background-color: rgb(10, 149, 255);
+  }
 
   &.Button-membership {
     font-weight: 700;
@@ -60,6 +69,7 @@ const Button = ({ type, text, onClick, color }) => {
     'notification',
     'like',
     'participations',
+    'login',
   ].includes(type)
     ? type
     : 'default';

@@ -4,6 +4,7 @@ import Button from './Button';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
@@ -57,18 +58,20 @@ const Header = () => {
   return (
     <ServieceHeader>
       <div className="header-container">
-        <LinkBox href="/" className="title-box">
+        <Link to="/" className="title-box">
           <h1>Celebee</h1>
-        </LinkBox>
+        </Link>
         {isLogin ? (
           <ButtonBox>
-            <LinkBox href="/cards/new-cards">
-              <Button
-                type="newCard"
-                text="New Card!"
-                onClick={() => alert('게시글 작성 페이지로 이동')}
-              />
-            </LinkBox>
+            <Link to="/cards/new-cards">
+              <LinkBox>
+                <Button
+                  type="newCard"
+                  text="New Card!"
+                  onClick={() => alert('게시글 작성 페이지로 이동')}
+                />
+              </LinkBox>
+            </Link>
             {isNew ? (
               <Button
                 type="notification"
@@ -80,26 +83,27 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-
-            <LinkBox href="/members/{member-id}" className="user-info">
-              <FaRegUserCircle className="user-info-icon" />
-            </LinkBox>
+            <Link to="/members/{member-id}">
+              <LinkBox className="user-info">
+                <FaRegUserCircle className="user-info-icon" />
+              </LinkBox>
+            </Link>
           </ButtonBox>
         ) : (
           <ButtonBox>
-            <LinkBox href="/boards/new-boards">
+            <Link to="/boards/new-boards">
               <Button type="membership" text="New Card" />
-            </LinkBox>
-            <LinkBox href="/login">
+            </Link>
+            <Link to="/members/login">
               <Button
                 type="membership"
                 text="Log In"
                 onClick={() => alert('로그인 페이지로 이동')}
               />
-            </LinkBox>
-            <LinkBox href="/members">
+            </Link>
+            <Link to="/members">
               <Button type="membership" text="Sign Up" />
-            </LinkBox>
+            </Link>
           </ButtonBox>
         )}
       </div>
