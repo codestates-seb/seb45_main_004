@@ -4,10 +4,7 @@ import com.party.follow.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -22,6 +19,13 @@ public class FollowController {
                                      @PathVariable Long toMemberId) {
 
         followService.followMember(fromMemberId,toMemberId);
-        return new ResponseEntity<>("팔로우 성공!🎉", HttpStatus.OK);
+        return new ResponseEntity<>("FOLLOW💗", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{fromMemberId}/{toMemberId}")
+    public ResponseEntity deleteFollow(@PathVariable Long fromMemberId,
+                                       @PathVariable Long toMemberId) {
+        followService.unfollowMember(fromMemberId, toMemberId);
+        return new ResponseEntity<>("UNFOLLOW💔",HttpStatus.OK);
     }
 }

@@ -30,8 +30,4 @@ public interface FollowRepository extends JpaRepository<Follow, FollowId> {
     @Query("SELECT m FROM Member m INNER JOIN Follow f ON f.id.fromMember = m.id WHERE f.id.toMember = :memberId")
     List<Member> findAllByToMember(@Param("memberId") Long memberId);
 
-    //언팔로우
-    void deleteAllById_ToMember(Long memberId);
-
-    void deleteAllById_FromMember(Long memberId);
 }
