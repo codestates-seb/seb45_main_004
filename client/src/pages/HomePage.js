@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { FaSearch } from 'react-icons/fa';
+import { FcLike } from 'react-icons/fc';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { useState, useEffect } from 'react';
@@ -18,9 +19,17 @@ const HomePage = styled.div`
     display: flex;
     justify-content: center;
     height: 350px;
-    margin-top: 156px;
-    border: solid 1px black;
+    margin-top: 50px;
     align-items: center;
+    animation: slideTExt 10s linear infinite;
+  }
+  @keyframes slideTExt {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
   .service-introduction {
     color: white;
@@ -28,7 +37,7 @@ const HomePage = styled.div`
   .search-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
   .search {
     display: flex;
@@ -67,6 +76,31 @@ const HomePage = styled.div`
     display: flex;
     justify-content: center;
     height: 200px;
+  }
+  .likes-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  .likes-sort {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    border: solid 1px #d9d9d9;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+  .likes-text {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 5px;
+    cursor: pointer;
   }
 `;
 
@@ -119,31 +153,46 @@ export default function Homepage() {
   };
 
   // 검색 버튼클릭시 호출되는 함수
-  const titleSearch = () => {
+  const titleSearch = (category) => {
+    // 선택된 카테고리가 있으면
+    // if (selectedCategory) {
+    // 전체 검색창에서 검색되는 url과 선택된 카테고리에서만 검색되는 url
+    const searchApi =
+      category === 'CATEGORY_ALL'
+        ? `http://3.39.76.109:8080/boards/search/title/?title=${search}`
+        : `http://3.39.76.109:8080/boards/category/${category}/search/title/?title=${search}`;
     axios
-      .get(`http://3.39.76.109:8080/boards/search/title/?title=${search}`)
+      .get(searchApi)
       .then((response) => {
         const titleData = response.data;
-        setFilteredInvitation(titleData); // 검색창에 검색어와 동일한 내용만 필터
+        setFilteredInvitation(titleData);
+        console.log(titleData); // 검색창에 검색어와 동일한 내용만 필터
         setSearch('');
       })
       .catch((error) => {
         console.log('Error', error);
       });
+    // }
   };
   // 키 이벤트핸들러 함수
   // Enter를 쳤을때 tilteSearch 함수를 불러옴
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      titleSearch();
+      titleSearch(selectedCategory); // 선택된 카테고리에서만 tiltesearch함수가 실행
     }
   };
 
-  const likesSort = () => {
+  // 전체 초대글 좋아요 순
+  const likesSort = (category) => {
+    const apiUrl =
+      category === 'CATEGORY_ALL'
+        ? `http://3.39.76.109:8080/boards/likes`
+        : `http://3.39.76.109:8080/boards/category/${category}/likes`;
     axios
-      .get(`http://3.39.76.109:8080/boards/likes`)
+      .get(apiUrl)
       .then((response) => {
         const likeData = response.data;
+        // 좋아요 순서대로 보여주기 위한 구현
         const sortedData = likeData.sort(
           (a, b) => b.boardLikesCount - a.boardLikesCount,
         );
@@ -153,6 +202,11 @@ export default function Homepage() {
       .catch((error) => {
         console.log('Error', error);
       });
+  };
+
+  // 좋아요순을 위한 클릭 함수
+  const handleLikeSortClick = () => {
+    likesSort(selectedCategory);
   };
 
   return (
@@ -200,8 +254,9 @@ export default function Homepage() {
           </div>
         </div>
         <div className="likes-container">
-          <button className="likes-sort" onClick={likesSort}>
-            좋아요순
+          <button className="likes-sort" onClick={handleLikeSortClick}>
+            <FcLike />
+            <span className="likes-text">Liked Order</span>
           </button>
         </div>
         <div className="invitation-container">
