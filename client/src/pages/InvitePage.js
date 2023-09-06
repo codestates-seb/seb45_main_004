@@ -11,7 +11,7 @@ import MapKakao from '../services/MapKakao';
 //
 function InvitePage() {
   const token = //qwer12345 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzOTk2OTM1LCJleHAiOjE2OTQyOTY5MzV9.3DV36WXb51VLa1HBFdLV7yT4IKG9dplVzI_cPIBUCgPEgzF7cKaUMT7us9MdikrG'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7J2066-47KeA7ZmV7J24IiwiaWQiOjE2LCJlbWFpbCI6InF3ZXIxMjM0NUBnbWFpbC5jb20iLCJzdWIiOiJxd2VyMTIzNDVAZ21haWwuY29tIiwiaWF0IjoxNjkzOTk3ODMxLCJleHAiOjE2OTQyOTc4MzF9.cv2u4dg84tFhkR4Sv8S54pPkXMQdtkeuoJZB-fH2GntUt1-imz0VK2zVrJ_aK3No'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({

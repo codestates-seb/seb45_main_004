@@ -129,7 +129,14 @@ function InviteWritePage() {
           <article>
             <div className="card-container">
               <div className="image-container">
-                <img src={formData.imageUrl} alt={''} />
+                {formData.imageUrl ? (
+                  <img src={formData.imageUrl} alt="선택된 카테고리의 이미지" />
+                ) : (
+                  <img
+                    src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC1.png"
+                    alt="기본 이미지"
+                  />
+                )}
               </div>
               <div className="btn-box">
                 <button className="submit-btn" type="submit">
@@ -330,12 +337,31 @@ const StyledWritePage = styled.div`
     width: 80px;
   }
   .submit-btn {
+    position: relative;
     width: 80px;
   }
-
+  .modal {
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    left: 600px;
+    display: grid;
+    place-items: center;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
+    width: 370px;
+    height: 400px;
+    background-color: #96a6f4;
+    background: linear-gradient(
+      135deg,
+      rgba(18, 104, 233, 10) 10%,
+      rgba(196, 113, 237, 10) 50%,
+      rgba(246, 79, 89, 10) 100%
+    );
+  }
   .card-img {
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     /* background-color: transparent;
     border: none; */
   }
