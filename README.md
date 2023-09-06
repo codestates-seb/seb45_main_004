@@ -39,7 +39,7 @@
   </tr>
   </tbody>
 </table>
-
+<div align=center>
 ### ✨ Front-end
 
 <table style="display:grid" >
@@ -71,6 +71,7 @@
     - 
   </td>
   </tr>
+  </div>
   </tbody>
 </table>
 
