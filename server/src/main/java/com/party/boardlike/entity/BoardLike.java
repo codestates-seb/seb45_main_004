@@ -24,6 +24,6 @@ public class BoardLike {
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name = "CARD_ID")
+    @JoinColumn(name = "BOARD_ID")
     private Board board;
 }

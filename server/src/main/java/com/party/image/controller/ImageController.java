@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/images")
+@RequestMapping
 public class ImageController {
 
     private final AwsService awsService;
@@ -25,26 +26,27 @@ public class ImageController {
     //테스트
     @GetMapping
     public String getTestImage(){
-        String imagePath = awsService.getThumbnailPath("board/Category_Culture1.png");
+        String path = "board/Category_Culture";
+        String imagePath = awsService.getThumbnailPath("1.png");
         Member member = new Member();
         member.setImageUrl(imagePath);
         System.out.println(imagePath);
         return imagePath;
     }
 
-    //board 이미지 전체 전달
-    @GetMapping("/cards")
-    public List<String> getBoardImages(){
-        List<String> boardImageList = new ArrayList<>();
+    //board 이미지 전달
+    @GetMapping("/cards/{category}/images")
+    public List<String> getBoardImages(@PathVariable("category") String category){
 
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Culture1.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Culture2.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Culture3.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Education1.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Education2.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Education3.png");
-        boardImageList.add( "https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/Category_Leisure2.png");
+       List<String> boardImageList = awsService.getImagesAll("board/", category);
 
        return boardImageList;
+    }
+
+    //profile 이미지 전달
+    @GetMapping("members/images")
+    public List<String> getProfileImages (){
+        List<String> profileImageList = awsService.getProfileImageAll("profile/");
+        return profileImageList;
     }
 }
