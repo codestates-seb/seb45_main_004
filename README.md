@@ -1,6 +1,6 @@
 # seb45_pre_001
 
-<img src="![Sep-06-2023_10-12-44](https://github.com/codestates-seb/seb45_main_004/assets/130025554/f91b507b-732b-42e6-836f-d9179e6491c8)
+<img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/f91b507b-732b-42e6-836f-d9179e6491c8
 " width="500" height="250"/>
 
 ## 
