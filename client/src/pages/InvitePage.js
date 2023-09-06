@@ -10,8 +10,8 @@ import MapKakao from '../services/MapKakao';
 
 //
 function InvitePage() {
-  const token = //img 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjkzOTg2MDYxLCJleHAiOjE2OTQyODYwNjF9.OkPQsqYNJCBAC6hWJRFnDWJMRpjD4eKb0JKX2ccuJni-3xaU5ON0PPHvSF4cNGKL'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+  const token = //qwer12345 아이디
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjkzOTk2OTM1LCJleHAiOjE2OTQyOTY5MzV9.3DV36WXb51VLa1HBFdLV7yT4IKG9dplVzI_cPIBUCgPEgzF7cKaUMT7us9MdikrG'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -56,8 +56,8 @@ function InvitePage() {
   };
 
   useEffect(() => {
-    fetchParticipants(); // 참여자 목록을 가져옵니다.
-  }, [eventData]); // boardId나 userData가 변경되면 참여자 목록을 다시 가져옵니다.
+    fetchParticipants(); // 참여자 목록 가져옴
+  }, [eventData]); // eventData가 변경되면 참여자 목록을 다시 가져옴
 
   // 카드 조회 요청
   useEffect(() => {
@@ -145,11 +145,7 @@ function InvitePage() {
         <article>
           <div className="card-container">
             <div className="image-container">
-              {/* <img src={eventData.imageUrl} alt="카드 이미지" /> */}
-              <img
-                src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-                alt="cardImage"
-              />
+              <img src={eventData.imageUrl} alt="카드 이미지" />
               <button className="heart-button" onClick={handleLikeClick}>
                 <VscHeartFilled className="heart-icon" />
               </button>

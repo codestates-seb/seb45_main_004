@@ -7,6 +7,9 @@ import CategoryMappings from '../components/CategoryMappings';
 
 function InviteWritePage() {
   const [selectedButton, setSelectedButton] = useState(null);
+  const [imageFromServer, setImageFromServer] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // 사용자입력값 상태변수
   const [formData, setFormData] = useState({
@@ -19,17 +22,17 @@ function InviteWritePage() {
     latitude: '',
     longitude: '',
     address: '',
-    imageUrl: 'abc',
+    imageUrl: selectedImage,
     member: {
       imageUrl: '', // 호스트 이미지
     },
   });
   console.log(formData);
+  const token = //img 아이디
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjkzOTg5NzQ5LCJleHAiOjE2OTQyODk3NDl9.Gt24e3dXpfDV0lfdDKZ9BHR_YAHKxkjArXlL92FGuStLQ-_NSNxm4iAOu_UpdZfR';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = //tjs4114아이디
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5Mzk3MjEwOSwiZXhwIjoxNjk0MjcyMTA5fQ.0SmCxV3cQ6G3i5rlwpFuNSc3JxgTyt9-DkoX97q-VPXMXjesZbUhfiC16VQe_8fQ';
 
     // 서버로 POST 요청 보내기
     axios
@@ -40,6 +43,7 @@ function InviteWritePage() {
       })
       .then(() => {
         // 요청 완료 후 페이지 새로고침
+        console.log('요청됨');
         window.location.reload();
       })
       .catch((error) => {
@@ -48,15 +52,27 @@ function InviteWritePage() {
   };
 
   // 카테고리 버튼 클릭 핸들러
-  const handleButtonClick = (buttonId) => {
+  const handleButtonClick = async (buttonId) => {
     // 선택된 버튼 업데이트
     setSelectedButton(buttonId);
     console.log('클릭한 버튼:', buttonId);
 
+    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
     }));
+
+    try {
+      // 서버에 카드 API 요청
+      const response = await axios.get(
+        `http://3.39.76.109:8080/cards/${buttonId}/images`,
+      );
+
+      setImageFromServer(response.data);
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -77,19 +93,43 @@ function InviteWritePage() {
     }));
   };
 
+  // 모달 버튼 클릭 핸들러
+  const handleModalClick = () => {
+    if (!selectedButton) {
+      // 사용자가 카테고리를 선택하지 않았다면
+      alert(
+        '카테고리를 선택하지 않을것인가? 그럼 자네는..모임장이 될 자격이 없네 !!',
+      );
+      return;
+    }
+
+    setIsModalOpen((prevState) => !prevState);
+  };
+
+  const handleImageClick = async (imageUrl) => {
+    // 선택된 버튼 업데이트
+    setSelectedImage(imageUrl);
+    console.log(selectedImage);
+
+    // formData 업데이트
+    setFormData((prevData) => ({
+      ...prevData,
+      imageUrl: imageUrl,
+    }));
+  };
+
   return (
     <StyledWritePage>
       <section>
-        <button className="modal-btn">모달클릭!</button>
+        <button onClick={handleModalClick} className="modal-btn">
+          모달클릭!
+        </button>
 
         <form onSubmit={handleSubmit}>
           <article>
             <div className="card-container">
               <div className="image-container">
-                <img
-                  src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-                  alt="cardImage"
-                />
+                <img src={formData.imageUrl} alt={''} />
               </div>
               <div className="btn-box">
                 <button className="submit-btn" type="submit">
@@ -165,7 +205,22 @@ function InviteWritePage() {
             </article>
           </form>
 
-          {/*카테고리 구현중*/}
+          {/* 모달 표시 */}
+          {isModalOpen && (
+            <div className="modal">
+              {imageFromServer.map((imageUrl, index) => (
+                <button
+                  className="card-img"
+                  key={index}
+                  onClick={() => handleImageClick(imageUrl)}
+                >
+                  <img className="card-img" src={imageUrl} alt={`${index}`} />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/*카테고리*/}
           <div className="category-btn">
             {Object.keys(CategoryMappings)
               .filter((key) => key !== 'CATEGORY_ALL') // 'All' 버튼 제외하고 렌더링
@@ -187,8 +242,7 @@ function InviteWritePage() {
                 );
               })}
           </div>
-          {/*카테고리 구현중*/}
-
+          {/*카테고리*/}
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
@@ -277,6 +331,13 @@ const StyledWritePage = styled.div`
   }
   .submit-btn {
     width: 80px;
+  }
+
+  .card-img {
+    width: 200px;
+    height: 200px;
+    /* background-color: transparent;
+    border: none; */
   }
 `;
 
