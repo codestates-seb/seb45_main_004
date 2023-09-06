@@ -7,6 +7,7 @@ import com.party.image.config.AwsS3Config;
 import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import com.party.util.UpdateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
     private final AwsService awsService;
+    private final UpdateUtils<Member> updateUtils;
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
@@ -44,7 +46,9 @@ public class MemberService {
 
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getId());
+        Member updatedMember = updateUtils.copyNonNullProperties(member, findMember);
 
+        return memberRepository.save(updatedMember);
     }
 
     public Member findMember(long memberId) {

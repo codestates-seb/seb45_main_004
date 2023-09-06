@@ -14,6 +14,7 @@ import java.util.List;
 @Getter
 public class MemberResponseDto {
     // 추가해야 되는거 팔로우 목록
+    // 좋아요 한
     private long memberId;
     private long applicantId;
     private String nickname;
@@ -21,5 +22,5 @@ public class MemberResponseDto {
     private String gender;
     private String introduce;
     private String imageUrl;
-    private List<Applicant> applicants = new ArrayList<>();
+    private List<ApplicantResponseDto> applicants = new ArrayList<>();
 }

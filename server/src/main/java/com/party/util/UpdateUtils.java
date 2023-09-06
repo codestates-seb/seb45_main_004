@@ -9,7 +9,7 @@ import java.util.Collection;
 
 // source에는 Dto 기반의 엔티티 객체 destination에는 DB에서 찾은 엔티티 객체
 @Component
-public class updateUtils<T> {
+public class UpdateUtils<T> {
     public T copyNonNullProperties(T source, T destination) {
      if(source == null || destination == null || source.getClass() != destination.getClass());
 

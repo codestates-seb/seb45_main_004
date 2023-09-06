@@ -2,6 +2,7 @@ package com.party.member.controller;
 
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.member.dto.MemberPatchDto;
 import com.party.member.dto.MemberPostDto;
 import com.party.member.entity.Member;
 import com.party.member.mapper.MemberMapper;
@@ -40,10 +41,12 @@ public class MemberController {
     }
 
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") long memberid) {
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberid,
+                                      @RequestBody MemberPatchDto memberPatchDto) {
         Long id = (Long) memberService.extractMemberInfo().get("id");
         if(id != memberid) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 
-
+        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 }

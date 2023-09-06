@@ -17,4 +17,6 @@ public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
     //특정 게시물에 특정 회원의 좋아요 여부 확인
     boolean existsByBoard_idAndMember_id(Long boardId, Long memberId);
 
+    List<BoardLike> findByMember_Id(Long memberId);
+
 }
