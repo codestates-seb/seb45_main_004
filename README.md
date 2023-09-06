@@ -7,6 +7,7 @@
 > 
 
 ## 🌟 팀원 소개
+<div align=center>
 
 ### ✨ Back-end
 
@@ -39,7 +40,7 @@
   </tr>
   </tbody>
 </table>
-<div align=center>
+
 ### ✨ Front-end
 
 <table style="display:grid" >
