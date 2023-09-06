@@ -26,7 +26,6 @@
   </tr>
   <tr>
   <td align="left">
-    - jap 엔티티 클래스 설정<br/>
     - 로그인/회원가입 기능<br/>    
     - 
   </td>
@@ -46,9 +45,10 @@
 
 <table style="display:grid" >
   <thead>
-  <th align="center"><a href="https://github.com/YongILTree1">이미지태그</a></th>
-  <th align="center"><a href="https://github.com/27Lia">이미지태그</a></th>
-  <th align="center"><a href="https://github.com/JIAHLEE0213">이미지태그</a></th>
+  <th align="center"><a href="https://github.com/YongILTree1"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/2fba010f-1fe8-4d85-ad0f-d7aa8ba9d8ff" width="100" alt="YongILTree1"></a></th>
+  <th align="center"><a href="https://github.com/27Lia"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/936bcab5-808a-4b2b-a61c-42e5fec81b70" width="100" alt="27Lia"></a></th>
+  <th align="center"><a href="https://github.com/JIAHLEE0213"><img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/e49f5c51-0dfa-422a-b9c9-75dc392fe22c" width="100" alt="JIAHLEE0213"></a></th>
+
   
   </thead>
   <tbody>
