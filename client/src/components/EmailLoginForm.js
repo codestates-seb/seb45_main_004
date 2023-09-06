@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const MailLoginform = styled.form`
   display: flex;
@@ -32,23 +33,54 @@ const MailLoginform = styled.form`
     }
   }
 `;
-const EmailLoginForm = () => {
+
+const EmailLoginForm = ({
+  userId,
+  userPassword,
+  handleUserIdChange,
+  handleUserPasswordChange,
+  eamilError,
+  passwordError,
+}) => {
   return (
     <MailLoginform>
       <div className="title-box">
         <b>Email</b>
       </div>
       <div className="input-box">
-        <input type="text" />
+        <input
+          type="text"
+          id="userId"
+          value={userId}
+          onChange={handleUserIdChange}
+        />
+        {eamilError && <p className="error">{eamilError}</p>}
       </div>
       <div className="title-box">
         <b>Password</b>
         <a href="/">Forgot password?</a>
       </div>
       <div className="input-box">
-        <input type="text" />
+        <input
+          type="text"
+          id="userPassword"
+          value={userPassword}
+          onChange={handleUserPasswordChange}
+        />
+        {passwordError && <p className="error">{passwordError}</p>}
       </div>
     </MailLoginform>
   );
 };
+
+EmailLoginForm.propTypes = {
+  userId: PropTypes.string.isRequired,
+  userPassword: PropTypes.string.isRequired,
+  handleUserIdChange: PropTypes.func.isRequired,
+  handleUserPasswordChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  eamilError: PropTypes.string.isRequired,
+  passwordError: PropTypes.string.isRequired,
+};
+
 export default EmailLoginForm;
