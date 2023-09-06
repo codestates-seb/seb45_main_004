@@ -29,6 +29,7 @@ const HomePage = styled.div`
   .search-container {
     display: flex;
     justify-content: center;
+    margin-bottom: 40px;
   }
   .search {
     display: flex;
@@ -81,9 +82,10 @@ const SearchBtn = styled.button`
 `;
 
 export default function Homepage() {
-  const [invitation, setInvitation] = useState([]);
-  const [filteredInvitation, setFilteredInvitation] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
+  const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장
+  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리를 저장
+  const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
 
   useEffect(() => {
     axios
@@ -114,6 +116,27 @@ export default function Homepage() {
       );
       setFilteredInvitation(filteredData);
       console.log('필터된 데이터', filteredData);
+    }
+  };
+
+  // 검색 버튼클릭시 호출되는 함수
+  const titleSearch = () => {
+    axios
+      .get(`http://3.39.76.109:8080/boards/search/title/?title=${search}`)
+      .then((response) => {
+        const titleData = response.data;
+        setFilteredInvitation(titleData); // 검색창에 검색어와 동일한 내용만 필터
+        setSearch('');
+      })
+      .catch((error) => {
+        console.log('Error', error);
+      });
+  };
+  // 키 이벤트핸들러 함수
+  // Enter를 쳤을때 tilteSearch 함수를 불러옴
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      titleSearch();
     }
   };
 
@@ -152,8 +175,11 @@ export default function Homepage() {
               id="search"
               placeholder="Search"
               className="search-text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyPress={handleKeyPress}
             />
-            <SearchBtn className="icon-search">
+            <SearchBtn className="icon-search" onClick={titleSearch}>
               <FaSearch />
             </SearchBtn>
           </div>
