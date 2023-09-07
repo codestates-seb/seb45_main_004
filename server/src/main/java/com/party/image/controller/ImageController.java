@@ -24,21 +24,17 @@ public class ImageController {
     private final MemberService memberService;
 
     //테스트
-    @GetMapping
-    public String getTestImage(){
-        String path = "board/Category_Culture";
-        String imagePath = awsService.getThumbnailPath("1.png");
-        Member member = new Member();
-        member.setImageUrl(imagePath);
-        System.out.println(imagePath);
-        return imagePath;
+    @GetMapping("/images")
+    public List<String> getTestImage(){
+        List<String> list = awsService.getFileList("board");
+        return list;
     }
 
     //board 이미지 전달
     @GetMapping("/cards/{category}/images")
     public List<String> getBoardImages(@PathVariable("category") String category){
 
-       List<String> boardImageList = awsService.getImagesAll("board/", category);
+       List<String> boardImageList = awsService.getFileList("board/"+category);
 
        return boardImageList;
     }
@@ -46,7 +42,7 @@ public class ImageController {
     //profile 이미지 전달
     @GetMapping("members/images")
     public List<String> getProfileImages (){
-        List<String> profileImageList = awsService.getProfileImageAll("profile/");
+        List<String> profileImageList = awsService.getFileList("profile");
         return profileImageList;
     }
 }
