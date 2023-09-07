@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class MemberResponseDto {
     // 추가해야 되는거 팔로우 목록
-    // 좋아요 한 모임 목록
+    // 좋아요 한 모임 목록(나오기는 하는데 뭔가 이상함.. 수정필요)
     private long id;
     private String nickname;
     private String email;
@@ -21,4 +21,5 @@ public class MemberResponseDto {
     private String introduce;
     private String imageUrl;
     private List<ApplicantResponseDto> applicants = new ArrayList<>();
+    private List<MemberBoardLikeResponseDto> boardLikes = new ArrayList<>();
 }

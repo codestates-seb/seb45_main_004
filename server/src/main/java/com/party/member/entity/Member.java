@@ -48,6 +48,9 @@ public class Member {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<>();
+
     public static Member createMember(String email, String password, String nickname) {
         return Member.builder()
                 .email(email)
