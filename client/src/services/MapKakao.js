@@ -100,7 +100,9 @@ function MapKakao({
             placeholder="주소를 입력하세요"
             style={{ marginRight: '10px' }}
           />
-          <button id="search-button">검색</button>
+          <button tabIndex="0" id="search-button">
+            검색
+          </button>
         </div>
       )}
       <div id="map" style={{ height: '400px' }}></div>

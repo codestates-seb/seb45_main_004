@@ -7,12 +7,12 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
-import { subDays, isSameDay } from 'date-fns';
+import { differenceInDays, startOfDay } from 'date-fns';
 
 //
 function InvitePage() {
-  const token = //qwer12345 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjk0MDYyNDgwLCJleHAiOjE2OTQzNjI0ODB9.pAK_Q8qIcjKTcT6pAblw0tk4324gkiAH9zthaoET-YAKKaX5XGJSmajaxqf3YLCG'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+  const token =
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -50,7 +50,6 @@ function InvitePage() {
         },
       );
       setParticipants(response.data); // 참여자 목록을 상태에 저장
-      console.log(participants);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
@@ -89,8 +88,7 @@ function InvitePage() {
           Authorization: token,
         },
       })
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         // currentNum 값을 1 증가시킴
         setEventData((prevData) => ({
           ...prevData,
@@ -122,9 +120,7 @@ function InvitePage() {
         },
       })
 
-      .then((response) => {
-        console.log(response.data);
-        console.log(response.data.currentNum);
+      .then(() => {
         // 응답 받은 상태 업데이트
         setEventData((prevData) => ({
           //prevData는 이전  상태의 eventData 객체를 가리키는 변수임
@@ -139,10 +135,11 @@ function InvitePage() {
         console.error('Error sending like status:', error);
       });
   };
-  const cardDate = subDays(new Date(eventData.date), 2); // 모임 날짜
-  const currentDate = new Date(); // 현재 날짜
-
-  console.log(cardDate);
+  const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
+  const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
+  // 두 날짜 간의 일수 차이 계산
+  const daysDifference = differenceInDays(cardDate, currentDate);
+  console.log(daysDifference);
   return (
     <EventDetailsContainer>
       <section>
@@ -189,19 +186,16 @@ function InvitePage() {
 
             <button
               onClick={handleJoinClick}
+              // 참여버튼 비활성화
               disabled={
                 eventData.currentNum === eventData.totalNum ||
-                isSameDay(cardDate, currentDate)
+                (daysDifference >= 0 && daysDifference <= 2)
               }
-              // 참여버튼 비활성화
             >
               {eventData.currentNum === eventData.totalNum ||
-              isSameDay(cardDate, currentDate)
+              (daysDifference >= 0 && daysDifference <= 2)
                 ? '모집마감'
                 : '참여 버튼'}
-              {/* console.log(cardDate); console.log(currentDate); // */}
-              {/* currentDate에서 +2 한값이 cardDate와 같다면 버튼을 모집마감으로
-              바꾸자 */}
             </button>
           </div>
         </article>
