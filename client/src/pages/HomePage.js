@@ -6,6 +6,7 @@ import CategoryMappings from '../components/CategoryMappings';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
   display: flex;
@@ -119,8 +120,12 @@ export default function Homepage() {
   const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장
   const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리를 저장
   const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentInvitations, setCurrentInvitations] = useState([]);
+  const PER_SCROLL = 10;
 
-  useEffect(() => {
+  const fetchAllInvitaion = () => {
     axios
       .get('http://3.39.76.109:8080/boards')
       .then((response) => {
@@ -131,9 +136,36 @@ export default function Homepage() {
         setInvitation(sortedInvitation);
         setFilteredInvitation(sortedInvitation); // 최초 렌더링시 전체데이터가 보이게끔 구현하기 위해 넣음
       })
+      .then(() => {
+        getInvitaions(PER_SCROLL);
+      })
       .catch((error) => {
         console.log('error', error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
+  };
+
+  const getInvitaions = (perscroll) => {
+    if (isLoading || invitation.length === 0) return; // 로딩 중이거나 초대장 데이터가 없으면 함수를 종료합니다.
+    const prevInvitations = [...currentInvitations];
+
+    // invitation 배열에서 현재 페이지에 해당하는 데이터를 슬라이스합니다.
+    const newInvitations = invitation.slice(
+      (currentPage - 1) * perscroll,
+      currentPage * perscroll,
+    );
+
+    // 현재 보이는 초대장 데이터에 새로운 데이터를 추가합니다.
+    setCurrentInvitations([...prevInvitations, ...newInvitations]);
+
+    // 다음 페이지로 현재 페이지를 업데이트합니다.
+    setCurrentPage(currentPage + 1);
+  };
+
+  useEffect(() => {
+    fetchAllInvitaion();
   }, []);
 
   const handleCategoryClick = (category) => {
@@ -259,7 +291,13 @@ export default function Homepage() {
             <span className="likes-text">Liked Order</span>
           </button>
         </div>
-        <div className="invitation-container">
+        <InfiniteScroll
+          dataLength={currentInvitations.length}
+          next={() => getInvitaions(PER_SCROLL)}
+          hasMore={true}
+          loader={invitation.length > 0 ? null : <h4>Loading</h4>}
+          className="invitation-container"
+        >
           {filteredInvitation.map((item) => (
             <Link
               key={item.boardId}
@@ -269,7 +307,7 @@ export default function Homepage() {
               <h2>{item.title}</h2>
             </Link>
           ))}
-        </div>
+        </InfiniteScroll>
       </div>
     </HomePage>
   );
