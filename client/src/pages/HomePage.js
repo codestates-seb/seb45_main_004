@@ -117,7 +117,7 @@ const SearchBtn = styled.button`
 
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
-  const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장
+  // const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장 -> 해당 상태를 currentInvitaions 상태값으로 저장 가능
   const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리를 저장
   const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
   const [currentPage, setCurrentPage] = useState(1);
@@ -134,10 +134,9 @@ export default function Homepage() {
           (a, b) => new Date(b.boardId) - new Date(a.boardId),
         );
         setInvitation(sortedInvitation);
-        setFilteredInvitation(sortedInvitation); // 최초 렌더링시 전체데이터가 보이게끔 구현하기 위해 넣음
       })
       .then(() => {
-        getInvitaions(PER_SCROLL);
+        getInvitations(PER_SCROLL);
       })
       .catch((error) => {
         console.log('error', error);
@@ -147,10 +146,9 @@ export default function Homepage() {
       });
   };
 
-  const getInvitaions = (perscroll) => {
-    if (isLoading || invitation.length === 0) return; // 로딩 중이거나 초대장 데이터가 없으면 함수를 종료합니다.
+  const getInvitations = (perscroll) => {
+    if (invitation.length === 0) return; // 로딩 중이거나 초대장 데이터가 없으면 함수를 종료합니다.
     const prevInvitations = [...currentInvitations];
-
     // invitation 배열에서 현재 페이지에 해당하는 데이터를 슬라이스합니다.
     const newInvitations = invitation.slice(
       (currentPage - 1) * perscroll,
@@ -168,18 +166,23 @@ export default function Homepage() {
     fetchAllInvitaion();
   }, []);
 
+  useEffect(() => {
+    if (invitation.length === 0) return;
+    if (currentPage > 1) return;
+    getInvitations(PER_SCROLL);
+  }, [invitation]);
+
   const handleCategoryClick = (category) => {
     setSelectedCategory(category); // 선택된 카테고리 상태를 설정
     if (category === 'CATEGORY_ALL') {
       // "ALL" 버튼을 누른 경우에는 전체 데이터를 필터링하지 않고 그대로 사용합니다.
-      setFilteredInvitation(invitation);
-      console.log('전체', invitation);
+      setCurrentInvitations(invitation);
     } else {
       // 다른 카테고리 버튼을 누른 경우 해당 카테고리만 필터링하여 할당합니다.
       const filteredData = invitation.filter(
         (item) => item.category === category,
       );
-      setFilteredInvitation(filteredData);
+      setCurrentInvitations(filteredData);
       console.log('필터된 데이터', filteredData);
     }
   };
@@ -197,7 +200,7 @@ export default function Homepage() {
       .get(searchApi)
       .then((response) => {
         const titleData = response.data;
-        setFilteredInvitation(titleData);
+        setCurrentInvitations(titleData);
         console.log(titleData); // 검색창에 검색어와 동일한 내용만 필터
         setSearch('');
       })
@@ -228,7 +231,7 @@ export default function Homepage() {
         const sortedData = likeData.sort(
           (a, b) => b.boardLikesCount - a.boardLikesCount,
         );
-        setFilteredInvitation(sortedData);
+        setCurrentInvitations(sortedData);
         console.log(sortedData);
       })
       .catch((error) => {
@@ -293,12 +296,13 @@ export default function Homepage() {
         </div>
         <InfiniteScroll
           dataLength={currentInvitations.length}
-          next={() => getInvitaions(PER_SCROLL)}
+          next={() => getInvitations(PER_SCROLL)}
           hasMore={true}
-          loader={invitation.length > 0 ? null : <h4>Loading</h4>}
+          loader={isLoading ? <h4>Loading</h4> : null}
           className="invitation-container"
+          scrollThreshold={1}
         >
-          {filteredInvitation.map((item) => (
+          {currentInvitations.map((item) => (
             <Link
               key={item.boardId}
               to={`/boards/${item.boardId}`}
