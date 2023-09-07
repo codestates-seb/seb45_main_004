@@ -7,6 +7,7 @@ import com.party.image.config.AwsS3Config;
 import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import com.party.util.UpdateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +27,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
     private final AwsService awsService;
+    private final UpdateUtils<Member> updateUtils;
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
@@ -42,14 +44,21 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-//    public Member updateMember(Member member) {
-//        findVerifiedMember(member.getId());
-//
-//    }
+    public Member updateMember(Member member) {
+        Member findMember = findVerifiedMember(member.getId());
+
+        Member updateMember = updateUtils.copyNonNullProperties(member, findMember);
+
+        return memberRepository.save(updateMember);
+    }
 
     public Member findMember(long memberId) {
         findVerifiedMember(memberId);
         return findVerifiedMember(memberId);
+    }
+
+    public void deleteMember(long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     private Member findVerifiedMember(long memberId) {
@@ -65,7 +74,7 @@ public class MemberService {
 
     // SpringSecurityContextHolder에 저장된 Authentication에서 사용자 정보를 빼옵니다
     // memberId, memberEmail, memberNickname 키에 해당 유저의 정보가 할당 되어있습니다
-    // Object memberId = memberService.extractMemberInfo().get("memberId");
+    // Object memberId = memberService.extractMemberInfo().get("Id");
     // 위와 같이 사용하면 memberId가 반환됨!
     // 사용조건은 Access 토큰이 헤더에 포함되어 있어야함 그렇지 않으면 오류발생
     public Map<String, Object> extractMemberInfo() {
