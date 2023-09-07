@@ -4,6 +4,7 @@ import MapKakao from '../services/MapKakao';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
+import { BiEdit } from 'react-icons/bi';
 
 function InviteWritePage() {
   const [selectedButton, setSelectedButton] = useState(null);
@@ -27,7 +28,6 @@ function InviteWritePage() {
       imageUrl: '', // 호스트 이미지
     },
   });
-  console.log(formData);
   const token = //img 아이디
     'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
@@ -97,9 +97,7 @@ function InviteWritePage() {
   const handleModalClick = () => {
     if (!selectedButton) {
       // 사용자가 카테고리를 선택하지 않았다면
-      alert(
-        '카테고리를 선택하지 않을것인가? 그럼 자네는..모임장이 될 자격이 없네 !!',
-      );
+      alert('카테고리를 선택해주세요');
       return;
     }
 
@@ -118,11 +116,18 @@ function InviteWritePage() {
     }));
   };
 
+  const handleModalBackgroundClick = (event) => {
+    // 클릭된 요소가 모달 배경인지 확인
+    if (event.target === event.currentTarget) {
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <StyledWritePage>
       <section>
-        <button onClick={handleModalClick} className="modal-btn">
-          모달클릭!
+        <button className="modal-btn" onClick={handleModalClick}>
+          <BiEdit className="edit-btn" />
         </button>
 
         <form onSubmit={handleSubmit}>
@@ -140,7 +145,7 @@ function InviteWritePage() {
               </div>
               <div className="btn-box">
                 <button className="submit-btn" type="submit">
-                  Create Card
+                  Submit
                 </button>
               </div>
             </div>
@@ -214,16 +219,24 @@ function InviteWritePage() {
 
           {/* 모달 표시 */}
           {isModalOpen && (
-            <div className="modal">
-              {imageFromServer.map((imageUrl, index) => (
-                <button
-                  className="card-img"
-                  key={index}
-                  onClick={() => handleImageClick(imageUrl)}
-                >
-                  <img className="card-img" src={imageUrl} alt={`${index}`} />
-                </button>
-              ))}
+            <div
+              className="modal-background"
+              onClick={handleModalBackgroundClick}
+              onKeyDown={handleModalBackgroundClick}
+              role="button"
+              tabIndex="0"
+            >
+              <div className="modal">
+                {imageFromServer.map((imageUrl, index) => (
+                  <button
+                    className="card-img"
+                    key={index}
+                    onClick={() => handleImageClick(imageUrl)}
+                  >
+                    <img className="card-img" src={imageUrl} alt={`${index}`} />
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 
@@ -322,7 +335,6 @@ const StyledWritePage = styled.div`
 
   button {
     width: 100%;
-    /* box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4); */
   }
 
   /* button:active {
@@ -332,36 +344,64 @@ const StyledWritePage = styled.div`
 
   .modal-btn {
     position: absolute;
-    top: 377px;
-    left: 519px;
-    width: 80px;
+    width: 27px;
+    left: 200px;
+    height: 26px;
+    top: 374px;
+    background-color: white;
+    border: none;
+  }
+
+  .modal-btn:active,
+  .submit-btn:active {
+    transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
+    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
+  }
+
+  .edit-btn {
+    width: 24px;
+    height: 24px;
   }
   .submit-btn {
     position: relative;
     width: 80px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid;
+    background-color: transparent;
+    left: 320px;
   }
   .modal {
     position: absolute;
     z-index: 999;
-    top: 0;
-    left: 600px;
-    display: grid;
-    place-items: center;
-    justify-content: center;
-    grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    width: 370px;
-    height: 400px;
-    background-color: #96a6f4;
-    background: linear-gradient(
-      135deg,
-      rgba(18, 104, 233, 10) 10%,
-      rgba(196, 113, 237, 10) 50%,
-      rgba(246, 79, 89, 10) 100%
-    );
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    padding: 20px 20px;
+    width: 450px;
+    height: 550px;
+    flex-wrap: wrap;
+    background-color: rgb(218, 170, 245, 0.26);
   }
+
+  /* 모달의 배경 */
+  .modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+  }
+
   .card-img {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     /* background-color: transparent;
     border: none; */
   }
