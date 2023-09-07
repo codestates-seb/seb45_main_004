@@ -71,8 +71,8 @@ const LoginPage = () => {
       //유효한 데이터를 서버로 전송한다.
       try {
         const responseData = await api.EmailLogin(username, password);
-        console.log('서버 응답 데이터', responseData);
         navigate('/');
+        return responseData;
       } catch (error) {
         console.error('비동기 요청 에러', error);
       }

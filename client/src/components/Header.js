@@ -1,10 +1,12 @@
-import PropTypes from 'prop-types';
 import { styled } from 'styled-components';
-import Button from './Button';
+import { Link } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoginStatus, setNewStatus } from '../redux/actions';
+import Button from './Button';
+import PropTypes from 'prop-types';
 
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
@@ -51,9 +53,23 @@ const LinkBox = styled.a`
 `;
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState(false);
-  const [isNew, setIsNew] = useState(false);
-  console.log(setIsLogin, isNew, setIsNew);
+  const isLogin = useSelector((state) => state.header.isLogin);
+  const isNew = useSelector((state) => state.header.isNew);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+
+    if (token) {
+      dispatch(setLoginStatus(true));
+    }
+  }, [dispatch]);
+
+  const handleNewStatus = () => {
+    dispatch(setNewStatus(!isNew));
+  };
+
+  console.log(handleNewStatus);
 
   return (
     <ServieceHeader>
@@ -65,11 +81,7 @@ const Header = () => {
           <ButtonBox>
             <Link to="/cards/new-cards">
               <LinkBox>
-                <Button
-                  type="newCard"
-                  text="New Card!"
-                  onClick={() => alert('게시글 작성 페이지로 이동')}
-                />
+                <Button type="newCard" text="New Card!" />
               </LinkBox>
             </Link>
             {isNew ? (
@@ -95,11 +107,7 @@ const Header = () => {
               <Button type="membership" text="New Card" />
             </Link>
             <Link to="/members/login">
-              <Button
-                type="membership"
-                text="Log In"
-                onClick={() => alert('로그인 페이지로 이동')}
-              />
+              <Button type="membership" text="Log In" />
             </Link>
             <Link to="/members">
               <Button type="membership" text="Sign Up" />
