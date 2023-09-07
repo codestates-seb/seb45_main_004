@@ -49,8 +49,6 @@ public class MemberService {
 
         Member updateMember = updateUtils.copyNonNullProperties(member, findMember);
 
-        System.out.println(updateMember.toString());
-
         return memberRepository.save(updateMember);
     }
 
