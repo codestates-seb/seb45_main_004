@@ -43,10 +43,11 @@ public class MemberController {
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") long memberid,
                                       @RequestBody MemberPatchDto memberPatchDto) {
-        Long id = (Long) memberService.extractMemberInfo().get("id");
-        if(id != memberid) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
-        Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
-
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        System.out.println("업데이트 멤버 실행------------------------------------------------------------------");
+        System.out.println(memberService.extractMemberInfo().toString());
+        long loginMemberId = (long) memberService.extractMemberInfo().get("id");
+        System.out.println("이다음엔 id가 옵니다");
+//        System.out.println(loginMemberId);
+        return new ResponseEntity("응답은 성공했음", HttpStatus.OK);
     }
 }
