@@ -76,7 +76,8 @@ const HomePage = styled.div`
   .invitation-item {
     display: flex;
     justify-content: center;
-    height: 200px;
+    height: 300px;
+    margin-bottom: 30px;
   }
   .likes-container {
     display: flex;
@@ -308,7 +309,7 @@ export default function Homepage() {
               to={`/boards/${item.boardId}`}
               className="invitation-item"
             >
-              <h2>{item.title}</h2>
+              <img src={item.imageUrl} alt="초대장 이미지" />
             </Link>
           ))}
         </InfiniteScroll>
