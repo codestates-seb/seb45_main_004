@@ -29,7 +29,7 @@ function InviteWritePage() {
   });
   console.log(formData);
   const token = //img 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjkzOTg5NzQ5LCJleHAiOjE2OTQyODk3NDl9.Gt24e3dXpfDV0lfdDKZ9BHR_YAHKxkjArXlL92FGuStLQ-_NSNxm4iAOu_UpdZfR';
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -133,7 +133,7 @@ function InviteWritePage() {
                   <img src={formData.imageUrl} alt="선택된 카테고리의 이미지" />
                 ) : (
                   <img
-                    src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC1.png"
+                    src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC/CATEGORY_ETC1.png"
                     alt="기본 이미지"
                   />
                 )}

@@ -7,11 +7,12 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
+import { subDays, isSameDay } from 'date-fns';
 
 //
 function InvitePage() {
   const token = //qwer12345 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7J2066-47KeA7ZmV7J24IiwiaWQiOjE2LCJlbWFpbCI6InF3ZXIxMjM0NUBnbWFpbC5jb20iLCJzdWIiOiJxd2VyMTIzNDVAZ21haWwuY29tIiwiaWF0IjoxNjkzOTk3ODMxLCJleHAiOjE2OTQyOTc4MzF9.cv2u4dg84tFhkR4Sv8S54pPkXMQdtkeuoJZB-fH2GntUt1-imz0VK2zVrJ_aK3No'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7J2066-47KeAIiwiaWQiOjE3LCJlbWFpbCI6ImltZ0BnbWFpbC5jb20iLCJzdWIiOiJpbWdAZ21haWwuY29tIiwiaWF0IjoxNjk0MDYyNDgwLCJleHAiOjE2OTQzNjI0ODB9.pAK_Q8qIcjKTcT6pAblw0tk4324gkiAH9zthaoET-YAKKaX5XGJSmajaxqf3YLCG'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -138,7 +139,10 @@ function InvitePage() {
         console.error('Error sending like status:', error);
       });
   };
+  const cardDate = subDays(new Date(eventData.date), 2); // 모임 날짜
+  const currentDate = new Date(); // 현재 날짜
 
+  console.log(cardDate);
   return (
     <EventDetailsContainer>
       <section>
@@ -180,9 +184,25 @@ function InvitePage() {
             )}
             {/* 참여자 표시 */}
             <div>
-              {eventData.currentNum - 1}/{eventData.totalNum}
+              {eventData.currentNum}/{eventData.totalNum}
             </div>
-            <button onClick={handleJoinClick}>참여 버튼</button>
+
+            <button
+              onClick={handleJoinClick}
+              disabled={
+                eventData.currentNum === eventData.totalNum ||
+                isSameDay(cardDate, currentDate)
+              }
+              // 참여버튼 비활성화
+            >
+              {eventData.currentNum === eventData.totalNum ||
+              isSameDay(cardDate, currentDate)
+                ? '모집마감'
+                : '참여 버튼'}
+              {/* console.log(cardDate); console.log(currentDate); // */}
+              {/* currentDate에서 +2 한값이 cardDate와 같다면 버튼을 모집마감으로
+              바꾸자 */}
+            </button>
           </div>
         </article>
         <article>
