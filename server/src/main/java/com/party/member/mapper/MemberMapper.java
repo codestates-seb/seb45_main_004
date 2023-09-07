@@ -18,6 +18,6 @@ public interface MemberMapper {
     MemberResponseDto memberToMemberResponseDto(Member member);
 
     Member memberPatchDtoToMember(MemberPatchDto memberPatchDto);
-
+    @Mapping(source = "board.id", target = "boardId")
     MemberBoardLikeResponseDto boardLikeToMemberBoardLikeResponseDto(BoardLike boardLike);
 }
