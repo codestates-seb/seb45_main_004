@@ -45,7 +45,13 @@ public class MemberService {
     }
 
     public Member updateMember(Member member) {
-        return memberRepository.save(member);
+        Member findMember = findVerifiedMember(member.getId());
+
+        Member updateMember = updateUtils.copyNonNullProperties(member, findMember);
+
+        System.out.println(updateMember.toString());
+
+        return memberRepository.save(updateMember);
     }
 
     public Member findMember(long memberId) {

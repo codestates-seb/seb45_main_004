@@ -7,6 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class MemberPostDto {
+    private Long id;
     @Email
     @NotBlank
     private String email;

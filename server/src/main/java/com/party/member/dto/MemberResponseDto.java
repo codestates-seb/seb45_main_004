@@ -14,8 +14,7 @@ import java.util.List;
 public class MemberResponseDto {
     // 추가해야 되는거 팔로우 목록
     // 좋아요 한 모임 목록
-    private long memberId;
-    private long applicantId;
+    private long id;
     private String nickname;
     private String email;
     private String gender;

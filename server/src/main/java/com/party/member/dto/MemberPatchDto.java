@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberPatchDto {
+    private int id;
     private String introduce;
     private String imageUrl;
 
