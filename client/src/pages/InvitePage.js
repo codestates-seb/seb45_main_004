@@ -135,11 +135,14 @@ function InvitePage() {
         console.error('Error sending like status:', error);
       });
   };
+
+  //마감 날짜
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   // 두 날짜 간의 일수 차이 계산
   const daysDifference = differenceInDays(cardDate, currentDate);
   console.log(daysDifference);
+
   return (
     <EventDetailsContainer>
       <section>
