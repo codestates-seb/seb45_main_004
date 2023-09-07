@@ -4,6 +4,7 @@ import EmailLoginForm from '../components/EmailLoginForm';
 import api from '../api/api';
 import { styled } from 'styled-components';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginBody = styled.section`
   display: flex;
@@ -20,10 +21,13 @@ const Logincontainer = styled.div`
 `;
 
 const LoginPage = () => {
-  const [userId, setUserId] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [eamilError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [isError, setIsError] = useState('');
+
+  const navigate = useNavigate();
 
   //이메일 형식 검사 규칙 정의
   const isEmailValid = (email) => {
@@ -32,9 +36,9 @@ const LoginPage = () => {
   };
 
   const handleUserIdChange = (e) => {
-    setUserId(e.target.value);
+    setUsername(e.target.value);
 
-    const isValid = isEmailValid(userId);
+    const isValid = isEmailValid(username);
 
     if (!isValid) {
       setEmailError('유효한 메일 형식이 아닙니다.');
@@ -48,9 +52,9 @@ const LoginPage = () => {
   };
 
   const handleUserPasswordChange = (e) => {
-    setUserPassword(e.target.value);
+    setPassword(e.target.value);
 
-    const isValid = isPasswordValid(userPassword);
+    const isValid = isPasswordValid(password);
 
     if (!isValid) {
       setPasswordError('패스워드는 최소 8자 이상이어야 합니다.');
@@ -63,17 +67,18 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isEmailValid(userId) && isPasswordValid(userPassword)) {
+    if (isEmailValid(username) && isPasswordValid(password)) {
       //유효한 데이터를 서버로 전송한다.
       try {
-        const responseData = await api.EmailLogin(userId, userPassword);
+        const responseData = await api.EmailLogin(username, password);
         console.log('서버 응답 데이터', responseData);
+        navigate('/');
       } catch (error) {
         console.error('비동기 요청 에러', error);
       }
     } else {
-      setEmailError('유효한 이메일을 입력하세요.');
-      setPasswordError('유효한 비밀번호를 입력하세요.');
+      console.log('에러: ', isError);
+      setIsError('아이디와 비밀번호를 확인해주세요.');
     }
   };
 
@@ -82,14 +87,14 @@ const LoginPage = () => {
       <Logincontainer>
         <OauthLoginButton />
         <EmailLoginForm
-          userId={userId}
-          userPassword={userPassword}
+          userId={username}
+          userPassword={password}
           handleUserIdChange={handleUserIdChange}
           handleUserPasswordChange={handleUserPasswordChange}
           eamilError={eamilError}
           passwordError={passwordError}
         />
-        <Button type="login" text="Log In" onSubmit={handleSubmit} />
+        <Button type="login" text="Log In" onClick={handleSubmit} />
       </Logincontainer>
     </LoginBody>
   );

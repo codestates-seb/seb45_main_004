@@ -31,6 +31,11 @@ const MailLoginform = styled.form`
       padding-right: 10px;
       font-size: 1.2rem;
     }
+
+    p {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
   }
 `;
 
@@ -62,7 +67,7 @@ const EmailLoginForm = ({
       </div>
       <div className="input-box">
         <input
-          type="text"
+          type="password"
           id="userPassword"
           value={userPassword}
           onChange={handleUserPasswordChange}
@@ -78,7 +83,6 @@ EmailLoginForm.propTypes = {
   userPassword: PropTypes.string.isRequired,
   handleUserIdChange: PropTypes.func.isRequired,
   handleUserPasswordChange: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
   eamilError: PropTypes.string.isRequired,
   passwordError: PropTypes.string.isRequired,
 };
