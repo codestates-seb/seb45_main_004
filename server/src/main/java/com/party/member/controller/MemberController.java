@@ -40,17 +40,25 @@ public class MemberController {
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 
+
+    // 파라미터의 회원 id와 토큰의 id를 비교해서 동일한 회원이면 update실행
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") long memberid,
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
                                       @RequestBody MemberPatchDto memberPatchDto) {
-        System.out.println("업데이트 멤버 실행------------------------------------------------------------------");
         int loginMemberId = (int) memberService.extractMemberInfo().get("id");
-        if(loginMemberId != memberid) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        if(loginMemberId != memberId) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
 
         memberPatchDto.setId(loginMemberId);
 
         Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
 
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{member-id}")
+    public void deleteMember(@PathVariable("member-id") long memberId) {
+        int loginMemberId = (int) memberService.extractMemberInfo().get("id");
+        if(loginMemberId != memberId) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        memberService.deleteMember(memberId);
     }
 }

@@ -57,6 +57,10 @@ public class MemberService {
         return findVerifiedMember(memberId);
     }
 
+    public void deleteMember(long memberId) {
+        memberRepository.deleteById(memberId);
+    }
+
     private Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member findmember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));

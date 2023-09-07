@@ -10,6 +10,8 @@ import java.util.Collection;
 // source에는 Dto 기반의 엔티티 객체 destination에는 DB에서 찾은 엔티티 객체
 @Component
 public class UpdateUtils<T> {
+    // source에는 변경사항이 들어있는 객체
+    // destination에는 변경사항을 반영해서 리턴할 객체
     public T copyNonNullProperties(T source, T destination) {
      if(source == null || destination == null || source.getClass() != destination.getClass());
 
