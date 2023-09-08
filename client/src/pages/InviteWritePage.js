@@ -275,6 +275,8 @@ function InviteWritePage() {
 
 const StyledWritePage = styled.div`
   margin: 0px 320px;
+  display: flex;
+  justify-content: center;
 
   section {
     position: relative;
@@ -302,12 +304,10 @@ const StyledWritePage = styled.div`
     padding: 10px;
   }
   .date-box {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
   }
-  .date-date {
-    width: 210px;
-  }
+
   .body-date {
     height: 150px;
   }
