@@ -21,11 +21,30 @@ const AvatarContainer = styled.div`
   align-items: center;
   margin-top: 20px;
   margin-right: 25px;
+  position: relative;
 
   .avatar-img {
     width: 100px;
     height: 100px;
     color: #d99bff;
+  }
+`;
+
+const EditIconBox = styled.span`
+  background-color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  .edit-icon {
+    width: 30px;
+    height: 30px;
   }
 `;
 
@@ -82,6 +101,9 @@ const Profile = ({ user }) => {
     <ProfileContainer>
       <AvatarContainer>
         <Icon icon="mingcute:ghost-line" className="avatar-img" />
+        <EditIconBox>
+          <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
+        </EditIconBox>
       </AvatarContainer>
       <UserInfoContainer>
         {/* 로그인 정보의 닉네임과 이메일이 표시됨 */}

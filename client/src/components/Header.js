@@ -48,9 +48,9 @@ const ButtonBox = styled.div`
   }
 `;
 
-const LinkBox = styled.a`
-  height: 42px;
-`;
+// const LinkBox = styled.a`
+//   height: 42px;
+// `;
 
 const Header = () => {
   const isLogin = useSelector((state) => state.header.isLogin);
@@ -80,9 +80,7 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/cards/new-cards">
-              <LinkBox>
-                <Button type="newCard" text="New Card!" />
-              </LinkBox>
+              <Button type="newCard" text="New Card!" />
             </Link>
             {isNew ? (
               <Button
@@ -95,10 +93,8 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to="/members/{member-id}">
-              <LinkBox className="user-info">
-                <FaRegUserCircle className="user-info-icon" />
-              </LinkBox>
+            <Link to="/members/1" className="user-info">
+              <FaRegUserCircle className="user-info-icon" />
             </Link>
           </ButtonBox>
         ) : (

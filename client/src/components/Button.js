@@ -15,11 +15,12 @@ const StyleButton = styled.button`
 
   &.Button-login {
     width: 430px;
-    height: 50px;
+    height: 60px;
     border: 0;
     color: white;
     font-weight: 600;
     background-color: rgb(10, 149, 255);
+    margin-bottom: 10px;
   }
 
   &.Button-membership {
