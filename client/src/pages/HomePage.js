@@ -22,8 +22,9 @@ const HomePage = styled.div`
     height: 350px;
     margin-top: 50px;
     align-items: center;
-    animation: slideTExt 10s linear infinite;
+    animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite)
   }
+  // 오른쪽에서 왼쪽으로 이동하게끔 효과주기
   @keyframes slideTExt {
     0% {
       transform: translateX(100%);
@@ -76,7 +77,8 @@ const HomePage = styled.div`
   .invitation-item {
     display: flex;
     justify-content: center;
-    height: 200px;
+    height: 300px;
+    margin-bottom: 30px;
   }
   .likes-container {
     display: flex;
@@ -308,7 +310,7 @@ export default function Homepage() {
               to={`/boards/${item.boardId}`}
               className="invitation-item"
             >
-              <h2>{item.title}</h2>
+              <img src={item.imageUrl} alt="초대장 이미지" />
             </Link>
           ))}
         </InfiniteScroll>
