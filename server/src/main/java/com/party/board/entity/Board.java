@@ -114,7 +114,7 @@ public class Board {
     public void validateDate() {
         LocalDate today = LocalDate.now();
         if (date.isBefore(today)) {
-            throw new IllegalArgumentException("날짜는 오늘 이후로만 선택할 수 있습니다.");
+            throw new IllegalArgumentException("Past date cannot be selected");
         }
     }
 }
