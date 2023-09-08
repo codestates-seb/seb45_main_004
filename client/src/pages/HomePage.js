@@ -22,8 +22,9 @@ const HomePage = styled.div`
     height: 350px;
     margin-top: 50px;
     align-items: center;
-    animation: slideTExt 10s linear infinite;
+    animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite)
   }
+  // 오른쪽에서 왼쪽으로 이동하게끔 효과주기
   @keyframes slideTExt {
     0% {
       transform: translateX(100%);
