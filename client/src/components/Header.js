@@ -84,8 +84,8 @@ const Header = () => {
         </Link>
         {isLogin ? (
           <ButtonBox>
-            <Link to="/cards/new-cards">
-              <Button type="newCard" text="New Card!" />
+            <Link to="/boards/new-boards">
+                <Button type="newCard" text="New Card!" />
             </Link>
             {isNew ? (
               <Button

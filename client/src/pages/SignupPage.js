@@ -41,6 +41,13 @@ const SignupPage = styled.div`
     width: 13px;
     height: 13px;
   }
+  .passworderror-message {
+    margin-bottom: 20px;
+  }
+  p {
+    font-size: 13px;
+    color: red;
+  }
 `;
 
 const InputStyle = styled.input`
@@ -75,9 +82,41 @@ export default function Signuppage() {
   const [password, setPassword] = useState('');
   const [checkbox, setCheckbox] = useState(false); // 초기값을 false로 설정
   const [gender, setGender] = useState('');
+  const [emailerror, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailRegex.test(email);
+  };
 
   const handleGenderChange = (e) => {
     setGender(e.target.value);
+  };
+
+  // 이메일 유효성 검사
+  const handleEmagilChange = (e) => {
+    setEmail(e.target.value);
+
+    if (!isEmailValid(e.target.value)) {
+      setEmailError('유효한 메일 형식이 아닙니다.');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const isPasswordValid = (password) => {
+    return password.length >= 8;
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+
+    if (!isPasswordValid(password)) {
+      setPasswordError('패스워드는 최소 8자 이상이어야 합니다.');
+    } else {
+      setPasswordError('');
+    }
   };
 
   const handleSignup = async () => {
@@ -85,6 +124,11 @@ export default function Signuppage() {
       window.alert('개인정보 수집 동의란에 체크해주세요');
       return;
     }
+    if (!gender) {
+      window.alert('성별을 선택해주세요');
+      return;
+    }
+
     try {
       const userData = {
         email: email,
@@ -162,8 +206,9 @@ export default function Signuppage() {
               id="email"
               value={email}
               placeholder="E-mail"
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmagilChange}
             />
+            {emailerror && <p className="emailerror-message">{emailerror}</p>}
           </div>
           <div className="signup-form-password">
             <InputStyle
@@ -171,8 +216,11 @@ export default function Signuppage() {
               id="password"
               value={password}
               placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
             />
+            {passwordError && (
+              <p className="passworderror-message">{passwordError}</p>
+            )}
           </div>
           <div className="signup-form-agree">
             <input

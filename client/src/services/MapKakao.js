@@ -12,6 +12,40 @@ function MapKakao({
   showSearch,
   showMarker,
 }) {
+  // 장소 검색 결과로 마커와 인포윈도우를 표시하는 함수
+  function displayMarkerAndInfowindow(map, latlng, address) {
+    const marker = new kakao.maps.Marker({
+      map: map,
+      position: latlng,
+    });
+
+    const iwContent = `<div style="
+    text-align: center;
+    max-width: 500px;
+    width: 160px;
+    background-color: #fff;
+    border: 1px solid ;
+    background-color: 
+    border-radius: 2px;
+    box-shadow: 2px 2px 2px rgba(1, 0, 0, 2);
+    padding: 5px;
+    font-size: 14px; 
+    ">${address}</div>`;
+    const infowindow = new kakao.maps.InfoWindow({
+      content: iwContent,
+    });
+
+    kakao.maps.event.addListener(marker, 'mouseover', function () {
+      infowindow.open(map, marker);
+    });
+
+    kakao.maps.event.addListener(marker, 'mouseout', function () {
+      infowindow.close();
+    });
+
+    return marker;
+  }
+
   useEffect(() => {
     // 카카오 지도 초기화
     const mapContainer = document.getElementById('map');
@@ -44,11 +78,14 @@ function MapKakao({
               marker.setMap(null);
             }
 
-            // 새로운 마커 생성
-            marker = new kakao.maps.Marker({
-              map: map,
-              position: latlng,
-            });
+            // // 새로운 마커 생성
+            // marker = new kakao.maps.Marker({
+            //   map: map,
+            //   position: latlng,
+            // });
+
+            // displayMarkerAndInfowindow 함수를 사용하여 마커와 인포윈도우를 생성 및 표시
+            marker = displayMarkerAndInfowindow(map, latlng, address);
 
             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
             map.setCenter(latlng);
@@ -61,23 +98,34 @@ function MapKakao({
         });
       }
     };
-    if (showMarker) {
+    if (showMarker && latitude && longitude) {
       const latlngs = new kakao.maps.LatLng(
         parseFloat(latitude),
         parseFloat(longitude),
       );
-      console.log(latlngs);
 
-      // 새로운 마커 생성
-      marker = new kakao.maps.Marker({
-        map: map,
-        position: latlngs,
-      });
+      // 좌표를 주소로 변환
+      geocoder.coord2Address(
+        latlngs.getLng(),
+        latlngs.getLat(),
+        (result, status) => {
+          if (status === kakao.maps.services.Status.OK) {
+            const address = result[0].address.address_name;
 
-      // 지도의 중심을 결과값으로 받은 위치로 이동
-      map.setCenter(latlngs);
+            // 이전 마커가 존재하면 제거
+            if (marker) {
+              marker.setMap(null);
+            }
+
+            // displayMarkerAndInfowindow 함수를 사용하여 마커와 인포윈도우를 생성 및 표시
+            marker = displayMarkerAndInfowindow(map, latlngs, address);
+
+            // 지도의 중심을 결과값으로 받은 위치로 이동
+            map.setCenter(latlngs);
+          }
+        },
+      );
     }
-
     const searchButton = showSearch
       ? document.getElementById('search-button')
       : null;
@@ -100,7 +148,9 @@ function MapKakao({
             placeholder="주소를 입력하세요"
             style={{ marginRight: '10px' }}
           />
-          <button id="search-button">검색</button>
+          <button tabIndex="0" id="search-button">
+            검색
+          </button>
         </div>
       )}
       <div id="map" style={{ height: '400px' }}></div>

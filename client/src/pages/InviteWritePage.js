@@ -4,9 +4,16 @@ import MapKakao from '../services/MapKakao';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
+import { BiEdit } from 'react-icons/bi';
 
 function InviteWritePage() {
+  const token = localStorage.getItem('jwtToken');
+  console.log(token);
+
   const [selectedButton, setSelectedButton] = useState(null);
+  const [imageFromServer, setImageFromServer] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   // 사용자입력값 상태변수
   const [formData, setFormData] = useState({
@@ -19,15 +26,16 @@ function InviteWritePage() {
     latitude: '',
     longitude: '',
     address: '',
-    imageUrl: 'abc',
+    imageUrl: selectedImage,
+    member: {
+      imageUrl: '', // 호스트 이미지
+    },
   });
-
-  console.log(formData);
+  // const token = //img 아이디
+  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const token = //tjs4114아이디
-      'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi6rmA7ISg66-4IiwiaWQiOjQsImVtYWlsIjoidGpzNDExNEBnbWFpbC5jb20iLCJzdWIiOiJ0anM0MTE0QGdtYWlsLmNvbSIsImlhdCI6MTY5MzkwNjg2MCwiZXhwIjoxNjk0MjA2ODYwfQ.uF6iBqduhjsjzSHWIWs5mhdnG96Dku1GK99665jf1HpsHWN-rzVVyglCV1xu1y_3';
 
     // 서버로 POST 요청 보내기
     axios
@@ -38,6 +46,7 @@ function InviteWritePage() {
       })
       .then(() => {
         // 요청 완료 후 페이지 새로고침
+        console.log('요청됨');
         window.location.reload();
       })
       .catch((error) => {
@@ -46,15 +55,27 @@ function InviteWritePage() {
   };
 
   // 카테고리 버튼 클릭 핸들러
-  const handleButtonClick = (buttonId) => {
+  const handleButtonClick = async (buttonId) => {
     // 선택된 버튼 업데이트
     setSelectedButton(buttonId);
     console.log('클릭한 버튼:', buttonId);
 
+    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
     }));
+
+    try {
+      // 서버에 카드 API 요청
+      const response = await axios.get(
+        `http://3.39.76.109:8080/cards/${buttonId}/images`,
+      );
+
+      setImageFromServer(response.data);
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
   };
 
   const handleInputChange = (event) => {
@@ -75,23 +96,59 @@ function InviteWritePage() {
     }));
   };
 
+  // 모달 버튼 클릭 핸들러
+  const handleModalClick = () => {
+    if (!selectedButton) {
+      // 사용자가 카테고리를 선택하지 않았다면
+      alert('카테고리를 선택해주세요');
+      return;
+    }
+
+    setIsModalOpen((prevState) => !prevState);
+  };
+
+  const handleImageClick = async (imageUrl) => {
+    // 선택된 버튼 업데이트
+    setSelectedImage(imageUrl);
+    console.log(selectedImage);
+
+    // formData 업데이트
+    setFormData((prevData) => ({
+      ...prevData,
+      imageUrl: imageUrl,
+    }));
+  };
+
+  const handleModalBackgroundClick = (event) => {
+    // 클릭된 요소가 모달 배경인지 확인
+    if (event.target === event.currentTarget) {
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <StyledWritePage>
       <section>
-        <button className="modal-btn">모달클릭 !</button>
+        <button className="modal-btn" onClick={handleModalClick}>
+          <BiEdit className="edit-btn" />
+        </button>
 
         <form onSubmit={handleSubmit}>
           <article>
             <div className="card-container">
               <div className="image-container">
-                <img
-                  src="https://cdn-bastani.stunning.kr/prod/portfolios/8735ec14-dccc-4ccd-92b8-cc559ac33bb2/contents/xcxZTwt6usiPmKNA.Mobile_Whale_World%202.jpg"
-                  alt="cardImage"
-                />
+                {formData.imageUrl ? (
+                  <img src={formData.imageUrl} alt="선택된 카테고리의 이미지" />
+                ) : (
+                  <img
+                    src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC/CATEGORY_ETC1.png"
+                    alt="기본 이미지"
+                  />
+                )}
               </div>
               <div className="btn-box">
                 <button className="submit-btn" type="submit">
-                  Create Card
+                  Submit
                 </button>
               </div>
             </div>
@@ -163,7 +220,30 @@ function InviteWritePage() {
             </article>
           </form>
 
-          {/*카테고리 구현중*/}
+          {/* 모달 표시 */}
+          {isModalOpen && (
+            <div
+              className="modal-background"
+              onClick={handleModalBackgroundClick}
+              onKeyDown={handleModalBackgroundClick}
+              role="button"
+              tabIndex="0"
+            >
+              <div className="modal">
+                {imageFromServer.map((imageUrl, index) => (
+                  <button
+                    className="card-img"
+                    key={index}
+                    onClick={() => handleImageClick(imageUrl)}
+                  >
+                    <img className="card-img" src={imageUrl} alt={`${index}`} />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/*카테고리*/}
           <div className="category-btn">
             {Object.keys(CategoryMappings)
               .filter((key) => key !== 'CATEGORY_ALL') // 'All' 버튼 제외하고 렌더링
@@ -185,8 +265,7 @@ function InviteWritePage() {
                 );
               })}
           </div>
-          {/*카테고리 구현중*/}
-
+          {/*카테고리*/}
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
@@ -259,7 +338,6 @@ const StyledWritePage = styled.div`
 
   button {
     width: 100%;
-    /* box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4); */
   }
 
   /* button:active {
@@ -269,12 +347,66 @@ const StyledWritePage = styled.div`
 
   .modal-btn {
     position: absolute;
-    top: 377px;
-    left: 519px;
-    width: 80px;
+    width: 27px;
+    left: 200px;
+    height: 26px;
+    top: 374px;
+    background-color: white;
+    border: none;
+  }
+
+  .modal-btn:active,
+  .submit-btn:active {
+    transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
+    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
+  }
+
+  .edit-btn {
+    width: 24px;
+    height: 24px;
   }
   .submit-btn {
+    position: relative;
     width: 80px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid;
+    background-color: transparent;
+    left: 320px;
+  }
+  .modal {
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    padding: 20px 20px;
+    width: 450px;
+    height: 550px;
+    flex-wrap: wrap;
+    background-color: rgb(218, 170, 245, 0.26);
+  }
+
+  /* 모달의 배경 */
+  .modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    z-index: 1000; /* 다른 요소 위에 표시 */
+  }
+
+  .card-img {
+    width: 200px;
+    height: 200px;
+    /* background-color: transparent;
+    border: none; */
   }
 `;
 
