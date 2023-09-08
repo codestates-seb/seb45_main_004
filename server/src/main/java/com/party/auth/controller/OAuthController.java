@@ -27,6 +27,7 @@ public class OAuthController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token.getAccessToken());
         headers.add("Refresh", "Bearer " + token.getRefreshToken());
+        headers.add("memberId", String.valueOf(token.getId()));
 
         return ResponseEntity.ok().headers(headers).build();
     }
