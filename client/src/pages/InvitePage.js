@@ -247,6 +247,8 @@ function InvitePage() {
 
 const EventDetailsContainer = styled.div`
   margin: 0px 320px;
+  display: flex;
+  justify-content: center;
 
   section {
     margin: 50px 0px;
