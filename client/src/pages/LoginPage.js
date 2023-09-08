@@ -1,10 +1,11 @@
 import Button from '../components/Button';
 import OauthLoginButton from '../components/OauthLoginButton';
 import EmailLoginForm from '../components/EmailLoginForm';
-import api from '../api/api';
+// import api from '../api/api';
 import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginBody = styled.section`
   display: flex;
@@ -70,14 +71,33 @@ const LoginPage = () => {
     if (isEmailValid(username) && isPasswordValid(password)) {
       //유효한 데이터를 서버로 전송한다.
       try {
-        const responseData = await api.EmailLogin(username, password);
-        navigate('/');
-        return responseData;
+        const response = await axios.post(
+          `http://3.39.76.109:8080/members/login`,
+          {
+            username,
+            password,
+          },
+        );
+        if (response.status === 200) {
+          const memberId = response.headers.memberId;
+          const token = response.headers.authorization;
+          localStorage.setItem('jwtToken', token);
+          console.log('성공', memberId);
+          navigate('/');
+        }
       } catch (error) {
         setIsError('아이디와 비밀번호를 확인해주세요.');
-        console.error('비동기 요청 에러', error);
+        console.error('에러발생', error);
+        throw error;
       }
     }
+    // try {
+    //   const responseData = await api.EmailLogin(username, password);
+    //   return responseData;
+    // } catch (error) {
+    //   setIsError('아이디와 비밀번호를 확인해주세요.');
+    //   console.error('비동기 요청 에러', error);
+    // }
   };
 
   return (
