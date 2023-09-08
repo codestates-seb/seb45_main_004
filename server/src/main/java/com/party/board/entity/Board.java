@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Board {
     private String body;
 
     @Column(nullable = false)
+    @Min(value = 1)
     private int totalNum; //총 인원수 (작성자가 설정)
 
     @Column(nullable = false)
@@ -39,6 +41,7 @@ public class Board {
     private LocalDate date;
 
     @Column(nullable = false)
+    @Min(value = 0)
     private int money;
 
     @Column
@@ -105,6 +108,13 @@ public class Board {
 
         BoardStatus(String status) {
             this.status = status;
+        }
+    }
+    @PrePersist
+    public void validateDate() {
+        LocalDate today = LocalDate.now();
+        if (date.isBefore(today)) {
+            throw new IllegalArgumentException("날짜는 오늘 이후로만 선택할 수 있습니다.");
         }
     }
 }

@@ -10,7 +10,8 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board,Long> {
 
-    @Query("select board from Board board where board.id = :boardId")
+//    @Query("select board from Board board where board.id = :boardId")
+    @Query("select board from Board board join fetch board.member where board.id = :boardId")
     Optional<Board> findByIdWithAll(@Param("boardId") Long boardId);
 
     //카테고리 조회
