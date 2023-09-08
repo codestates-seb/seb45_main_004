@@ -4,7 +4,7 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginStatus, setNewStatus } from '../redux/actions';
+import { setLoginStatus } from '../redux/actions';
 import Button from './Button';
 import PropTypes from 'prop-types';
 
@@ -66,10 +66,10 @@ const Header = () => {
     }
   }, [dispatch]);
 
-  const handleNewStatus = () => {
-    dispatch(setNewStatus(!isNew));
-  };
-  console.log(handleNewStatus);
+  // const handleNewStatus = () => {
+  //   dispatch(setNewStatus(!isNew));
+  // };
+  // console.log(handleNewStatus);
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
@@ -85,7 +85,7 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-                <Button type="newCard" text="New Card!" />
+              <Button type="newCard" text="New Card!" />
             </Link>
             {isNew ? (
               <Button
