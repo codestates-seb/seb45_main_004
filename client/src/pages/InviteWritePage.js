@@ -7,6 +7,9 @@ import CategoryMappings from '../components/CategoryMappings';
 import { BiEdit } from 'react-icons/bi';
 
 function InviteWritePage() {
+  const token = localStorage.getItem('jwtToken');
+  console.log(token);
+
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,8 +31,8 @@ function InviteWritePage() {
       imageUrl: '', // 호스트 이미지
     },
   });
-  const token = //img 아이디
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
+  // const token = //img 아이디
+  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
   const handleSubmit = (e) => {
     e.preventDefault();

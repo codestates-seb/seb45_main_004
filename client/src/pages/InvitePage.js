@@ -11,8 +11,10 @@ import { differenceInDays, startOfDay } from 'date-fns';
 
 //
 function InvitePage() {
-  const token =
-    'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
+  const token = localStorage.getItem('jwtToken');
+  console.log(token);
+  // const token =
+  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -43,11 +45,11 @@ function InvitePage() {
     try {
       const response = await axios.get(
         `http://3.39.76.109:8080/boards/${boardId}/join`,
-        {
-          headers: {
-            Authorization: token,
-          },
-        },
+        // {
+        //   headers: {
+        //     Authorization: token,
+        //   },
+        // },
       );
       setParticipants(response.data); // 참여자 목록을 상태에 저장
     } catch (error) {
@@ -136,7 +138,7 @@ function InvitePage() {
       });
   };
 
-  //마감 날짜
+  //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   // 두 날짜 간의 일수 차이 계산
