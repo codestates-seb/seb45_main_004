@@ -34,34 +34,34 @@ public class MemberController {
         return new ResponseEntity<>(mapper.memberToMemberResponseDto(member), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{memberEmail}")
-    public ResponseEntity getMember(@PathVariable("memberEmail") String memberEmail) {
-        Member member = memberService.findMember(memberEmail);
+    @GetMapping("/{member-id}")
+    public ResponseEntity getMember(@PathVariable("member-id") long memberId) {
+        Member member = memberService.findMember(memberId);
         return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 
 
     // 파라미터의 회원 id와 토큰의 id를 비교해서 동일한 회원이면 update실행
-    @PatchMapping("/{memberEmail}")
-    public ResponseEntity patchMember(@PathVariable("memberEmail") String memberEmail,
+    @PatchMapping("/{member-id}")
+    public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
                                       @RequestBody MemberPatchDto memberPatchDto) {
-        String loginMemberEmail = (String) memberService.extractMemberInfo().get("email");
-        if(!loginMemberEmail.equals(memberEmail)) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        int loginMemberEmail = (int) memberService.extractMemberInfo().get("id");
+        if(loginMemberEmail != memberId) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
 
         Member member = mapper.memberPatchDtoToMember(memberPatchDto);
-        member.setEmail(loginMemberEmail);
+        member.setId((long) loginMemberEmail);
 
         Member updateMember = memberService.updateMember(member);
 
         return new ResponseEntity(mapper.memberToMemberResponseDto(updateMember), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{memberEmail}")
-    public void deleteMember(@PathVariable("memberEmail") String memberEmail) {
-        String loginMemberEmail = (String) memberService.extractMemberInfo().get("email");
-        System.out.println(memberEmail);
+    @DeleteMapping("/{member-id}")
+    public void deleteMember(@PathVariable("member-id") long memberId) {
+        int loginMemberEmail = (int) memberService.extractMemberInfo().get("id");
+        System.out.println(memberId);
         System.out.println(loginMemberEmail);
-        if(!loginMemberEmail.equals(memberEmail)) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
-        memberService.deleteMember(memberEmail);
+        if(loginMemberEmail != memberId) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        memberService.deleteMember(memberId);
     }
 }

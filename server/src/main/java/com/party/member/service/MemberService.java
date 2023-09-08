@@ -45,23 +45,23 @@ public class MemberService {
     }
 
     public Member updateMember(Member member) {
-        Member findMember = findVerifiedMember(member.getEmail());
+        Member findMember = findVerifiedMember(member.getId());
 
         Member updateMember = updateUtils.copyNonNullProperties(member, findMember);
 
         return memberRepository.save(updateMember);
     }
 
-    public Member findMember(String memberId) {
+    public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
     }
 
-    public void deleteMember(String memberId) {
-        memberRepository.deleteByEmail(memberId);
+    public void deleteMember(long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
-    private Member findVerifiedMember(String memberId) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(memberId);
+    private Member findVerifiedMember(long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
         Member findmember = optionalMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findmember;
     }
