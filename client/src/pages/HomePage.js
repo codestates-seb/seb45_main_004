@@ -120,7 +120,7 @@ const SearchBtn = styled.button`
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
   // const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장 -> 해당 상태를 currentInvitaions 상태값으로 저장 가능
-  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리를 저장
+  const [selectedCategory, setSelectedCategory] = useState('CATEGORY_ALL'); // 선택된 카테고리를 저장
   const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);

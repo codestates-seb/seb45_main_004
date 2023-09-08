@@ -49,7 +49,7 @@ const LoginPage = () => {
   };
   //패스워드 유효성 검사 규칙 정의
   const isPasswordValid = (password) => {
-    return password.length >= 8;
+    return password.length >= 7;
   };
 
   const handleUserPasswordChange = (e) => {
