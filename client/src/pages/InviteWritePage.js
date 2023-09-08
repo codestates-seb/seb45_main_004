@@ -37,6 +37,12 @@ function InviteWritePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // 유효성 검사 로직 추가
+    if (!formData.title.trim() || !formData.date || !formData.body.trim()) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+
     // 서버로 POST 요청 보내기
     axios
       .post('http://3.39.76.109:8080/boards/new-boards', formData, {
@@ -125,7 +131,7 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
-
+  const currentDate = new Date().toISOString().split('T')[0];
   return (
     <StyledWritePage>
       <section>
@@ -175,6 +181,7 @@ function InviteWritePage() {
                     type="date"
                     name="date"
                     value={formData.date}
+                    min={currentDate}
                     onChange={handleInputChange}
                   />
                 </label>
@@ -185,6 +192,7 @@ function InviteWritePage() {
                     type="number"
                     name="totalNum"
                     value={formData.totalNum}
+                    min="0"
                     onChange={handleInputChange}
                   />
                 </label>
@@ -196,6 +204,7 @@ function InviteWritePage() {
                   type="number"
                   name="money"
                   value={formData.money}
+                  min="0"
                   onChange={handleInputChange}
                 />
               </label>
