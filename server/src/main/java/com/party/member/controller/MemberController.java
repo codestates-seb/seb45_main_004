@@ -48,11 +48,12 @@ public class MemberController {
         String loginMemberEmail = (String) memberService.extractMemberInfo().get("email");
         if(!loginMemberEmail.equals(memberId)) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
 
-        memberPatchDto.setEmail(loginMemberEmail);
+        Member member = mapper.memberPatchDtoToMember(memberPatchDto);
+        member.setEmail(loginMemberEmail);
 
-        Member member = memberService.updateMember(mapper.memberPatchDtoToMember(memberPatchDto));
+        Member updateMember = memberService.updateMember(member);
 
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        return new ResponseEntity(mapper.memberToMemberResponseDto(updateMember), HttpStatus.OK);
     }
 
     @DeleteMapping("/{member-id}")
