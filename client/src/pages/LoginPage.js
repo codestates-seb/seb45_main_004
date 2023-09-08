@@ -74,11 +74,9 @@ const LoginPage = () => {
         navigate('/');
         return responseData;
       } catch (error) {
+        setIsError('아이디와 비밀번호를 확인해주세요.');
         console.error('비동기 요청 에러', error);
       }
-    } else {
-      console.log('에러: ', isError);
-      setIsError('아이디와 비밀번호를 확인해주세요.');
     }
   };
 
@@ -95,6 +93,7 @@ const LoginPage = () => {
           passwordError={passwordError}
         />
         <Button type="login" text="Log In" onClick={handleSubmit} />
+        {isError && <p>{isError}</p>}
       </Logincontainer>
     </LoginBody>
   );
