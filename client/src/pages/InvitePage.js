@@ -12,7 +12,6 @@ import { differenceInDays, startOfDay } from 'date-fns';
 //
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
-  console.log(token);
   // const token =
   //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
   const { boardId } = useParams(); // URL 파라미터 가져오기
@@ -36,6 +35,7 @@ function InvitePage() {
     address: '',
     longitude: '',
     latitude: '',
+    isLiked: '',
   });
 
   const [participants, setParticipants] = useState([]);
@@ -106,6 +106,7 @@ function InvitePage() {
   const handleLikeClick = () => {
     const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
     // 서버에 좋아요 상태 전송 함수 호출
+    console.log(newIsLiked);
     sendLikeStatus(newIsLiked);
   };
 
@@ -132,6 +133,7 @@ function InvitePage() {
             ? prevData.boardLikesCount + 1
             : prevData.boardLikesCount - 1,
         }));
+        console.log(isLiked);
       })
       .catch((error) => {
         console.error('Error sending like status:', error);
@@ -143,7 +145,6 @@ function InvitePage() {
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   // 두 날짜 간의 일수 차이 계산
   const daysDifference = differenceInDays(cardDate, currentDate);
-  console.log(daysDifference);
 
   return (
     <EventDetailsContainer>
