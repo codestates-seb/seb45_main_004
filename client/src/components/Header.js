@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useEffect } from 'react';
@@ -48,11 +48,12 @@ const ButtonBox = styled.div`
   }
 `;
 
-const LinkBox = styled.a`
-  height: 42px;
-`;
+// const LinkBox = styled.a`
+//   height: 42px;
+// `;
 
 const Header = () => {
+  const navigate = useNavigate();
   const isLogin = useSelector((state) => state.header.isLogin);
   const isNew = useSelector((state) => state.header.isNew);
   const dispatch = useDispatch();
@@ -68,8 +69,12 @@ const Header = () => {
   const handleNewStatus = () => {
     dispatch(setNewStatus(!isNew));
   };
-
   console.log(handleNewStatus);
+
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    navigate('/');
+  };
 
   return (
     <ServieceHeader>
@@ -80,9 +85,7 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <LinkBox>
                 <Button type="newCard" text="New Card!" />
-              </LinkBox>
             </Link>
             {isNew ? (
               <Button
@@ -95,11 +98,10 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to="/members/{member-id}">
-              <LinkBox className="user-info">
-                <FaRegUserCircle className="user-info-icon" />
-              </LinkBox>
+            <Link to="/members/1" className="user-info">
+              <FaRegUserCircle className="user-info-icon" />
             </Link>
+            <Button type="membership" text="Logout" onClick={handleLogout} />
           </ButtonBox>
         ) : (
           <ButtonBox>

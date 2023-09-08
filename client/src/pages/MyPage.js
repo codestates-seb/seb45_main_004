@@ -3,6 +3,7 @@ import Profile from '../components/Profile';
 import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+// import api from '../api/api';
 
 const MyPageSection = styled.section`
   width: 100vw;
@@ -23,7 +24,6 @@ const MyPage = () => {
     try {
       const response = await axios.get(`http://3.39.76.109:8080/members/1`);
       const myInfo = response.data;
-      console.log(myInfo);
       setUser(myInfo);
     } catch (error) {
       console.error(error);
@@ -41,7 +41,11 @@ const MyPage = () => {
   return (
     <MyPageSection>
       <Profile user={user} />
-      <MyPageTab activetab={activetab} handleTabClick={handleTabClick} />
+      <MyPageTab
+        activetab={activetab}
+        handleTabClick={handleTabClick}
+        user={user}
+      />
     </MyPageSection>
   );
 };

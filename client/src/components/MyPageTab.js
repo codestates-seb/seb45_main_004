@@ -20,7 +20,7 @@ const TabContentContainer = styled.div`
   margin-top: 40px;
   width: 70vw;
 `;
-const MyPageTab = ({ activetab, handleTabClick }) => {
+const MyPageTab = ({ activetab, handleTabClick, user }) => {
   return (
     <MyTabContainer>
       <MyTabBtn>
@@ -45,7 +45,7 @@ const MyPageTab = ({ activetab, handleTabClick }) => {
       </MyTabBtn>
       <TabContentContainer>
         {activetab === 'tab1' && <LikeIt />}
-        {activetab === 'tab2' && <Participations />}
+        {activetab === 'tab2' && <Participations user={user} />}
       </TabContentContainer>
     </MyTabContainer>
   );
@@ -54,5 +54,6 @@ const MyPageTab = ({ activetab, handleTabClick }) => {
 MyPageTab.propTypes = {
   activetab: PropTypes.func.isRequired,
   handleTabClick: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 export default MyPageTab;

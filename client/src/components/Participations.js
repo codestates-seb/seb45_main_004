@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const MyPartyPost = styled.div`
   display: flex;
@@ -8,7 +9,6 @@ const MyPartyPost = styled.div`
 const ContentRow = styled.li`
   list-style-type: none;
   display: flex;
-  justify-content: center;
   margin-top: 20px;
   margin-bottom: 30px;
 `;
@@ -22,45 +22,31 @@ const ContentItem = styled.div`
   border: 1px solid black;
   margin-left: 45px;
   margin-right: 45px;
+
+  img {
+    width: 16em;
+    height: 16em;
+  }
 `;
 
-const Participations = () => {
+const Participations = ({ user }) => {
   return (
     <MyPartyPost>
       <ContentRow>
-        <ContentItem>
-          <b>스케이트 보드 배워보고 싶은신 분들!</b>
-        </ContentItem>
-        <ContentItem>
-          <b>러닝 크루 모집해요</b>
-        </ContentItem>
-        <ContentItem>
-          <b>롤 같이 하실 분!?</b>
-        </ContentItem>
-      </ContentRow>
-      <ContentRow>
-        <ContentItem>
-          <b>스케이트 보드 배워보고 싶은신 분들!</b>
-        </ContentItem>
-        <ContentItem>
-          <b>러닝 크루 모집해요</b>
-        </ContentItem>
-        <ContentItem>
-          <b>롤 같이 하실 분!?</b>
-        </ContentItem>
-      </ContentRow>
-      <ContentRow>
-        <ContentItem>
-          <b>스케이트 보드 배워보고 싶은신 분들!</b>
-        </ContentItem>
-        <ContentItem>
-          <b>러닝 크루 모집해요</b>
-        </ContentItem>
-        <ContentItem>
-          <b>롤 같이 하실 분!?</b>
-        </ContentItem>
+        {user.applicants.map((el, id) => {
+          return (
+            <ContentItem key={id}>
+              <img src={el.boardImageUrl} alt="my-party-list" />;
+            </ContentItem>
+          );
+        })}
       </ContentRow>
     </MyPartyPost>
   );
 };
+
+Participations.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
 export default Participations;
