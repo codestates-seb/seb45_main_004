@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
+import com.party.follow.entity.Follow;
 import lombok.*;
 
 import javax.persistence.*;
@@ -51,7 +52,14 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
+    private List<Follow> fromMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
+    private List<Follow> toMembers = new ArrayList<>();
+
     public static Member createMember(String email, String password, String nickname) {
+
         return Member.builder()
                 .email(email)
                 .password(password)
