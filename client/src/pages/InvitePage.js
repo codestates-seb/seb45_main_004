@@ -11,9 +11,10 @@ import { differenceInDays, startOfDay } from 'date-fns';
 //
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
-  // const token =
-  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
-  const { boardId } = useParams(); // URL 파라미터 가져오기
+  const { boardId } = useParams();
+
+  const api = 'http://3.39.76.109:8080';
+
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     title: '', // 카드의 제목
@@ -42,14 +43,7 @@ function InvitePage() {
   // 참여자 목록을 가져오는 함수
   const fetchParticipants = async () => {
     try {
-      const response = await axios.get(
-        `http://3.39.76.109:8080/boards/${boardId}/join`,
-        // {
-        //   headers: {
-        //     Authorization: token,
-        //   },
-        // },
-      );
+      const response = await axios.get(`${api}/boards/${boardId}/join`);
       setParticipants(response.data); // 참여자 목록을 상태에 저장
     } catch (error) {
       console.error('Error fetching participants:', error);
@@ -58,12 +52,12 @@ function InvitePage() {
 
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴
-  }, [eventData]); // eventData가 변경되면 참여자 목록을 다시 가져옴
+  }, []);
 
   // 카드 조회 요청
   useEffect(() => {
     axios
-      .get(`http://3.39.76.109:8080/boards/${boardId}`)
+      .get(`${api}/boards/${boardId}`)
       .then((response) => {
         const eventData = response.data; // API 응답 데이터를 가져옴
         setEventData(eventData);
@@ -73,17 +67,12 @@ function InvitePage() {
       });
   }, []);
 
-  // 참여 버튼을 클릭했을 때 호출
-  const handleJoinClick = () => {
-    sendJoinStatus();
-  };
-
   //참여요청
   const sendJoinStatus = () => {
     axios
       .request({
         method: 'post',
-        url: `http://3.39.76.109:8080/boards/${boardId}/join`,
+        url: `${api}/boards/${boardId}/join`,
         data: { isJoin: true },
         headers: {
           Authorization: token,
@@ -95,6 +84,7 @@ function InvitePage() {
           ...prevData,
           currentNum: prevData.currentNum + 1,
         }));
+        fetchParticipants(); // 참여자 목록을 다시 불러옴
       })
       .catch((error) => {
         console.error('Error sending join status:', error);
@@ -105,7 +95,7 @@ function InvitePage() {
   const handleLikeClick = () => {
     const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
     // 서버에 좋아요 상태 전송 함수 호출
-    console.log(newIsLiked);
+    // console.log(newIsLiked);
     sendLikeStatus(newIsLiked);
   };
 
@@ -115,7 +105,7 @@ function InvitePage() {
     axios
       .request({
         method: isLiked ? 'post' : 'delete', // isLiked 값에 따라 POST 또는 DELETE 요청을 함(true면 post(좋아요추가) false면 delete(좋아요취소))
-        url: `http://3.39.76.109:8080/likes/${boardId}`,
+        url: `${api}/likes/${boardId}`,
         data: { isLiked }, // isLiked 상태값을 서버에 요청값으로 보내줌
         headers: {
           Authorization: token,
@@ -132,7 +122,7 @@ function InvitePage() {
             ? prevData.boardLikesCount + 1
             : prevData.boardLikesCount - 1,
         }));
-        console.log(isLiked);
+        // console.log(isLiked);
       })
       .catch((error) => {
         console.error('Error sending like status:', error);
@@ -190,7 +180,7 @@ function InvitePage() {
               </div>
 
               <button
-                onClick={handleJoinClick}
+                onClick={sendJoinStatus}
                 // 참여버튼 비활성화
                 disabled={
                   eventData.currentNum === eventData.totalNum ||
@@ -261,6 +251,21 @@ const EventDetailsContainer = styled.div`
     }
   }
 
+  @keyframes stampEffect {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   article {
     width: 433px;
     display: flex;
@@ -295,7 +300,7 @@ const EventDetailsContainer = styled.div`
   .likes-count {
     text-align: center;
     position: absolute;
-    color: black;
+    color: whitesmoke;
     top: 369px;
     left: 370px;
   }

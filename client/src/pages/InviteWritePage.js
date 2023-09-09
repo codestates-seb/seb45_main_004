@@ -344,7 +344,7 @@ const StyledWritePage = styled.div`
     margin: 16px 0px;
     display: grid;
     grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    grid-gap: 13px; // 버튼 사이의 간격을 조절할 수 있습니다.
+    grid-gap: 14px; // 버튼 사이의 간격을 조절할 수 있습니다.
   }
 
   .modal-btn {
