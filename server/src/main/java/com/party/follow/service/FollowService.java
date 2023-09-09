@@ -2,6 +2,7 @@ package com.party.follow.service;
 
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.follow.dto.FollowDto;
 import com.party.follow.entity.Follow;
 import com.party.follow.repository.FollowRepository;
 import com.party.member.entity.Member;
@@ -12,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -43,11 +46,49 @@ public class FollowService {
         return followRepository.countByToMember_Id(memberId);
     }
 
+    //팔로워 계정 목록 조회
+    public List<FollowDto.Member> getFollowers(Long memberId) {
+        List<Follow> followerList = followRepository.findToMember_IdsByFromMember_Id(memberId);
+
+        List<FollowDto.Member> followers = followerList.stream()
+                .map(follow -> {
+                    Member member = follow.getToMember();
+                    FollowDto.Member dtoMember = new FollowDto.Member();
+                    dtoMember.setMemberId(member.getId());
+                    dtoMember.setNickname(member.getNickname());
+                    dtoMember.setIntroduce(member.getIntroduce());
+                    dtoMember.setImageUrl(member.getImageUrl());
+                    return dtoMember;
+                })
+                .collect(Collectors.toList());
+
+        return followers;
+    }
+
     //팔로잉수 조회
     public Long countFollowings(Long memberId) {
         return followRepository.countByFromMember_Id(memberId);
     }
 
+    //팔로잉 계정 목록 조회
+    public List<FollowDto.Member> getFollowings(Long memberId) {
+
+        List<Follow> followingList = followRepository.findFromMember_IdsByToMember_Id(memberId);
+
+        List<FollowDto.Member> followings = followingList.stream()
+                .map(follow -> {
+                    Member member = follow.getFromMember();
+                    FollowDto.Member dtoMember = new FollowDto.Member();
+                    dtoMember.setMemberId(member.getId());
+                    dtoMember.setNickname(member.getNickname());
+                    dtoMember.setIntroduce(member.getIntroduce());
+                    dtoMember.setImageUrl(member.getImageUrl());
+                    return dtoMember;
+                })
+                .collect(Collectors.toList());
+
+        return followings;
+    }
 
     //팔로우 취소
     public void unFollowMember(Long toMemberId) {
