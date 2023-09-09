@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
-import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
@@ -153,14 +152,14 @@ function InvitePage() {
           <div className="card-container">
             <div className="image-container">
               <img src={eventData.imageUrl} alt="카드 이미지" />
-              <button className="heart-button" onClick={handleLikeClick}>
-                <VscHeartFilled className="heart-icon" />
-              </button>
+              <button
+                className="heart-button"
+                onClick={handleLikeClick}
+              ></button>
+              <VscHeartFilled className="heart-icon" />
               <div className="likes-count">{eventData.boardLikesCount}</div>
             </div>
-            <button>
-              <BsFillShareFill />
-            </button>
+            <button>카카오 공유{/*  카카오 공유 버튼 자리 */}</button>
           </div>
           <div className="user-box">
             <div className="host-container">
@@ -255,7 +254,6 @@ const EventDetailsContainer = styled.div`
     margin: 50px 0px;
     display: flex;
     padding: 0px 200px;
-    height: 100vh;
 
     @media (max-width: 768px) {
       flex-direction: column;
@@ -278,38 +276,50 @@ const EventDetailsContainer = styled.div`
   }
   .heart-button {
     position: absolute;
-    top: 360px;
-    left: 355px;
+    background-color: transparent;
+    top: 365px;
+    left: 358px;
+    width: 31px;
+    height: 27px;
     border: none;
+    cursor: pointer;
+    z-index: 1;
   }
   .heart-icon {
-    font-size: 32px;
+    position: absolute;
+    top: 360px;
+    left: 355px;
+    font-size: 38px;
     color: red;
   }
   .likes-count {
+    text-align: center;
     position: absolute;
-    color: #ffffff;
-    font-size: 14px;
-    top: 367px;
-    left: 373px;
-    cursor: pointer;
+    color: black;
+    top: 369px;
+    left: 370px;
   }
 
   .user-box {
     display: flex;
     flex-direction: column;
     gap: 30px;
+    margin-top: 20px;
   }
+
   .host-container {
     display: flex;
     align-items: center;
-    width: 400px;
+    gap: 5px;
+    width: 100%;
+    height: 50px;
   }
 
   .user-container {
     display: flex;
     align-items: center;
-    width: 400px;
+    gap: 5px;
+    width: 100%;
   }
 
   .user-img {
@@ -319,14 +329,9 @@ const EventDetailsContainer = styled.div`
   }
   .host-btn {
     border: none;
+    height: 50px;
     padding: 0px;
     background-color: transparent;
-  }
-
-  .host-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50px;
   }
 
   .title-box {
@@ -335,9 +340,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
   .title-date {
     background-color: white;
@@ -345,9 +349,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
 
   .title-body {
@@ -357,9 +360,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
   .map-box {
     height: 300px;

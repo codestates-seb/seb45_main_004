@@ -162,7 +162,7 @@ function InviteWritePage() {
         </form>
         <div>
           <form>
-            <article>
+            <article className="form-box">
               <label>
                 Title:
                 <input
@@ -217,15 +217,6 @@ function InviteWritePage() {
                   onChange={handleInputChange}
                 />
               </label>
-              {/* <label>
-                Category:
-                <input
-                  type="text"
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                />
-              </label> */}
             </article>
           </form>
 
@@ -303,12 +294,17 @@ const StyledWritePage = styled.div`
     display: flex;
     justify-content: space-between;
   }
+
+  .form-box {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
   input,
   textarea {
     width: 100%;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
     height: 40px;
     padding: 10px;
   }
@@ -318,70 +314,70 @@ const StyledWritePage = styled.div`
   }
 
   .body-date {
-    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+    max-width: 500px;
+    min-width: 446px;
   }
 
   .search-box {
+    margin: 10px 0px;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 20px;
-    padding: 20px 0px;
+    height: 38px;
+    background-color: rgba(244, 227, 233, 0.4);
   }
 
   #address-input {
-    background-color: white;
+    background-color: transparent;
     width: 90%;
     height: 20px;
   }
   #search-button {
-    height: 20px;
-    flex: 1;
+    width: 38px;
+    height: 38px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
   .category-btn {
+    margin: 16px 0px;
     display: grid;
     grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    gap: 10px; // 버튼 사이의 간격을 조절할 수 있습니다.
-    width: 100%;
+    grid-gap: 13px; // 버튼 사이의 간격을 조절할 수 있습니다.
   }
-
-  button {
-    width: 100%;
-  }
-
-  /* button:active {
-    transform: translateY(2px); // 클릭 시 버튼을 아래로 2px 이동
-    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
-  } */
 
   .modal-btn {
     position: absolute;
-    width: 27px;
+    width: 38px;
     left: 200px;
-    height: 26px;
-    top: 374px;
-    background-color: white;
+    height: 38px;
+    top: 362px;
+    background-color: #d25bea;
     border: none;
   }
 
   .modal-btn:active,
-  .submit-btn:active {
+  .submit-btn:active,
+  #search-button:active {
     transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
     box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
   }
 
   .edit-btn {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+    color: whitesmoke;
+    margin-top: 1px;
   }
   .submit-btn {
     position: relative;
-    width: 80px;
-    height: 30px;
-    border-radius: 50px;
-    border: 1px solid;
-    background-color: transparent;
-    left: 320px;
+    width: 100px;
+    height: 38px;
+    border: none;
+    background-color: rgba(244, 227, 233, 0.4);
+    left: 300px;
+    margin-top: 10px;
   }
   .modal {
     position: absolute;
@@ -414,8 +410,23 @@ const StyledWritePage = styled.div`
   .card-img {
     width: 200px;
     height: 200px;
-    /* background-color: transparent;
-    border: none; */
+  }
+
+  @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .modal-btn {
+      top: 408px;
+    }
+
+    .submit-btn {
+      left: 0px;
+    }
   }
 `;
 
