@@ -162,50 +162,51 @@ function InvitePage() {
               <BsFillShareFill />
             </button>
           </div>
-          <div className="host-container">
-            <button className="host-btn">
-              <img
-                className="host-img" // 호스트 이미지 표시
-                src={eventData.member.imageUrl}
-                alt="host-img"
-                style={{ width: '50px', height: '50px' }}
-              />
-            </button>
-            <div>금액: {eventData.money}</div>
-          </div>
-          <div className="user-container">
-            {/* 참여자 표시 */}
-            {participants.map((participant, index) =>
-              index !== 0 ? (
+          <div className="user-box">
+            <div className="host-container">
+              <button className="host-btn">
                 <img
-                  key={index}
-                  src={participant.memberImageUrl}
-                  alt="user-img"
-                  style={{ width: '50px', height: '50px' }}
+                  className="user-img" // 호스트 이미지 표시
+                  src={eventData.member.imageUrl}
+                  alt="host-img"
                 />
-              ) : null,
-            )}
-            {/* 참여자 표시 */}
-            <div>
-              {eventData.currentNum}/{eventData.totalNum}
+              </button>
+              <div>금액: {eventData.money}</div>
             </div>
+            <div className="user-container">
+              {/* 참여자 표시 */}
+              {participants.map((participant, index) =>
+                index !== 0 ? (
+                  <img
+                    className="user-img"
+                    key={index}
+                    src={participant.memberImageUrl}
+                    alt="user-img"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                ) : null,
+              )}
+              <div>
+                {eventData.currentNum}/{eventData.totalNum}
+              </div>
 
-            <button
-              onClick={handleJoinClick}
-              // 참여버튼 비활성화
-              disabled={
-                eventData.currentNum === eventData.totalNum ||
+              <button
+                onClick={handleJoinClick}
+                // 참여버튼 비활성화
+                disabled={
+                  eventData.currentNum === eventData.totalNum ||
+                  (daysDifference >= 0 && daysDifference <= 2)
+                }
+              >
+                {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
-              }
-            >
-              {eventData.currentNum === eventData.totalNum ||
-              (daysDifference >= 0 && daysDifference <= 2)
-                ? '모집마감'
-                : '참여 버튼'}
-            </button>
+                  ? '모집마감'
+                  : '참여 버튼'}
+              </button>
+            </div>
           </div>
         </article>
-        <article>
+        <article className="form-box">
           <div className="title-box">
             <h1>{eventData.title}</h1>
           </div>
@@ -255,6 +256,11 @@ const EventDetailsContainer = styled.div`
     display: flex;
     padding: 0px 200px;
     height: 100vh;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      padding: 0px 10px;
+    }
   }
 
   article {
@@ -288,25 +294,28 @@ const EventDetailsContainer = styled.div`
     left: 373px;
     cursor: pointer;
   }
+
+  .user-box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
   .host-container {
     display: flex;
     align-items: center;
     width: 400px;
-    height: 40px;
   }
 
   .user-container {
     display: flex;
     align-items: center;
     width: 400px;
-    height: 40px;
-    margin-top: 10px;
   }
 
-  .user-container > img {
-    width: 40px;
-    height: 40px;
+  .user-img {
     border-radius: 50px;
+    width: 50px;
+    height: 50px;
   }
   .host-btn {
     border: none;
@@ -386,6 +395,24 @@ const EventDetailsContainer = styled.div`
 
   #map {
     margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .user-box {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .form-box {
+      margin-top: 20px;
+    }
   }
 `;
 
