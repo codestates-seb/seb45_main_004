@@ -148,7 +148,6 @@ function InvitePage() {
               <VscHeartFilled className="heart-icon" />
               <div className="likes-count">{eventData.boardLikesCount}</div>
             </div>
-            <button>카카오 공유{/*  카카오 공유 버튼 자리 */}</button>
           </div>
           <div className="user-box">
             <div className="host-container">
@@ -163,7 +162,7 @@ function InvitePage() {
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
-              {participants.slice(0, 5).map((participant, index) => (
+              {participants.slice(0, 4).map((participant, index) => (
                 <img
                   className={`user-img ${index !== 0 ? 'user-img-offset' : ''}`}
                   key={index}
@@ -171,7 +170,7 @@ function InvitePage() {
                   alt="user-img"
                 />
               ))}
-              {participants.length >= 3 && <span>...</span>}
+              {participants.length > 3 && <span>...</span>}
               <div>
                 {eventData.currentNum}/{eventData.totalNum}
               </div>
