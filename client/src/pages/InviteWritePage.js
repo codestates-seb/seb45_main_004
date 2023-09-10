@@ -64,7 +64,6 @@ function InviteWritePage() {
       })
       .catch((error) => {
         console.error('Error creating card:', error);
-        console.log(formData);
       });
   };
 
@@ -132,7 +131,6 @@ function InviteWritePage() {
         <button className="modal-btn" onClick={handleModalClick}>
           <BiEdit className="edit-btn" />
         </button>
-
         <form onSubmit={handleSubmit}>
           <article>
             <div className="card-container">
@@ -160,7 +158,7 @@ function InviteWritePage() {
           </article>
         </form>
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <article className="form-box">
               <label>
                 Title:
@@ -279,16 +277,9 @@ const StyledWritePage = styled.div`
     padding: 0px 200px;
   }
 
-  .main-img {
+  .card-container {
     width: 400px;
     height: 400px;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-    transition: box-shadow 0.3s ease;
-  }
-
-  /* 이미지 컨테이너 왼쪽 부분에 마우스를 올릴 때 */
-  .image-container:hover img {
-    transform: translatez(-20px) rotateY(30deg); /* rotate의 각도를 더 크게 설정 */
   }
 
   .btn-box {
@@ -311,10 +302,18 @@ const StyledWritePage = styled.div`
   }
 
   .form-box label > input,
-  textarea {
+  textarea,
+  .submit-btn,
+  .search-box,
+  .main-img,
+  #map {
     box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
   }
 
+  .main-img {
+    width: 400px;
+    height: 400px;
+  }
   .date-box {
     display: grid;
     grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.

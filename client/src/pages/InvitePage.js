@@ -140,7 +140,11 @@ function InvitePage() {
         <article>
           <div className="card-container">
             <div className="image-container">
-              <img src={eventData.imageUrl} alt="카드 이미지" />
+              <img
+                className="main-img"
+                src={eventData.imageUrl}
+                alt="카드 이미지"
+              />
               <button
                 className="heart-button"
                 onClick={handleLikeClick}
@@ -192,13 +196,13 @@ function InvitePage() {
           </div>
         </article>
         <article className="form-box">
-          <div className="title-box">
+          <div className="data title-box">
             <h1>{eventData.title}</h1>
           </div>
-          <div className="title-date">
+          <div className="data title-date">
             <div>{eventData.date}</div>
           </div>
-          <div className="title-body">
+          <div className="data title-body">
             <div>{eventData.body}</div>
           </div>
           <div>
@@ -264,24 +268,17 @@ const EventDetailsContainer = styled.div`
     flex-direction: column;
     gap: 10px;
   }
-  img {
+  .main-img {
     width: 400px;
     height: 400px;
-    transform: translatez(-50px);
   }
   .image-container {
     position: relative;
-    animation: poster-ani 1.6s infinite linear alternate;
-    transform-style: preserve-3d;
   }
-
-  @keyframes poster-ani {
-    0% {
-      transform: rotateY(-20deg);
-    }
-    100% {
-      transform: rotateY(20deg);
-    }
+  .data,
+  .main-img,
+  #map {
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
   }
 
   .heart-button {
