@@ -4,14 +4,13 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-//
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
   const { boardId } = useParams();
-
+  const navigate = useNavigate();
   const api = 'http://3.39.76.109:8080';
 
   // 카드 조회 요청 데이터 관리
@@ -36,8 +35,12 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   const [participants, setParticipants] = useState([]);
+
+  const hostPageClick = () => {
+    const memberId = eventData.member.id;
+    navigate(`/members/${memberId}`);
+  };
 
   // 참여자 목록을 가져오는 함수
   const fetchParticipants = async () => {
@@ -155,7 +158,7 @@ function InvitePage() {
           </div>
           <div className="user-box">
             <div className="host-container">
-              <button className="host-btn">
+              <button className="host-btn" onClick={hostPageClick}>
                 <img
                   className="host-img" // 호스트 이미지 표시
                   src={eventData.member.imageUrl}
@@ -341,6 +344,7 @@ const EventDetailsContainer = styled.div`
   }
 
   .host-btn {
+    cursor: pointer;
     border: none;
     height: 50px;
     padding: 0px;
