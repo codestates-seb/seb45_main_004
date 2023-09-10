@@ -8,11 +8,8 @@ import { BiEdit } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
-  // 두번 렌더링됨
-  const token = localStorage.getItem('jwtToken');
-  console.log(token);
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('jwtToken');
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,18 +27,10 @@ function InviteWritePage() {
     longitude: '',
     address: '',
     imageUrl: selectedImage,
-    member: {
-      imageUrl: '', // 호스트 이미지
-    },
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 유효성 검사 로직 추가
-    if (!formData.title.trim() || !formData.date || !formData.body.trim()) {
-      alert('모든 필드를 입력해주세요.');
-      return;
-    }
     axios
       .post('http://3.39.76.109:8080/boards/new-boards', formData, {
         headers: {
@@ -54,21 +43,39 @@ function InviteWritePage() {
       })
       .catch((error) => {
         console.error('Error creating card:', error);
+
+        if (!formData.title.trim()) {
+          alert('제목을 입력해주세요.');
+          return;
+        }
+
+        if (!formData.date) {
+          alert('날짜를 선택해주세요.');
+          return;
+        }
+
+        if (!formData.body.trim()) {
+          alert('내용을 입력해주세요.');
+          return;
+        }
+
+        if (!formData.category) {
+          alert('카테고리를 선택해주세요.');
+          return;
+        }
+        alert('모든 필드를 입력해주세요.');
       });
   };
 
   // 카테고리 버튼 클릭 핸들러
   const handleButtonClick = async (buttonId) => {
-    // 선택된 버튼 업데이트
     setSelectedButton(buttonId);
-    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
     }));
 
     try {
-      // 서버에 카드 API 요청
       const response = await axios.get(
         `http://3.39.76.109:8080/cards/${buttonId}/images`,
       );
@@ -79,15 +86,14 @@ function InviteWritePage() {
     }
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  // 사용자가 지도에서 선택한 장소 정보를 업데이트하는 함수
   const handleLocationSelect = (latitude, longitude, address) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -97,10 +103,8 @@ function InviteWritePage() {
     }));
   };
 
-  // 모달 버튼 클릭 핸들러
   const handleModalClick = () => {
     if (!selectedButton) {
-      // 사용자가 카테고리를 선택하지 않았다면
       alert('카테고리를 선택해주세요');
       return;
     }
@@ -109,11 +113,7 @@ function InviteWritePage() {
   };
 
   const handleImageClick = async (imageUrl) => {
-    // 선택된 버튼 업데이트
     setSelectedImage(imageUrl);
-    console.log(selectedImage);
-
-    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       imageUrl: imageUrl,
@@ -243,26 +243,22 @@ function InviteWritePage() {
           {/*카테고리*/}
           <div className="category-btn">
             {Object.keys(CategoryMappings)
-              .filter((key) => key !== 'CATEGORY_ALL') // 'All' 버튼 제외하고 렌더링
+              .filter((key) => key !== 'CATEGORY_ALL')
               .map((key) => {
-                const buttonId = key; // 버튼 ID 설정
-                // 선택된 버튼인지 여부를 확인하여 스타일 적용
+                const buttonId = key;
                 const isButtonSelected = selectedButton === buttonId;
                 return (
                   <CategoryBtn
                     key={key}
                     isSelected={isButtonSelected}
                     className={isButtonSelected ? 'selected' : ''}
-                    onClick={() => handleButtonClick(key)} // 클릭 이벤트 핸들러 전달
-                    // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
-                    // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                    onClick={() => handleButtonClick(key)}
+                    text={CategoryMappings[key]?.label}
+                    color={CategoryMappings[key]?.backgroundColor}
                   />
                 );
               })}
           </div>
-          {/*카테고리*/}
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
