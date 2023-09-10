@@ -2,9 +2,8 @@ import { styled } from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoginStatus, setNewStatus } from '../redux/actions';
+import { logout, newStatus } from '../redux/actions';
 import Button from './Button';
 import PropTypes from 'prop-types';
 
@@ -54,25 +53,18 @@ const ButtonBox = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
-  const isLogin = useSelector((state) => state.header.isLogin);
-  const isNew = useSelector((state) => state.header.isNew);
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isNew = useSelector((state) => state.new.isNew);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const token = localStorage.getItem('jwtToken');
-
-    if (token) {
-      dispatch(setLoginStatus(true));
-    }
-  }, [dispatch]);
-
   const handleNewStatus = () => {
-    dispatch(setNewStatus(!isNew));
+    dispatch(newStatus(!isNew));
   };
   console.log(handleNewStatus);
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
+    dispatch(logout());
     navigate('/');
   };
 

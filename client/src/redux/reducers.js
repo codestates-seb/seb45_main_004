@@ -1,19 +1,33 @@
-import { SET_LOGIN_STATUS, SET_NEW_STATUS } from './actionTypes';
 import { combineReducers } from 'redux';
 
 const initialState = {
   isLogin: false,
+  token: null,
   isNew: false,
 };
 
-const headerReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SET_LOGIN_STATUS:
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
-        isLogin: action.payload,
+        isLogin: true,
+        token: action.payload,
       };
-    case SET_NEW_STATUS:
+    case 'LOGOUT':
+      return {
+        ...state,
+        isLogin: false,
+        token: null,
+      };
+    default:
+      return state;
+  }
+};
+
+const newReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'NEW_STATUS':
       return {
         ...state,
         isNew: action.payload,
@@ -24,7 +38,8 @@ const headerReducer = (state = initialState, action) => {
 };
 
 const rootReducer = combineReducers({
-  header: headerReducer, // headerReducer를 추가
+  auth: authReducer,
+  new: newReducer,
   // 다른 리듀서들도 필요한 경우 추가
 });
 
