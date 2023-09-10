@@ -11,3 +11,8 @@ export const newStatus = (isNew) => ({
   type: 'NEW_STATUS',
   payload: isNew,
 });
+
+export const fetchUserData = (memberId) => ({
+  type: 'FETCH_USER_DATA',
+  payload: memberId,
+});

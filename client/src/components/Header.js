@@ -90,7 +90,7 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to="/members/1" className="user-info">
+            <Link to="/members/:memberId" className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
             <Button type="membership" text="Logout" onClick={handleLogout} />

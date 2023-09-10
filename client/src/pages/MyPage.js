@@ -3,6 +3,7 @@ import Profile from '../components/Profile';
 import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 // import api from '../api/api';
 
 const MyPageSection = styled.section`
@@ -20,9 +21,13 @@ const MyPage = () => {
   const [user, setUser] = useState({});
   const [activetab, setActiveTab] = useState('tab1');
 
+  const memberId = useSelector((state) => state.user.memberId);
+
   const fetchMyInfo = async () => {
     try {
-      const response = await axios.get(`http://3.39.76.109:8080/members/1`);
+      const response = await axios.get(
+        `http://3.39.76.109:8080/members/${memberId}`,
+      );
       const myInfo = response.data;
       setUser(myInfo);
     } catch (error) {
