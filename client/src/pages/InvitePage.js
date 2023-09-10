@@ -37,6 +37,7 @@ function InvitePage() {
   });
   const [participants, setParticipants] = useState([]);
 
+  // 호스트 페이지 이동
   const hostPageClick = () => {
     const memberId = eventData.member.id;
     navigate(`/members/${memberId}`);
@@ -193,7 +194,7 @@ function InvitePage() {
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
                   ? 'Closed'
-                  : 'Join'}
+                  : 'Participation'}
               </button>
             </div>
           </div>
@@ -420,8 +421,7 @@ const EventDetailsContainer = styled.div`
   }
 
   .join-btn:active {
-    transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
-    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
+    box-shadow: inset 1px 1px 3px rgb(0, 0, 0, 0.4);
   }
 
   #map {
