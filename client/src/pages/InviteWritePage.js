@@ -5,10 +5,13 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { BiEdit } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
+  // 두번 렌더링됨
   const token = localStorage.getItem('jwtToken');
   console.log(token);
+  const navigate = useNavigate();
 
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -31,29 +34,23 @@ function InviteWritePage() {
       imageUrl: '', // 호스트 이미지
     },
   });
-  // const token = //img 아이디
-  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     // 유효성 검사 로직 추가
     if (!formData.title.trim() || !formData.date || !formData.body.trim()) {
       alert('모든 필드를 입력해주세요.');
       return;
     }
-
-    // 서버로 POST 요청 보내기
     axios
       .post('http://3.39.76.109:8080/boards/new-boards', formData, {
         headers: {
           Authorization: token,
         },
       })
-      .then(() => {
-        // 요청 완료 후 페이지 새로고침
+      .then((response) => {
+        navigate(`/boards/${response.data.boardId}`);
         console.log('요청됨');
-        window.location.reload();
       })
       .catch((error) => {
         console.error('Error creating card:', error);
@@ -64,8 +61,6 @@ function InviteWritePage() {
   const handleButtonClick = async (buttonId) => {
     // 선택된 버튼 업데이트
     setSelectedButton(buttonId);
-    console.log('클릭한 버튼:', buttonId);
-
     // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
@@ -131,7 +126,9 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
+
   const currentDate = new Date().toISOString().split('T')[0];
+
   return (
     <StyledWritePage>
       <section>
