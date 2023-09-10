@@ -78,12 +78,6 @@ function MapKakao({
               marker.setMap(null);
             }
 
-            // // 새로운 마커 생성
-            // marker = new kakao.maps.Marker({
-            //   map: map,
-            //   position: latlng,
-            // });
-
             // displayMarkerAndInfowindow 함수를 사용하여 마커와 인포윈도우를 생성 및 표시
             marker = displayMarkerAndInfowindow(map, latlng, address);
 
@@ -132,10 +126,11 @@ function MapKakao({
     if (searchButton) {
       searchButton.addEventListener('click', handleSearchButtonClick);
     }
-    // 컴포넌트가 언마운트될 때 이벤트 핸들러를 제거
-    // return () => {
-    //   searchButton.removeEventListener('click', handleSearchButtonClick);
-    // };
+    return () => {
+      if (searchButton) {
+        searchButton.removeEventListener('click', handleSearchButtonClick);
+      }
+    };
   }, [latitude, longitude, showSearch, showMarker]);
 
   return (

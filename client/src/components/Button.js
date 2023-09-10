@@ -48,19 +48,6 @@ const StyleButton = styled.button`
     padding: 0;
     margin-left: 20px;
   }
-
-  &.Button-like,
-  &.Button-participations {
-    width: 150px;
-    height: 50px;
-    background-color: ${(props) => props.color || 'white'};
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    padding: 0px;
-    margin-left: 30px;
-    margin-right: 30px;
-  }
 `;
 
 const Button = ({ type, text, onClick, color }) => {

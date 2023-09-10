@@ -8,14 +8,14 @@ import { BiEdit } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
-  const navigate = useNavigate();
   const token = localStorage.getItem('jwtToken');
+  const api = 'http://3.39.76.109:8080';
+  const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 사용자입력값 상태변수
   const [formData, setFormData] = useState({
     title: '',
     date: '',
@@ -31,7 +31,6 @@ function InviteWritePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const fieldValidations = [
       { field: 'title', error: '제목을 입력해주세요.' },
       { field: 'date', error: '날짜를 선택해주세요.' },
@@ -54,7 +53,7 @@ function InviteWritePage() {
     }
 
     axios
-      .post('http://3.39.76.109:8080/boards/new-boards', formData, {
+      .post(`${api}/boards/new-boards`, formData, {
         headers: {
           Authorization: token,
         },
@@ -65,11 +64,12 @@ function InviteWritePage() {
       })
       .catch((error) => {
         console.error('Error creating card:', error);
+        console.log(formData);
       });
   };
 
   // 카테고리 버튼 클릭 핸들러
-  const handleButtonClick = async (buttonId) => {
+  const handleCategoryButtonClick = async (buttonId) => {
     setSelectedButton(buttonId);
     setFormData((prevData) => ({
       ...prevData,
@@ -77,10 +77,7 @@ function InviteWritePage() {
     }));
 
     try {
-      const response = await axios.get(
-        `http://3.39.76.109:8080/cards/${buttonId}/images`,
-      );
-
+      const response = await axios.get(`${api}/cards/${buttonId}/images`);
       setImageFromServer(response.data);
     } catch (error) {
       console.error('Error fetching image:', error);
@@ -109,7 +106,6 @@ function InviteWritePage() {
       alert('카테고리를 선택해주세요');
       return;
     }
-
     setIsModalOpen((prevState) => !prevState);
   };
 
@@ -217,8 +213,6 @@ function InviteWritePage() {
               </label>
             </article>
           </form>
-
-          {/* 모달 표시 */}
           {isModalOpen && (
             <div
               className="modal-background"
@@ -234,7 +228,7 @@ function InviteWritePage() {
                     key={index}
                     onClick={() => handleImageClick(imageUrl)}
                   >
-                    <img className="card-img" src={imageUrl} alt={`${index}`} />
+                    <img className="card-img" src={imageUrl} alt="카드이미지" />
                   </button>
                 ))}
               </div>
@@ -253,7 +247,7 @@ function InviteWritePage() {
                     key={key}
                     isSelected={isButtonSelected}
                     className={isButtonSelected ? 'selected' : ''}
-                    onClick={() => handleButtonClick(key)}
+                    onClick={() => handleCategoryButtonClick(key)}
                     text={CategoryMappings[key]?.label}
                     color={CategoryMappings[key]?.backgroundColor}
                   />

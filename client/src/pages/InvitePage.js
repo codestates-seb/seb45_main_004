@@ -7,7 +7,6 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-
 //
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -59,7 +58,7 @@ function InvitePage() {
     axios
       .get(`${api}/boards/${boardId}`)
       .then((response) => {
-        const eventData = response.data; // API 응답 데이터를 가져옴
+        const eventData = response.data;
         setEventData(eventData);
       })
       .catch((error) => {
@@ -155,7 +154,7 @@ function InvitePage() {
             <div className="host-container">
               <button className="host-btn">
                 <img
-                  className="user-img" // 호스트 이미지 표시
+                  className="host-img" // 호스트 이미지 표시
                   src={eventData.member.imageUrl}
                   alt="host-img"
                 />
@@ -164,22 +163,20 @@ function InvitePage() {
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
-              {participants.map((participant, index) =>
-                index !== 0 ? (
-                  <img
-                    className="user-img"
-                    key={index}
-                    src={participant.memberImageUrl}
-                    alt="user-img"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                ) : null,
-              )}
+              {participants.slice(0, 5).map((participant, index) => (
+                <img
+                  className={`user-img ${index !== 0 ? 'user-img-offset' : ''}`}
+                  key={index}
+                  src={participant.memberImageUrl}
+                  alt="user-img"
+                />
+              ))}
+              {participants.length >= 3 && <span>...</span>}
               <div>
                 {eventData.currentNum}/{eventData.totalNum}
               </div>
-
               <button
+                className="join-btn"
                 onClick={sendJoinStatus}
                 // 참여버튼 비활성화
                 disabled={
@@ -189,8 +186,8 @@ function InvitePage() {
               >
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
-                  ? '모집마감'
-                  : '참여 버튼'}
+                  ? 'Closed'
+                  : 'Join'}
               </button>
             </div>
           </div>
@@ -206,26 +203,22 @@ function InvitePage() {
             <div>{eventData.body}</div>
           </div>
           <div>
-            {/* // Object.keys로 categoryMappings 객체의 키들을 배열로 바꿈,map사용해서 각 카테고리 키를 순회함 */}
             {Object.keys(CategoryMappings).map((key) => {
-              // 사용자가 선택한 카테고리와 일치하는 키값을 찾아서 그에 해당하는 ui 렌더링
               if (eventData.category === key) {
                 return (
-                  <CategoryBtn // 조건이 만족하면, CategoryBtn 컴포넌트를 생성하여 렌더링
+                  <CategoryBtn
                     key={key}
-                    // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
-                    // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                    text={CategoryMappings[key]?.label}
+                    color={CategoryMappings[key]?.backgroundColor}
                   />
                 );
               }
-              return null; // 선택된 카테고리와 일치하지 않는 경우 null 반환하여 렌더링하지 않음
+              return null;
             })}
           </div>
           <MapKakao
-            latitude={eventData.latitude} // 좌표값을 props로 전달
-            longitude={eventData.longitude} // 좌표값을 props로 전달
+            latitude={eventData.latitude}
+            longitude={eventData.longitude}
             showSearch={false}
             showMarker={true}
           />
@@ -327,11 +320,17 @@ const EventDetailsContainer = styled.div`
     width: 100%;
   }
 
+  .host-img,
   .user-img {
     border-radius: 50px;
     width: 50px;
     height: 50px;
   }
+
+  .user-img-offset {
+    margin-left: -30px;
+  }
+
   .host-btn {
     border: none;
     height: 50px;
@@ -398,6 +397,18 @@ const EventDetailsContainer = styled.div`
 
   .submit-btn {
     width: 100%;
+  }
+
+  .join-btn {
+    height: 32px;
+    border: none;
+    padding: 0px 12px;
+    background-color: rgba(244, 227, 233, 0.4);
+  }
+
+  .join-btn:active {
+    transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
+    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
   }
 
   #map {

@@ -42,8 +42,8 @@ export default function CategoryBtn({ text, color, onClick, isSelected }) {
 }
 
 CategoryBtn.propTypes = {
-  text: PropTypes.string.isRequired, // text prop의 유효성을 검사합니다.
-  color: PropTypes.string.isRequired,
+  text: PropTypes.string, // text prop의 유효성을 검사합니다.
+  color: PropTypes.string,
   onClick: PropTypes.func,
   isSelected: PropTypes.bool,
 };
