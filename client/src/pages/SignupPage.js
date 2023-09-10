@@ -106,7 +106,7 @@ export default function Signuppage() {
   };
 
   const isPasswordValid = (password) => {
-    return password.length >= 8;
+    return password.length >= 7;
   };
 
   const handlePasswordChange = (e) => {

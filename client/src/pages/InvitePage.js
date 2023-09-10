@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
-import { BsFillShareFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
@@ -153,59 +152,60 @@ function InvitePage() {
           <div className="card-container">
             <div className="image-container">
               <img src={eventData.imageUrl} alt="카드 이미지" />
-              <button className="heart-button" onClick={handleLikeClick}>
-                <VscHeartFilled className="heart-icon" />
-              </button>
+              <button
+                className="heart-button"
+                onClick={handleLikeClick}
+              ></button>
+              <VscHeartFilled className="heart-icon" />
               <div className="likes-count">{eventData.boardLikesCount}</div>
             </div>
-            <button>
-              <BsFillShareFill />
-            </button>
+            <button>카카오 공유{/*  카카오 공유 버튼 자리 */}</button>
           </div>
-          <div className="host-container">
-            <button className="host-btn">
-              <img
-                className="host-img" // 호스트 이미지 표시
-                src={eventData.member.imageUrl}
-                alt="host-img"
-                style={{ width: '50px', height: '50px' }}
-              />
-            </button>
-            <div>금액: {eventData.money}</div>
-          </div>
-          <div className="user-container">
-            {/* 참여자 표시 */}
-            {participants.map((participant, index) =>
-              index !== 0 ? (
+          <div className="user-box">
+            <div className="host-container">
+              <button className="host-btn">
                 <img
-                  key={index}
-                  src={participant.memberImageUrl}
-                  alt="user-img"
-                  style={{ width: '50px', height: '50px' }}
+                  className="user-img" // 호스트 이미지 표시
+                  src={eventData.member.imageUrl}
+                  alt="host-img"
                 />
-              ) : null,
-            )}
-            {/* 참여자 표시 */}
-            <div>
-              {eventData.currentNum}/{eventData.totalNum}
+              </button>
+              <div>금액: {eventData.money}</div>
             </div>
+            <div className="user-container">
+              {/* 참여자 표시 */}
+              {participants.map((participant, index) =>
+                index !== 0 ? (
+                  <img
+                    className="user-img"
+                    key={index}
+                    src={participant.memberImageUrl}
+                    alt="user-img"
+                    style={{ width: '50px', height: '50px' }}
+                  />
+                ) : null,
+              )}
+              <div>
+                {eventData.currentNum}/{eventData.totalNum}
+              </div>
 
-            <button
-              onClick={handleJoinClick}
-              // 참여버튼 비활성화
-              disabled={
-                eventData.currentNum === eventData.totalNum ||
+              <button
+                onClick={handleJoinClick}
+                // 참여버튼 비활성화
+                disabled={
+                  eventData.currentNum === eventData.totalNum ||
+                  (daysDifference >= 0 && daysDifference <= 2)
+                }
+              >
+                {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
-              }
-            >
-              {eventData.currentNum === eventData.totalNum ||
-              (daysDifference >= 0 && daysDifference <= 2)
-                ? '모집마감'
-                : '참여 버튼'}
-            </button>
+                  ? '모집마감'
+                  : '참여 버튼'}
+              </button>
+            </div>
           </div>
         </article>
-        <article>
+        <article className="form-box">
           <div className="title-box">
             <h1>{eventData.title}</h1>
           </div>
@@ -247,12 +247,18 @@ function InvitePage() {
 
 const EventDetailsContainer = styled.div`
   margin: 0px 320px;
+  display: flex;
+  justify-content: center;
 
   section {
     margin: 50px 0px;
     display: flex;
     padding: 0px 200px;
-    height: 100vh;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      padding: 0px 10px;
+    }
   }
 
   article {
@@ -270,52 +276,62 @@ const EventDetailsContainer = styled.div`
   }
   .heart-button {
     position: absolute;
-    top: 360px;
-    left: 355px;
+    background-color: transparent;
+    top: 365px;
+    left: 358px;
+    width: 31px;
+    height: 27px;
     border: none;
+    cursor: pointer;
+    z-index: 1;
   }
   .heart-icon {
-    font-size: 32px;
+    position: absolute;
+    top: 360px;
+    left: 355px;
+    font-size: 38px;
     color: red;
   }
   .likes-count {
+    text-align: center;
     position: absolute;
-    color: #ffffff;
-    font-size: 14px;
-    top: 367px;
-    left: 373px;
-    cursor: pointer;
+    color: black;
+    top: 369px;
+    left: 370px;
   }
+
+  .user-box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
   .host-container {
     display: flex;
     align-items: center;
-    width: 400px;
-    height: 40px;
+    gap: 5px;
+    width: 100%;
+    height: 50px;
   }
 
   .user-container {
     display: flex;
     align-items: center;
-    width: 400px;
-    height: 40px;
-    margin-top: 10px;
+    gap: 5px;
+    width: 100%;
   }
 
-  .user-container > img {
-    width: 40px;
-    height: 40px;
+  .user-img {
     border-radius: 50px;
+    width: 50px;
+    height: 50px;
   }
   .host-btn {
     border: none;
+    height: 50px;
     padding: 0px;
     background-color: transparent;
-  }
-
-  .host-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50px;
   }
 
   .title-box {
@@ -324,9 +340,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
   .title-date {
     background-color: white;
@@ -334,9 +349,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
 
   .title-body {
@@ -346,9 +360,8 @@ const EventDetailsContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    border: 1px solid;
-    border-radius: 20px;
+    background-color: rgba(244, 227, 233, 0.4);
+    border: none;
   }
   .map-box {
     height: 300px;
@@ -384,6 +397,24 @@ const EventDetailsContainer = styled.div`
 
   #map {
     margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .user-box {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .form-box {
+      margin-top: 20px;
+    }
   }
 `;
 

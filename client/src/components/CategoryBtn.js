@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const CatgegoryBtnWrapper = styled.li`
   button {
-    width: 120px;
+    width: 140px; // 너비가 수정 부분
     height: 40px;
     background-color: ${(props) => props.color || 'white'};
     border: none;
@@ -12,7 +12,7 @@ const CatgegoryBtnWrapper = styled.li`
     cursor: pointer;
     padding: 0px;
     // 특정 버튼에만 마진값 안주기
-    margin-right: ${(props) => (props.isETC ? '0px' : '20px')};
+    /* margin-right: ${(props) => (props.isETC ? '0px' : '20px')}; */
 
     // 버튼 그림자
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
