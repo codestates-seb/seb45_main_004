@@ -138,9 +138,14 @@ function InviteWritePage() {
             <div className="card-container">
               <div className="image-container">
                 {formData.imageUrl ? (
-                  <img src={formData.imageUrl} alt="선택된 카테고리의 이미지" />
+                  <img
+                    className="main-img"
+                    src={formData.imageUrl}
+                    alt="선택된 카테고리의 이미지"
+                  />
                 ) : (
                   <img
+                    className="main-img"
                     src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC/CATEGORY_ETC1.png"
                     alt="기본 이미지"
                   />
@@ -273,9 +278,17 @@ const StyledWritePage = styled.div`
     gap: 20px;
     padding: 0px 200px;
   }
-  img {
+
+  .main-img {
     width: 400px;
     height: 400px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+  }
+
+  /* 이미지 컨테이너 왼쪽 부분에 마우스를 올릴 때 */
+  .image-container:hover img {
+    transform: translatez(-20px) rotateY(30deg); /* rotate의 각도를 더 크게 설정 */
   }
 
   .btn-box {
@@ -296,6 +309,12 @@ const StyledWritePage = styled.div`
     height: 40px;
     padding: 10px;
   }
+
+  .form-box label > input,
+  textarea {
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+  }
+
   .date-box {
     display: grid;
     grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
@@ -343,6 +362,7 @@ const StyledWritePage = styled.div`
     top: 362px;
     background-color: #d25bea;
     border: none;
+    z-index: 1;
   }
 
   .modal-btn:active,

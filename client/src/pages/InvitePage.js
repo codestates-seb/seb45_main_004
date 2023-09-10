@@ -267,10 +267,23 @@ const EventDetailsContainer = styled.div`
   img {
     width: 400px;
     height: 400px;
+    transform: translatez(-50px);
   }
   .image-container {
     position: relative;
+    animation: poster-ani 1.6s infinite linear alternate;
+    transform-style: preserve-3d;
   }
+
+  @keyframes poster-ani {
+    0% {
+      transform: rotateY(-20deg);
+    }
+    100% {
+      transform: rotateY(20deg);
+    }
+  }
+
   .heart-button {
     position: absolute;
     background-color: transparent;
