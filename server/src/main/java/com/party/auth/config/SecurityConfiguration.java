@@ -47,8 +47,11 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/*/members").permitAll()
-                        .antMatchers(HttpMethod.POST, "/cards/new-cards").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/boards/new-boards").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/{memberId}").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/boards/{board-id}/join").hasRole("USER")
+                        .antMatchers(HttpMethod.POST, "/likes/{board-id}").hasRole("USER")
+                        .antMatchers("/follows/**").hasRole("USER")
                         .anyRequest().permitAll())
                 .oauth2Login()
                 .and()
