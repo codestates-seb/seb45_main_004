@@ -52,9 +52,11 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
+    // 팔로잉
     @OneToMany(mappedBy = "fromMember", cascade = CascadeType.ALL)
     private List<Follow> fromMembers = new ArrayList<>();
 
+    // 팔로우
     @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
     private List<Follow> toMembers = new ArrayList<>();
 

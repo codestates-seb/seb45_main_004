@@ -21,4 +21,6 @@ public class MemberResponseDto {
     private String imageUrl;
     private List<ApplicantResponseDto> applicants = new ArrayList<>();
     private List<MemberBoardLikeResponseDto> boardLikes = new ArrayList<>();
+    private long follower;
+    private long following;
 }

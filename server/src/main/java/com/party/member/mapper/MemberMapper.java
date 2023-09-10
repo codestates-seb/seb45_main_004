@@ -15,14 +15,15 @@ import java.util.List;
 public interface MemberMapper {
     Member memberPostDtoToMember(MemberPostDto memberPostDto);
 
-    @Mapping(source = "applicants", target = "applicants")
+    @Mapping(target = "follower", expression = "java(member.getToMembers() != null ? member.getToMembers().size() : 0)")
+    @Mapping(target = "following", expression = "java(member.getFromMembers() != null ? member.getFromMembers().size() : 0)")
     MemberResponseDto memberToMemberResponseDto(Member member);
 
     Member memberPatchDtoToMember(MemberPatchDto memberPatchDto);
 
     List<SimpleMemberResponseDto> memberToSimpleMemberResponseDto(List<Member> member);
 
-    @Mapping(source = "board.id", target = "boardId")
-    @Mapping(source = "board.imageUrl", target = "imgUrl")
+    @Mapping(target = "boardId", source = "board.id")
+    @Mapping(target = "imgUrl", source = "board.imageUrl")
     MemberBoardLikeResponseDto boardLikeToMemberBoardLikeResponseDto(BoardLike boardLike);
 }
