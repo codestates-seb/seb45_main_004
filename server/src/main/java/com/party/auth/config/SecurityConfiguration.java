@@ -50,7 +50,12 @@ public class SecurityConfiguration {
                         .antMatchers(HttpMethod.POST, "/cards/new-cards").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/{memberId}").hasRole("USER")
                         .anyRequest().permitAll())
-                .oauth2Login();
+                .oauth2Login()
+                .and()
+                .logout()
+                .logoutUrl("/members/logout")
+                .logoutSuccessUrl("/");
+
         return http.build();
     }
 
