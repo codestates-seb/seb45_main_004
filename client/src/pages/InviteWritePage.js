@@ -31,6 +31,28 @@ function InviteWritePage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const fieldValidations = [
+      { field: 'title', error: '제목을 입력해주세요.' },
+      { field: 'date', error: '날짜를 선택해주세요.' },
+      { field: 'totalNum', error: '인원 수를 선택해주세요.' },
+      { field: 'body', error: '내용을 입력해주세요.' },
+      { field: 'category', error: '카테고리를 선택해주세요.' },
+      { field: 'address', error: '장소를 선택해주세요.' },
+      { field: 'imageUrl', error: '이미지를 선택해주세요.' },
+    ];
+
+    const invalidField = fieldValidations.find(
+      ({ field }) =>
+        !formData[field] ||
+        (typeof formData[field] === 'string' && !formData[field].trim()),
+    );
+
+    if (invalidField) {
+      alert(invalidField.error);
+      return;
+    }
+
     axios
       .post('http://3.39.76.109:8080/boards/new-boards', formData, {
         headers: {
@@ -43,27 +65,6 @@ function InviteWritePage() {
       })
       .catch((error) => {
         console.error('Error creating card:', error);
-
-        if (!formData.title.trim()) {
-          alert('제목을 입력해주세요.');
-          return;
-        }
-
-        if (!formData.date) {
-          alert('날짜를 선택해주세요.');
-          return;
-        }
-
-        if (!formData.body.trim()) {
-          alert('내용을 입력해주세요.');
-          return;
-        }
-
-        if (!formData.category) {
-          alert('카테고리를 선택해주세요.');
-          return;
-        }
-        alert('모든 필드를 입력해주세요.');
       });
   };
 
