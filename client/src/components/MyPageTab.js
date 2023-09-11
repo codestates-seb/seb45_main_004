@@ -18,7 +18,7 @@ const MyTabBtn = styled.div`
 
 const TabContentContainer = styled.div`
   margin-top: 40px;
-  width: 70vw;
+  width: 75vw;
 `;
 const MyPageTab = ({ activetab, handleTabClick, user }) => {
   return (
@@ -44,7 +44,7 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
         />
       </MyTabBtn>
       <TabContentContainer>
-        {activetab === 'tab1' && <LikeIt />}
+        {activetab === 'tab1' && <LikeIt user={user} />}
         {activetab === 'tab2' && <Participations user={user} />}
       </TabContentContainer>
     </MyTabContainer>

@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const ProfileContainer = styled.div`
   width: 76vw;
@@ -41,6 +42,7 @@ const EditIconBox = styled.span`
   position: absolute;
   bottom: 0;
   right: 0;
+  cursor: pointer;
 
   .edit-icon {
     width: 30px;
@@ -95,15 +97,18 @@ const UserInfoContainer = styled.div`
 `;
 
 const Profile = ({ user }) => {
-  const { email, gender, introduce, nickname } = user;
+  const { email, gender, introduce, nickname, follower, following } = user;
+  const isLogin = useSelector((state) => state.auth.isLogin);
 
   return (
     <ProfileContainer>
       <AvatarContainer>
         <Icon icon="mingcute:ghost-line" className="avatar-img" />
-        <EditIconBox>
-          <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
-        </EditIconBox>
+        {isLogin ? (
+          <EditIconBox>
+            <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
+          </EditIconBox>
+        ) : null}
       </AvatarContainer>
       <UserInfoContainer>
         {/* 로그인 정보의 닉네임과 이메일이 표시됨 */}
@@ -123,10 +128,10 @@ const Profile = ({ user }) => {
         <div className="info-box">
           <b className="follow-info">Follower</b>
           {/* 숫자는 일천단위 K, 일만단위 M 으로 표시 */}
-          <p className="follow-info">1.3M</p>
+          <p className="follow-info">{follower}</p>
           <b className="follow-info">Following</b>
           {/* 숫자는 일천단위 K, 일만단위 M 으로 표시 */}
-          <p className="follow-info">1K</p>
+          <p className="follow-info">{following}</p>
         </div>
         {/* 유저 정보의 자기소개내용 표시 */}
         <div className="introduction-box">
