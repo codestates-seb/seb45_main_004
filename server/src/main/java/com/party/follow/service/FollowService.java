@@ -5,14 +5,18 @@ import com.party.exception.ExceptionCode;
 import com.party.follow.dto.FollowDto;
 import com.party.follow.entity.Follow;
 import com.party.follow.repository.FollowRepository;
+import com.party.mail.service.MailService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,9 +30,10 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final MailService mailService;
 
     //팔로우 추가
-    public Follow followMember(Long toMemberId) {
+    public Follow followMember(Long toMemberId) throws MessagingException, IOException {
 
         //현재 로그인한 사용자의 ID를 추출
         Long fromMemberId = extractMemberId();
@@ -38,7 +43,10 @@ public class FollowService {
         validateFollow(fromMemberId, toMemberId);
 
         Follow follow = processCreateFollow(fromMemberId, toMemberId);
-        return followRepository.save(follow);
+        follow = followRepository.save(follow);
+        sendMail(toMemberId, fromMemberId);
+
+        return follow;
     }
 
     //팔로워수 조회
@@ -148,6 +156,17 @@ public class FollowService {
         } else {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
+    }
+
+    //이메일 전송
+    private void sendMail(Long toMemberId, Long fromMemberId) throws MessagingException, IOException {
+        Member fromMember = memberRepository.getById(fromMemberId);
+        String followerNickname = fromMember.getNickname();
+        String imageUrl = fromMember.getImageUrl();
+        Member toMember = memberRepository.getById(toMemberId);
+        String title = "CELEBEE의 새로운 팔로워 알림🐝";
+        String message = followerNickname + "님이 당신을 팔로우했습니다💘";
+        mailService.sendMail(toMember.getEmail(), title, message,imageUrl);
     }
 }
 
