@@ -180,18 +180,19 @@ public class OAuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", userDetails.getId());
         claims.put("authorities", authentication.getAuthorities());
+        claims.put("roles", member.getRoles());
 
         // Access Token 생성
         String accessToken = jwtTokenizer.generateAccessToken(
                 claims,
                 userDetails.getUsername(),
                 jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes()),
-                jwtTokenizer.getSecretKey() // 기본 키 사용
+                jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey()) // 기본 키 사용
         );
         String refreshToken = jwtTokenizer.generateRefreshToken(
                 userDetails.getUsername(),
                 jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes()),
-                jwtTokenizer.getSecretKey()
+                jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())
         );
 
         return new Token(accessToken, refreshToken, member.getId());
