@@ -56,6 +56,7 @@ const Header = () => {
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
   const dispatch = useDispatch();
+  const memberId = useSelector((state) => state.user.memberId);
 
   const handleNewStatus = () => {
     dispatch(newStatus(!isNew));
@@ -64,6 +65,8 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('isLogin');
     dispatch(logout());
     navigate('/');
   };
@@ -90,7 +93,7 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to="/members/:memberId" className="user-info">
+            <Link to={`/members/${memberId}`} className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
             <Button type="membership" text="Logout" onClick={handleLogout} />

@@ -37,7 +37,7 @@ const Participations = ({ user }) => {
         {user.applicants.map((el, boardId) => {
           return (
             <ContentItem key={boardId}>
-              <img src={el.imgUrl} alt="my-party-list" />;
+              <img src={el.imgUrl} alt="my-party-list" />
             </ContentItem>
           );
         })}

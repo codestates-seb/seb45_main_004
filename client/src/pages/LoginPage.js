@@ -1,12 +1,11 @@
 import Button from '../components/Button';
 import OauthLoginButton from '../components/OauthLoginButton';
 import EmailLoginForm from '../components/EmailLoginForm';
-// import api from '../api/api';
 import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData, login } from '../redux/actions';
 
 const LoginBody = styled.section`
@@ -32,7 +31,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const isLogin = useSelector((state) => state.auth.loginStatus);
   //이메일 형식 검사 규칙 정의
   const isEmailValid = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -84,8 +83,11 @@ const LoginPage = () => {
         console.log(response);
         if (response.status === 200) {
           const token = response.headers.authorization;
+          const refresh = response.headers.refresh;
           const memberId = response.headers.memberid;
           localStorage.setItem('jwtToken', token);
+          localStorage.setItem('refresh', refresh);
+          localStorage.setItem('isLogin', isLogin);
           console.log('성공');
           dispatch(login(token));
           dispatch(fetchUserData(memberId));
@@ -97,13 +99,6 @@ const LoginPage = () => {
         throw error;
       }
     }
-    // try {
-    //   const responseData = await api.EmailLogin(username, password);
-    //   return responseData;
-    // } catch (error) {
-    //   setIsError('아이디와 비밀번호를 확인해주세요.');
-    //   console.error('비동기 요청 에러', error);
-    // }
   };
 
   return (

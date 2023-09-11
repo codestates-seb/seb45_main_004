@@ -41,7 +41,7 @@ const LikeIt = ({ user }) => {
         {user.boardLikes.map((el, boardId) => {
           return (
             <ContentItem key={boardId}>
-              <img src={el.imgUrl} alt="찜한 목록" />;
+              <img src={el.imgUrl} alt="찜한 목록" />
             </ContentItem>
           );
         })}
