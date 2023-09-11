@@ -67,6 +67,7 @@ const HomePage = styled.div`
     justify-content: center;
     padding: 0;
     margin: 20px 0px;
+    gap: 20px;
   }
   .invitation-container {
     display: grid;
@@ -79,6 +80,7 @@ const HomePage = styled.div`
     justify-content: center;
     height: 300px;
     margin-bottom: 30px;
+    position: relative;
   }
   .likes-container {
     display: flex;
@@ -104,6 +106,52 @@ const HomePage = styled.div`
     font-weight: 800;
     margin-left: 5px;
     cursor: pointer;
+  }
+  .invitation-image-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
+  }
+  .invitation-image {
+    width: 300px;
+    height: 300px;
+  }
+  .invitation-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    text-align: center;
+    gap: 10px;
+    transition:
+      opacity 0.3s,
+      visibility 0.3s; /* 전환 효과를 추가 */
+    opacity: 0; /* 초기에는 보이지 않도록 설정 */
+    visibility: hidden; /* 초기에는 숨김 처리 */
+  }
+  .invitation-image-container:hover .invitation-info-container {
+    opacity: 1;
+    visibility: visible;
+  }
+  .likes_icon {
+    margin-right: 5px;
+  }
+  .like-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -310,7 +358,23 @@ export default function Homepage() {
               to={`/boards/${item.boardId}`}
               className="invitation-item"
             >
-              <img src={item.imageUrl} alt="초대장 이미지" />
+              <div className="invitation-image-container">
+                <img
+                  src={item.imageUrl}
+                  alt="초대장 이미지"
+                  className="invitation-image"
+                />
+                {/* 호버 시 정보를 표시할 컨테이너 */}
+                <div className="invitation-info-container">
+                  <span className="likes-count">{item.title}</span>
+                  <div className="like-container">
+                    <FcLike className="likes_icon" />
+                    <span className="invitation-title">
+                      {item.boardLikesCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </Link>
           ))}
         </InfiniteScroll>
