@@ -1,7 +1,9 @@
 package com.party.auth.fliter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.token.JwtTokenizer;
 import com.party.auth.util.CustomAuthorityUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +30,20 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> claims = verifyJws(request);
+        Map<String, Object> claims;
+        try {
+            claims = verifyJws(request);
+        } catch (ExpiredJwtException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "토큰이 만료되었습니다.");
+            String json = mapper.writeValueAsString(responseBody);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(json);
+            return;
+        }
         setAuthenticationToContext(claims);
         filterChain.doFilter(request, response);
     }
