@@ -4,7 +4,6 @@ import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-// import api from '../api/api';
 
 const MyPageSection = styled.section`
   width: 100vw;
