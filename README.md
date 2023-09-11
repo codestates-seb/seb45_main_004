@@ -1,4 +1,4 @@
-# seb45_pre_001
+# seb45_main_004
 <div align=center>
 <img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/078d0451-289b-447d-a693-eeb6e1cab114" width="700" height="300"/>
 </div>
