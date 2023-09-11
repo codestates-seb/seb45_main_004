@@ -1,5 +1,6 @@
 package com.party.auth.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.dto.MemberProfile;
 import com.party.auth.dto.Token;
 import com.party.auth.fliter.JwtAuthenticationFilter;
@@ -10,6 +11,9 @@ import com.party.exception.ExceptionCode;
 import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -30,10 +34,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -69,8 +72,12 @@ public class OAuthService {
 
         Member member = getOrSaveMember(memberProfile);
 
-        return createToken(member);
+        Token jwtToken = createToken(member);
 
+//        // jwt토큰의 refreshToken을 Member의 refresh 칼럼에 저장
+//        memberRepository.updateRefreshToken(member.getId(), jwtToken.getRefreshToken());
+
+        return jwtToken;
     }
 
     public String getToken(String code, ClientRegistration clientRegistration) {
@@ -195,4 +202,57 @@ public class OAuthService {
 
         return new Token(accessToken, refreshToken, member.getId());
     }
+
+    // 여기부터는 카카오 로그인이랑 상관없음
+    /*
+    public void verifyRefreshToken(String refreshToken, HttpServletResponse response) throws IOException {
+        // 만료기한과 유효한 리프레쉬 토큰인지 검증과정을 거침
+        try {
+        겹침 ->     jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey()));
+        }catch (ExpiredJwtException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "다시 로그인 필요");
+            String json = mapper.writeValueAsString(responseBody);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(json);
+        }
+        // 토큰에 포함된 Username(email)을 통해 Member를 찾고
+        // 해당 Member의 refresh와 비교
+        겹침 -> Claims claims = jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())).getBody();
+    }
+    작성하다가 겹치는 코드가 있어서 리팩터링
+    */
+    public Token verifyRefreshToken(String refreshToken, HttpServletResponse response) throws IOException {
+        Claims claims = null;
+
+        // 만료기한과 유효한 리프레쉬 토큰인지 검증과정을 거침
+        try {
+            claims = jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())).getBody();
+        } catch (ExpiredJwtException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "다시 로그인 필요");
+            String json = mapper.writeValueAsString(responseBody);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(json);
+            return null;
+        }
+        // 유효한 토큰이면 멤버꺼내와서 토큰 재생성
+        if (claims != null) {
+            Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
+            if (findmember.isPresent()) {
+                Token token = createToken(findmember.get());
+//                memberRepository.updateRefreshToken(findmember.get().getId(), token.getRefreshToken());
+                return token;
+            }
+        }
+        return null;
+    }
+
+
 }
