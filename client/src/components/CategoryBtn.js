@@ -19,7 +19,7 @@ const CatgegoryBtnWrapper = styled.li`
 
     // InviteWritePage 버튼 클릭 상태에 따른 css
     box-shadow: ${(props) =>
-      props.isSelected ? 'inset 1px 1px 4px 1px rgb(0, 0, 0, 0.5)' : ''};
+      props.isSelected ? 'inset 1px 1px 3px 1px rgb(0, 0, 0, 0.2)' : ''};
   }
 `;
 
@@ -42,8 +42,8 @@ export default function CategoryBtn({ text, color, onClick, isSelected }) {
 }
 
 CategoryBtn.propTypes = {
-  text: PropTypes.string.isRequired, // text prop의 유효성을 검사합니다.
-  color: PropTypes.string.isRequired,
+  text: PropTypes.string, // text prop의 유효성을 검사합니다.
+  color: PropTypes.string,
   onClick: PropTypes.func,
   isSelected: PropTypes.bool,
 };

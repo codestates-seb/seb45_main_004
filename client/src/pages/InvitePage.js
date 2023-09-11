@@ -4,16 +4,15 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { VscHeartFilled } from 'react-icons/vsc';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-
-//
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
-  // const token =
-  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7LC47Jes7YWM7Iqk7Yq47ZqM7JuQIiwiaWQiOjUsImVtYWlsIjoiam9pbnRlc3RAZ21haWwuY29tIiwic3ViIjoiam9pbnRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjk0MDcxNTcxLCJleHAiOjE2OTQzNzE1NzF9.DFxou60wKhVp7Lv-5hp6u0QK6DrKKX87I_xKwPHNdc46uls_hk4n49pAQ5ymblVY'; // 로그인 구현 전이라서 임시로 토큰값 넣어줌
-  const { boardId } = useParams(); // URL 파라미터 가져오기
+  const { boardId } = useParams();
+  const navigate = useNavigate();
+  const api = 'http://3.39.76.109:8080';
+
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     title: '', // 카드의 제목
@@ -36,20 +35,18 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   const [participants, setParticipants] = useState([]);
+
+  // 호스트 페이지 이동
+  const hostPageClick = () => {
+    const memberId = eventData.member.id;
+    navigate(`/members/${memberId}`);
+  };
 
   // 참여자 목록을 가져오는 함수
   const fetchParticipants = async () => {
     try {
-      const response = await axios.get(
-        `http://3.39.76.109:8080/boards/${boardId}/join`,
-        // {
-        //   headers: {
-        //     Authorization: token,
-        //   },
-        // },
-      );
+      const response = await axios.get(`${api}/boards/${boardId}/join`);
       setParticipants(response.data); // 참여자 목록을 상태에 저장
     } catch (error) {
       console.error('Error fetching participants:', error);
@@ -58,14 +55,14 @@ function InvitePage() {
 
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴
-  }, [eventData]); // eventData가 변경되면 참여자 목록을 다시 가져옴
+  }, []);
 
   // 카드 조회 요청
   useEffect(() => {
     axios
-      .get(`http://3.39.76.109:8080/boards/${boardId}`)
+      .get(`${api}/boards/${boardId}`)
       .then((response) => {
-        const eventData = response.data; // API 응답 데이터를 가져옴
+        const eventData = response.data;
         setEventData(eventData);
       })
       .catch((error) => {
@@ -73,17 +70,12 @@ function InvitePage() {
       });
   }, []);
 
-  // 참여 버튼을 클릭했을 때 호출
-  const handleJoinClick = () => {
-    sendJoinStatus();
-  };
-
   //참여요청
   const sendJoinStatus = () => {
     axios
       .request({
         method: 'post',
-        url: `http://3.39.76.109:8080/boards/${boardId}/join`,
+        url: `${api}/boards/${boardId}/join`,
         data: { isJoin: true },
         headers: {
           Authorization: token,
@@ -95,6 +87,7 @@ function InvitePage() {
           ...prevData,
           currentNum: prevData.currentNum + 1,
         }));
+        fetchParticipants(); // 참여자 목록을 다시 불러옴
       })
       .catch((error) => {
         console.error('Error sending join status:', error);
@@ -105,7 +98,7 @@ function InvitePage() {
   const handleLikeClick = () => {
     const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
     // 서버에 좋아요 상태 전송 함수 호출
-    console.log(newIsLiked);
+    // console.log(newIsLiked);
     sendLikeStatus(newIsLiked);
   };
 
@@ -115,7 +108,7 @@ function InvitePage() {
     axios
       .request({
         method: isLiked ? 'post' : 'delete', // isLiked 값에 따라 POST 또는 DELETE 요청을 함(true면 post(좋아요추가) false면 delete(좋아요취소))
-        url: `http://3.39.76.109:8080/likes/${boardId}`,
+        url: `${api}/likes/${boardId}`,
         data: { isLiked }, // isLiked 상태값을 서버에 요청값으로 보내줌
         headers: {
           Authorization: token,
@@ -132,7 +125,7 @@ function InvitePage() {
             ? prevData.boardLikesCount + 1
             : prevData.boardLikesCount - 1,
         }));
-        console.log(isLiked);
+        // console.log(isLiked);
       })
       .catch((error) => {
         console.error('Error sending like status:', error);
@@ -151,7 +144,11 @@ function InvitePage() {
         <article>
           <div className="card-container">
             <div className="image-container">
-              <img src={eventData.imageUrl} alt="카드 이미지" />
+              <img
+                className="main-img"
+                src={eventData.imageUrl}
+                alt="카드 이미지"
+              />
               <button
                 className="heart-button"
                 onClick={handleLikeClick}
@@ -159,13 +156,12 @@ function InvitePage() {
               <VscHeartFilled className="heart-icon" />
               <div className="likes-count">{eventData.boardLikesCount}</div>
             </div>
-            <button>카카오 공유{/*  카카오 공유 버튼 자리 */}</button>
           </div>
           <div className="user-box">
             <div className="host-container">
-              <button className="host-btn">
+              <button className="host-btn" onClick={hostPageClick}>
                 <img
-                  className="user-img" // 호스트 이미지 표시
+                  className="host-img" // 호스트 이미지 표시
                   src={eventData.member.imageUrl}
                   alt="host-img"
                 />
@@ -174,23 +170,21 @@ function InvitePage() {
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
-              {participants.map((participant, index) =>
-                index !== 0 ? (
-                  <img
-                    className="user-img"
-                    key={index}
-                    src={participant.memberImageUrl}
-                    alt="user-img"
-                    style={{ width: '50px', height: '50px' }}
-                  />
-                ) : null,
-              )}
+              {participants.slice(0, 4).map((participant, index) => (
+                <img
+                  className={`user-img ${index !== 0 ? 'user-img-offset' : ''}`}
+                  key={index}
+                  src={participant.memberImageUrl}
+                  alt="user-img"
+                />
+              ))}
+              {participants.length > 3 && <span>...</span>}
               <div>
                 {eventData.currentNum}/{eventData.totalNum}
               </div>
-
               <button
-                onClick={handleJoinClick}
+                className="join-btn"
+                onClick={sendJoinStatus}
                 // 참여버튼 비활성화
                 disabled={
                   eventData.currentNum === eventData.totalNum ||
@@ -199,43 +193,39 @@ function InvitePage() {
               >
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
-                  ? '모집마감'
-                  : '참여 버튼'}
+                  ? 'Closed'
+                  : 'Participation'}
               </button>
             </div>
           </div>
         </article>
         <article className="form-box">
-          <div className="title-box">
+          <div className="data title-box">
             <h1>{eventData.title}</h1>
           </div>
-          <div className="title-date">
+          <div className="data title-date">
             <div>{eventData.date}</div>
           </div>
-          <div className="title-body">
+          <div className="data title-body">
             <div>{eventData.body}</div>
           </div>
           <div>
-            {/* // Object.keys로 categoryMappings 객체의 키들을 배열로 바꿈,map사용해서 각 카테고리 키를 순회함 */}
             {Object.keys(CategoryMappings).map((key) => {
-              // 사용자가 선택한 카테고리와 일치하는 키값을 찾아서 그에 해당하는 ui 렌더링
               if (eventData.category === key) {
                 return (
-                  <CategoryBtn // 조건이 만족하면, CategoryBtn 컴포넌트를 생성하여 렌더링
+                  <CategoryBtn
                     key={key}
-                    // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
-                    // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                    text={CategoryMappings[key]?.label}
+                    color={CategoryMappings[key]?.backgroundColor}
                   />
                 );
               }
-              return null; // 선택된 카테고리와 일치하지 않는 경우 null 반환하여 렌더링하지 않음
+              return null;
             })}
           </div>
           <MapKakao
-            latitude={eventData.latitude} // 좌표값을 props로 전달
-            longitude={eventData.longitude} // 좌표값을 props로 전달
+            latitude={eventData.latitude}
+            longitude={eventData.longitude}
             showSearch={false}
             showMarker={true}
           />
@@ -261,19 +251,40 @@ const EventDetailsContainer = styled.div`
     }
   }
 
+  @keyframes stampEffect {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
   article {
     width: 433px;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  img {
+  .main-img {
     width: 400px;
     height: 400px;
   }
   .image-container {
     position: relative;
   }
+  .data,
+  .main-img,
+  #map {
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+  }
+
   .heart-button {
     position: absolute;
     background-color: transparent;
@@ -295,7 +306,7 @@ const EventDetailsContainer = styled.div`
   .likes-count {
     text-align: center;
     position: absolute;
-    color: black;
+    color: whitesmoke;
     top: 369px;
     left: 370px;
   }
@@ -322,12 +333,19 @@ const EventDetailsContainer = styled.div`
     width: 100%;
   }
 
+  .host-img,
   .user-img {
     border-radius: 50px;
     width: 50px;
     height: 50px;
   }
+
+  .user-img-offset {
+    margin-left: -30px;
+  }
+
   .host-btn {
+    cursor: pointer;
     border: none;
     height: 50px;
     padding: 0px;
@@ -393,6 +411,17 @@ const EventDetailsContainer = styled.div`
 
   .submit-btn {
     width: 100%;
+  }
+
+  .join-btn {
+    height: 32px;
+    border: none;
+    padding: 0px 12px;
+    background-color: rgba(244, 227, 233, 0.4);
+  }
+
+  .join-btn:active {
+    box-shadow: inset 1px 1px 3px rgb(0, 0, 0, 0.4);
   }
 
   #map {

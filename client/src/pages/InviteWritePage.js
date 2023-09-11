@@ -5,17 +5,17 @@ import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
 import { BiEdit } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  console.log(token);
-
+  const api = 'http://3.39.76.109:8080';
+  const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 사용자입력값 상태변수
   const [formData, setFormData] = useState({
     title: '',
     date: '',
@@ -27,33 +27,40 @@ function InviteWritePage() {
     longitude: '',
     address: '',
     imageUrl: selectedImage,
-    member: {
-      imageUrl: '', // 호스트 이미지
-    },
   });
-  // const token = //img 아이디
-  //   'Bearer eyJhbGciOiJIUzM4NCJ9.eyJyb2xlcyI6WyJVU0VSIl0sIm5pY2tuYW1lIjoi7YWM7Iqk7Yq47ZWg6rGwIiwiaWQiOjE4LCJlbWFpbCI6InRqczQxMTNAZ21haWwuY29tIiwic3ViIjoidGpzNDExM0BnbWFpbC5jb20iLCJpYXQiOjE2OTQwNjIxOTEsImV4cCI6MTY5NDM2MjE5MX0.CnnDGtQiyHh0NtTEqFDAsj7jJAiEulU4YRHws4LdHoat7p6ZdB99fY7NhxpTnN8D';
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const fieldValidations = [
+      { field: 'title', error: '제목을 입력해주세요.' },
+      { field: 'date', error: '날짜를 선택해주세요.' },
+      { field: 'totalNum', error: '인원 수를 선택해주세요.' },
+      { field: 'body', error: '내용을 입력해주세요.' },
+      { field: 'category', error: '카테고리를 선택해주세요.' },
+      { field: 'address', error: '장소를 선택해주세요.' },
+      { field: 'imageUrl', error: '이미지를 선택해주세요.' },
+    ];
 
-    // 유효성 검사 로직 추가
-    if (!formData.title.trim() || !formData.date || !formData.body.trim()) {
-      alert('모든 필드를 입력해주세요.');
+    const invalidField = fieldValidations.find(
+      ({ field }) =>
+        !formData[field] ||
+        (typeof formData[field] === 'string' && !formData[field].trim()),
+    );
+
+    if (invalidField) {
+      alert(invalidField.error);
       return;
     }
 
-    // 서버로 POST 요청 보내기
     axios
-      .post('http://3.39.76.109:8080/boards/new-boards', formData, {
+      .post(`${api}/boards/new-boards`, formData, {
         headers: {
           Authorization: token,
         },
       })
-      .then(() => {
-        // 요청 완료 후 페이지 새로고침
+      .then((response) => {
+        navigate(`/boards/${response.data.boardId}`);
         console.log('요청됨');
-        window.location.reload();
       })
       .catch((error) => {
         console.error('Error creating card:', error);
@@ -61,38 +68,29 @@ function InviteWritePage() {
   };
 
   // 카테고리 버튼 클릭 핸들러
-  const handleButtonClick = async (buttonId) => {
-    // 선택된 버튼 업데이트
+  const handleCategoryButtonClick = async (buttonId) => {
     setSelectedButton(buttonId);
-    console.log('클릭한 버튼:', buttonId);
-
-    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
     }));
 
     try {
-      // 서버에 카드 API 요청
-      const response = await axios.get(
-        `http://3.39.76.109:8080/cards/${buttonId}/images`,
-      );
-
+      const response = await axios.get(`${api}/cards/${buttonId}/images`);
       setImageFromServer(response.data);
     } catch (error) {
       console.error('Error fetching image:', error);
     }
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  // 사용자가 지도에서 선택한 장소 정보를 업데이트하는 함수
   const handleLocationSelect = (latitude, longitude, address) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -102,23 +100,16 @@ function InviteWritePage() {
     }));
   };
 
-  // 모달 버튼 클릭 핸들러
   const handleModalClick = () => {
     if (!selectedButton) {
-      // 사용자가 카테고리를 선택하지 않았다면
       alert('카테고리를 선택해주세요');
       return;
     }
-
     setIsModalOpen((prevState) => !prevState);
   };
 
   const handleImageClick = async (imageUrl) => {
-    // 선택된 버튼 업데이트
     setSelectedImage(imageUrl);
-    console.log(selectedImage);
-
-    // formData 업데이트
     setFormData((prevData) => ({
       ...prevData,
       imageUrl: imageUrl,
@@ -131,22 +122,28 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
+
   const currentDate = new Date().toISOString().split('T')[0];
+
   return (
     <StyledWritePage>
       <section>
         <button className="modal-btn" onClick={handleModalClick}>
           <BiEdit className="edit-btn" />
         </button>
-
         <form onSubmit={handleSubmit}>
           <article>
             <div className="card-container">
               <div className="image-container">
                 {formData.imageUrl ? (
-                  <img src={formData.imageUrl} alt="선택된 카테고리의 이미지" />
+                  <img
+                    className="main-img"
+                    src={formData.imageUrl}
+                    alt="선택된 카테고리의 이미지"
+                  />
                 ) : (
                   <img
+                    className="main-img"
                     src="https://celebeeimage.s3.ap-northeast-2.amazonaws.com/board/CATEGORY_ETC/CATEGORY_ETC1.png"
                     alt="기본 이미지"
                   />
@@ -161,7 +158,7 @@ function InviteWritePage() {
           </article>
         </form>
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <article className="form-box">
               <label>
                 Title:
@@ -219,8 +216,6 @@ function InviteWritePage() {
               </label>
             </article>
           </form>
-
-          {/* 모달 표시 */}
           {isModalOpen && (
             <div
               className="modal-background"
@@ -236,7 +231,7 @@ function InviteWritePage() {
                     key={index}
                     onClick={() => handleImageClick(imageUrl)}
                   >
-                    <img className="card-img" src={imageUrl} alt={`${index}`} />
+                    <img className="card-img" src={imageUrl} alt="카드이미지" />
                   </button>
                 ))}
               </div>
@@ -246,26 +241,22 @@ function InviteWritePage() {
           {/*카테고리*/}
           <div className="category-btn">
             {Object.keys(CategoryMappings)
-              .filter((key) => key !== 'CATEGORY_ALL') // 'All' 버튼 제외하고 렌더링
+              .filter((key) => key !== 'CATEGORY_ALL')
               .map((key) => {
-                const buttonId = key; // 버튼 ID 설정
-                // 선택된 버튼인지 여부를 확인하여 스타일 적용
+                const buttonId = key;
                 const isButtonSelected = selectedButton === buttonId;
                 return (
                   <CategoryBtn
                     key={key}
                     isSelected={isButtonSelected}
                     className={isButtonSelected ? 'selected' : ''}
-                    onClick={() => handleButtonClick(key)} // 클릭 이벤트 핸들러 전달
-                    // ( categoryMappings[key]?. => categoryMappings 객체에서 특정 키에 해당하는 값의 프로퍼티를 가져옴)
-                    // (옵셔널 체이닝 연산자(?.)는 key에 해당하는 label,backgroundColor 프로퍼티 값을 가져옴)
-                    text={CategoryMappings[key]?.label} //카테고리의 label 값을 text 프로퍼티로 전달
-                    color={CategoryMappings[key]?.backgroundColor} //카테고리의 backgroundColor 값을 color 프로퍼티로 전달
+                    onClick={() => handleCategoryButtonClick(key)}
+                    text={CategoryMappings[key]?.label}
+                    color={CategoryMappings[key]?.backgroundColor}
                   />
                 );
               })}
           </div>
-          {/*카테고리*/}
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
@@ -285,7 +276,8 @@ const StyledWritePage = styled.div`
     gap: 20px;
     padding: 0px 200px;
   }
-  img {
+
+  .card-container {
     width: 400px;
     height: 400px;
   }
@@ -307,6 +299,20 @@ const StyledWritePage = styled.div`
     border: none;
     height: 40px;
     padding: 10px;
+  }
+
+  .form-box label > input,
+  textarea,
+  .submit-btn,
+  .search-box,
+  .main-img,
+  #map {
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  .main-img {
+    width: 400px;
+    height: 400px;
   }
   .date-box {
     display: grid;
@@ -344,7 +350,7 @@ const StyledWritePage = styled.div`
     margin: 16px 0px;
     display: grid;
     grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    grid-gap: 13px; // 버튼 사이의 간격을 조절할 수 있습니다.
+    grid-gap: 14px; // 버튼 사이의 간격을 조절할 수 있습니다.
   }
 
   .modal-btn {
@@ -355,6 +361,7 @@ const StyledWritePage = styled.div`
     top: 362px;
     background-color: #d25bea;
     border: none;
+    z-index: 1;
   }
 
   .modal-btn:active,
