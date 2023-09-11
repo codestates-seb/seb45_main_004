@@ -113,7 +113,7 @@ const HomePage = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
   }
   .invitation-image {
     width: 300px;
@@ -141,7 +141,6 @@ const HomePage = styled.div`
     visibility: hidden; /* 초기에는 숨김 처리 */
   }
   .invitation-image-container:hover .invitation-info-container {
-    /* display: block; //호버 시 정보를 보이도록 설정 */
     opacity: 1;
     visibility: visible;
   }
