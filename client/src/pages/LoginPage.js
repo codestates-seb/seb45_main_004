@@ -6,6 +6,8 @@ import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { fetchUserData, login } from '../redux/actions';
 
 const LoginBody = styled.section`
   display: flex;
@@ -29,6 +31,7 @@ const LoginPage = () => {
   const [isError, setIsError] = useState('');
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //이메일 형식 검사 규칙 정의
   const isEmailValid = (email) => {
@@ -36,7 +39,7 @@ const LoginPage = () => {
     return emailPattern.test(email);
   };
 
-  const handleUserIdChange = (e) => {
+  const handleUsernameChange = (e) => {
     setUsername(e.target.value);
 
     const isValid = isEmailValid(username);
@@ -52,7 +55,7 @@ const LoginPage = () => {
     return password.length >= 7;
   };
 
-  const handleUserPasswordChange = (e) => {
+  const handlePasswordChange = (e) => {
     setPassword(e.target.value);
 
     const isValid = isPasswordValid(password);
@@ -65,7 +68,7 @@ const LoginPage = () => {
   };
 
   // 로그인 데이터 양식 전달 시 검사 규칙 정의
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (isEmailValid(username) && isPasswordValid(password)) {
@@ -78,11 +81,14 @@ const LoginPage = () => {
             password,
           },
         );
+        console.log(response);
         if (response.status === 200) {
-          const memberId = response.headers.memberId;
           const token = response.headers.authorization;
+          const memberId = response.headers.memberid;
           localStorage.setItem('jwtToken', token);
-          console.log('성공', memberId);
+          console.log('성공');
+          dispatch(login(token));
+          dispatch(fetchUserData(memberId));
           navigate('/');
         }
       } catch (error) {
@@ -105,14 +111,14 @@ const LoginPage = () => {
       <Logincontainer>
         <OauthLoginButton />
         <EmailLoginForm
-          userId={username}
-          userPassword={password}
-          handleUserIdChange={handleUserIdChange}
-          handleUserPasswordChange={handleUserPasswordChange}
+          username={username}
+          password={password}
+          handleUsernameChange={handleUsernameChange}
+          handlePasswordChange={handlePasswordChange}
           eamilError={eamilError}
           passwordError={passwordError}
         />
-        <Button type="login" text="Log In" onClick={handleSubmit} />
+        <Button type="login" text="Log In" onClick={handleLogin} />
         {isError && <p>{isError}</p>}
       </Logincontainer>
     </LoginBody>

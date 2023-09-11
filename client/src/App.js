@@ -18,7 +18,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="boards/new-boards" element={<InviteWritePage />} />
         <Route path="/boards/:boardId" element={<InvitePage />} />
-        <Route path="/members/1" element={<MyPage />} />
+        <Route path="/members/:memberId" element={<MyPage />} />
         <Route path="/members/login" element={<LoginPage />} />
         <Route path="/members/" element={<SignupPage />} />
       </Routes>

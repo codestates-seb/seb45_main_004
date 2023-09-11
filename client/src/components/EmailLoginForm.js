@@ -40,10 +40,10 @@ const MailLoginform = styled.form`
 `;
 
 const EmailLoginForm = ({
-  userId,
-  userPassword,
-  handleUserIdChange,
-  handleUserPasswordChange,
+  username,
+  password,
+  handleUsernameChange,
+  handlePasswordChange,
   eamilError,
   passwordError,
 }) => {
@@ -56,8 +56,8 @@ const EmailLoginForm = ({
         <input
           type="text"
           id="userId"
-          value={userId}
-          onChange={handleUserIdChange}
+          value={username}
+          onChange={handleUsernameChange}
         />
         {eamilError && <p className="error">{eamilError}</p>}
       </div>
@@ -69,8 +69,8 @@ const EmailLoginForm = ({
         <input
           type="password"
           id="userPassword"
-          value={userPassword}
-          onChange={handleUserPasswordChange}
+          value={password}
+          onChange={handlePasswordChange}
         />
         {passwordError && <p className="error">{passwordError}</p>}
       </div>
@@ -79,10 +79,10 @@ const EmailLoginForm = ({
 };
 
 EmailLoginForm.propTypes = {
-  userId: PropTypes.string.isRequired,
-  userPassword: PropTypes.string.isRequired,
-  handleUserIdChange: PropTypes.func.isRequired,
-  handleUserPasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
   eamilError: PropTypes.string.isRequired,
   passwordError: PropTypes.string.isRequired,
 };
