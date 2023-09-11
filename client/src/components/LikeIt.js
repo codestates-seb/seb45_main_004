@@ -1,11 +1,17 @@
 import { styled } from 'styled-components';
+import PropTypes from 'prop-types';
 
-const DibsOnPost = styled.div``;
+const DibsOnPost = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ContentRow = styled.li`
   list-style-type: none;
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-bottom: 30px;
 `;
 
 const ContentItem = styled.div`
@@ -14,26 +20,38 @@ const ContentItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
   margin-left: 45px;
   margin-right: 45px;
+  margin-bottom: 20px;
+
+  img {
+    width: 16em;
+    height: 16em;
+  }
 `;
 
-const LikeIt = () => {
+const LikeIt = ({ user }) => {
+  if (!user || !user.boardLikes || user.boardLikes.length === 0) {
+    return null;
+  }
+
   return (
     <DibsOnPost>
       <ContentRow>
-        <ContentItem>
-          <b>코딩 같이 할 사람</b>
-        </ContentItem>
-        <ContentItem>
-          <b>인피니트 콘서트 파티 구해요!</b>
-        </ContentItem>
-        <ContentItem>
-          <b>이번 주 일요일 조기축구 파티 구해요!</b>
-        </ContentItem>
+        {user.boardLikes.map((el, boardId) => {
+          return (
+            <ContentItem key={boardId}>
+              <img src={el.imgUrl} alt="찜한 목록" />;
+            </ContentItem>
+          );
+        })}
       </ContentRow>
     </DibsOnPost>
   );
 };
+
+LikeIt.propTypes = {
+  user: PropTypes.object.isRequired,
+};
+
 export default LikeIt;

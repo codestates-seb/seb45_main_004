@@ -9,6 +9,7 @@ const MyPartyPost = styled.div`
 const ContentRow = styled.li`
   list-style-type: none;
   display: flex;
+  flex-wrap: wrap;
   margin-top: 20px;
   margin-bottom: 30px;
 `;
@@ -19,9 +20,9 @@ const ContentItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
   margin-left: 45px;
   margin-right: 45px;
+  margin-bottom: 20px;
 
   img {
     width: 16em;
@@ -33,10 +34,10 @@ const Participations = ({ user }) => {
   return (
     <MyPartyPost>
       <ContentRow>
-        {user.applicants.map((el, id) => {
+        {user.applicants.map((el, boardId) => {
           return (
-            <ContentItem key={id}>
-              <img src={el.boardImageUrl} alt="my-party-list" />;
+            <ContentItem key={boardId}>
+              <img src={el.imgUrl} alt="my-party-list" />;
             </ContentItem>
           );
         })}
