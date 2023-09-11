@@ -242,6 +242,7 @@ public class OAuthService {
             response.getWriter().write(json);
             return null;
         }
+        // 유효한 토큰이면 멤버꺼내와서 토큰 재생성
         if (claims != null) {
             Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
             if (findmember.isPresent()) {

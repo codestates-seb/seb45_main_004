@@ -37,9 +37,9 @@ public class OAuthController {
         return ResponseEntity.ok().headers(headers).build();
     }
 
+    // 리프레쉬 토큰을 받아 검증후 엑세스토큰 리프레쉬토큰을 각각 재발급해줌
     @GetMapping("/refresh")
     public ResponseEntity refreshForAccess(@RequestBody Refresh refreshToken, HttpServletResponse response) throws IOException {
-        System.out.println(refreshToken.getRefreshToken());
         Token token = oAuthService.verifyRefreshToken(refreshToken.getRefreshToken(), response);
         // 여긴 ATK랑 RTK를 헤더에 담아서 다시 보내줄거임;
         HttpHeaders headers = new HttpHeaders();
