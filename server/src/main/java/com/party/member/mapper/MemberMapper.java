@@ -1,5 +1,6 @@
 package com.party.member.mapper;
 
+import com.party.board.entity.Applicant;
 import com.party.board.mapper.ApplicantMapper;
 import com.party.boardlike.entity.BoardLike;
 import com.party.member.dto.*;
@@ -26,4 +27,8 @@ public interface MemberMapper {
     @Mapping(target = "boardId", source = "board.id")
     @Mapping(target = "imgUrl", source = "board.imageUrl")
     MemberBoardLikeResponseDto boardLikeToMemberBoardLikeResponseDto(BoardLike boardLike);
+
+    @Mapping(target = "imgUrl", source = "boardImageUrl")
+    @Mapping(target = "boardId", source = "board.id")
+    MemberApplicantResponseDto applicantToMemberApplicantResponseDto(Applicant applicant);
 }
