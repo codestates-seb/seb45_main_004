@@ -19,7 +19,7 @@ public class MemberResponseDto {
     private String gender;
     private String introduce;
     private String imageUrl;
-    private List<ApplicantResponseDto> applicants = new ArrayList<>();
+    private List<MemberApplicantResponseDto> applicants = new ArrayList<>();
     private List<MemberBoardLikeResponseDto> boardLikes = new ArrayList<>();
     private long follower;
     private long following;
