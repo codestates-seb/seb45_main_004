@@ -19,6 +19,7 @@ function InvitePage() {
 
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
+    memberId: '',
     title: '', // 카드의 제목
     date: '', // 카드의 날짜
     body: '', // 카드의 본문 내용
@@ -30,7 +31,7 @@ function InvitePage() {
     boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
     imageUrl: '', // 카드의 이미지
     member: {
-      memberId: 0, // 멤버의 아이디
+      id: 0, // 멤버의 아이디
       memberNickname: '', // 멤버의 닉네임
       imageUrl: '', // 호스트의 이미지
     },
@@ -39,7 +40,7 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
+  console.log(eventData.member.id);
   //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
@@ -48,8 +49,8 @@ function InvitePage() {
 
   // 호스트 페이지 이동
   const hostPageClick = () => {
-    const memberId = eventData.member.id;
-    navigate(`/members/${memberId}`);
+    // const memberId = eventData.member.id;
+    navigate(`/members/${eventData.member.id}`);
   };
 
   // 참여자 목록을 가져오는 함수
