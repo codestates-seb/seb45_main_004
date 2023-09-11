@@ -9,6 +9,7 @@ import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.util.UpdateUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -54,6 +56,12 @@ public class MemberService {
 
     public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
+    }
+
+    public List<Member> findMembers() {
+        List<Member> members = memberRepository.findAll();
+        System.out.println(members);
+        return members;
     }
 
     public void deleteMember(long memberId) {

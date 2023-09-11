@@ -7,11 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MemberBoardLikeResponseDto {
-    private Long id;
     private Long boardId;
-    public Board getBoard(){
-        Board board = new Board();
-        board.setId(boardId);
-        return board;
-    }
+    private String imgUrl;
 }
