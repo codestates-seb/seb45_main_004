@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 //    @Query("select board from Board board where board.id = :boardId")
     @Query("select board from Board board join fetch board.member where board.id = :boardId")
     Optional<Board> findByIdWithAll(@Param("boardId") Long boardId);
+
+    List<Board> findByDate(LocalDate eventDate);
 
     //카테고리 조회
     List<Board> findByCategory(Board.BoardCategory category);

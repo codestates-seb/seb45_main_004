@@ -61,8 +61,6 @@ public class Board {
     @Enumerated(value = EnumType.STRING)
     private BoardStatus status = BoardStatus.BOARD_RECRUITING;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     private long boardLikesCount;
 
     private String imageUrl;
