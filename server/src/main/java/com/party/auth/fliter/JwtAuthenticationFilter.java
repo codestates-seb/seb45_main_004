@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.dto.LoginDto;
 import com.party.auth.token.JwtTokenizer;
 import com.party.member.entity.Member;
+import com.party.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
     private final JwtTokenizer jwtTokenizer;
     private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
 
     private String delegateAccessToken(Member member) {
         Map<String, Object> claims = new HashMap<>();
@@ -72,6 +75,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String accessToken = delegateAccessToken(member);
         String refreshToken = delegateRefreshToken(member);
+
+//        // 멤버 레코드의 refreshToken만 업데이트 해주는 쿼리를
+//        // 사용해서 Member의 refreshToken을 refresh 칼럼에 저장
+//        memberRepository.updateRefreshToken(member.getId(), refreshToken);
+
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", "Bearer " + refreshToken);
         response.setHeader("memberId", String.valueOf(member.getId()));
