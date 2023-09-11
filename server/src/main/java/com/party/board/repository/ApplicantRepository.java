@@ -15,7 +15,4 @@ public interface ApplicantRepository extends JpaRepository<Applicant, Long> {
     //참여했는지 조회
     boolean existsByBoardIdAndMemberId(Long boardId, Long memberId);
 
-
-
-
 }
