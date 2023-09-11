@@ -27,6 +27,7 @@ public enum OAuthProvider implements BaseEnum {
 
         return MemberProfile.builder()
                 .email((String) kakaoAccount.get("email"))
+                .gender((String) kakaoAccount.get("gender"))
                 .build();
     });
 

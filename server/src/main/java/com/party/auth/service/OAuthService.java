@@ -7,8 +7,10 @@ import com.party.auth.provider.OAuthProvider;
 import com.party.auth.token.JwtTokenizer;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,21 +40,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class OAuthService {
     private final InMemoryClientRegistrationRepository inMemoryRepository;
     private final MemberRepository memberRepository;
     private final JwtTokenizer jwtTokenizer;
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final RestTemplate restTemplate;
-
-    public OAuthService(InMemoryClientRegistrationRepository inMemoryRepository, MemberRepository memberRepository,
-                        JwtTokenizer jwtTokenizer, DefaultOAuth2UserService defaultOAuth2UserService, RestTemplate restTemplate) {
-        this.inMemoryRepository = inMemoryRepository;
-        this.memberRepository = memberRepository;
-        this.jwtTokenizer = jwtTokenizer;
-        this.defaultOAuth2UserService = defaultOAuth2UserService;
-        this.restTemplate = restTemplate;
-    }
+    private final AwsService awsService;
 
     @Transactional
     public Token login(OAuthProvider provider, String code) {
@@ -154,8 +149,11 @@ public class OAuthService {
         Member member = Member.createMember(
                 memberProfile.getEmail(),
                 "oauthUser",
-                memberProfile.getEmail().split("@")[0]
+                memberProfile.getEmail().split("@")[0],
+                memberProfile.getGender()
         );
+        String imagePath = awsService.getThumbnailPath("profile/1.png");
+        member.setImageUrl(imagePath);
         Member signMember = memberRepository.save(member);
         return signMember;
     }
