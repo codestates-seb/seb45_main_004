@@ -180,6 +180,7 @@ public class OAuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", userDetails.getId());
         claims.put("authorities", authentication.getAuthorities());
+        claims.put("roles", member.getRoles());
 
         // Access Token 생성
         String accessToken = jwtTokenizer.generateAccessToken(
