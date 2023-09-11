@@ -22,17 +22,17 @@ const HomePage = styled.div`
     height: 350px;
     margin-top: 50px;
     align-items: center;
-    animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite)
+    /* animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite) */
   }
   // 오른쪽에서 왼쪽으로 이동하게끔 효과주기
-  @keyframes slideTExt {
+  /* @keyframes slideTExt {
     0% {
       transform: translateX(100%);
     }
     100% {
       transform: translateX(-100%);
     }
-  }
+  } */
   .service-introduction {
     color: white;
   }
@@ -115,10 +115,6 @@ const HomePage = styled.div`
     align-items: center;
     overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
   }
-  .invitation-image {
-    width: 300px;
-    height: 300px;
-  }
   .invitation-info-container {
     display: flex;
     flex-direction: column;
@@ -153,6 +149,54 @@ const HomePage = styled.div`
     align-items: center;
     justify-content: center;
   }
+  .header-frame1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .fram1-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-right: 20px;
+    animation: slideText 10s linear infinite;
+  }
+
+  @keyframes slideText {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* @keyframes slideTranslate {
+    0% {
+      transform: translateX(0%);
+    }
+    25% {
+      transform: translateX(25%);
+    }
+    50% {
+      transform: translateX(50%);
+    }
+    75% {
+      transform: translateX(75%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  } */
 `;
 
 const SearchBtn = styled.button`
@@ -165,6 +209,14 @@ const SearchBtn = styled.button`
   font-size: 18px;
 `;
 
+const Image = styled.img`
+  width: 300px;
+  height: 300px;
+  &.header-image {
+    border-radius: 20px;
+  }
+`;
+
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
   // const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장 -> 해당 상태를 currentInvitaions 상태값으로 저장 가능
@@ -174,6 +226,7 @@ export default function Homepage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentInvitations, setCurrentInvitations] = useState([]);
   const PER_SCROLL = 10;
+  const [showFrame1, setShowFrame1] = useState(true);
 
   const fetchAllInvitaion = () => {
     axios
@@ -294,13 +347,39 @@ export default function Homepage() {
     likesSort(selectedCategory);
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowFrame1(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <HomePage>
-      <div className="main-container">
+      <div
+        className={`main-container ${
+          showFrame1 ? 'show-frame1' : 'show-frame2'
+        }`}
+      >
         <div className="main-header">
-          <h1 className="service-introduction">
-            Hi! Make new friends at Celebee 🐝
-          </h1>
+          <div className="header-frame1">
+            <div className={`fram1-content${showFrame1 ? 'visible' : ''}`}>
+              <h1> Let&apos;s make a new friend at celebee 🐝</h1>
+              <h3> Value of together Lookinf for a companion to be with me</h3>
+            </div>
+            <Image
+              src="/assets/Category_Travel1.png"
+              alt="card"
+              className="header-image"
+            />
+          </div>
+          {/* <div className="header-frame2">
+            <div className={`fram2-content${showFrame1 ? '' : 'visible'}`}>
+              <h1>make a friend</h1>
+              <h3>친구를 만들어보아요</h3>
+            </div>
+          </div> */}
         </div>
         <div className="categorys-container">
           <ul className="categorys-container">
@@ -359,7 +438,7 @@ export default function Homepage() {
               className="invitation-item"
             >
               <div className="invitation-image-container">
-                <img
+                <Image
                   src={item.imageUrl}
                   alt="초대장 이미지"
                   className="invitation-image"
