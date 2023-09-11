@@ -7,11 +7,15 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
+import { useSelector } from 'react-redux';
+
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
   const { boardId } = useParams();
   const navigate = useNavigate();
   const api = 'http://3.39.76.109:8080';
+  const [participants, setParticipants] = useState([]);
+  const memberId = useSelector((state) => state.user.memberId);
 
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -35,7 +39,12 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-  const [participants, setParticipants] = useState([]);
+
+  //마감 날짜 관련
+  const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
+  const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
+  // 두 날짜 간의 일수 차이 계산
+  const daysDifference = differenceInDays(cardDate, currentDate);
 
   // 호스트 페이지 이동
   const hostPageClick = () => {
@@ -94,54 +103,57 @@ function InvitePage() {
       });
   };
 
-  // 좋아요 버튼을 클릭했을 때 호출
+  const [isLiked, setIsLiked] = useState();
+
+  useEffect(() => {
+    console.log(isLiked);
+    axios
+      .get(`${api}/members/${memberId}`)
+      .then((response) => {
+        const userLikedBoards = response.data.boardLikes;
+        const liked = userLikedBoards.some((board) => board.id === boardId);
+        setIsLiked(liked);
+      })
+      .catch((error) => {
+        console.error('에러 Error fetching member like status:', error);
+      });
+  }, []);
+
   const handleLikeClick = () => {
-    const newIsLiked = !eventData.isLiked; // 현재 좋아요 상태 반전하여 새로운 상태 저장
-    // 서버에 좋아요 상태 전송 함수 호출
-    // console.log(newIsLiked);
-    sendLikeStatus(newIsLiked);
+    const newLikeStatus = !isLiked;
+    setIsLiked(newLikeStatus);
+    sendLikeStatus(newLikeStatus);
   };
 
-  // 서버로 좋아요 상태 전송 post또는 delete요청을 함
   const sendLikeStatus = (isLiked) => {
-    // 서버로 좋아요 상태 전송
     axios
       .request({
         method: isLiked ? 'post' : 'delete', // isLiked 값에 따라 POST 또는 DELETE 요청을 함(true면 post(좋아요추가) false면 delete(좋아요취소))
         url: `${api}/likes/${boardId}`,
-        data: { isLiked }, // isLiked 상태값을 서버에 요청값으로 보내줌
+        data: { isLiked },
         headers: {
           Authorization: token,
         },
       })
-
       .then(() => {
         // 응답 받은 상태 업데이트
         setEventData((prevData) => ({
-          //prevData는 이전  상태의 eventData 객체를 가리키는 변수임
           ...prevData, // 기존의 eventData를 복사하여 새로운 객체를 생성
-          isLiked: isLiked, // 새로운 객체에 새로운 좋아요 상태 값을 업데이트
-          boardLikesCount: isLiked // 좋아요 추가 시 좋아요 전체 카운트를 증가 또는 감소함
+          boardLikesCount: isLiked
             ? prevData.boardLikesCount + 1
             : prevData.boardLikesCount - 1,
         }));
-        // console.log(isLiked);
       })
       .catch((error) => {
         console.error('Error sending like status:', error);
       });
   };
 
-  //마감 날짜 관련
-  const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
-  const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
-  // 두 날짜 간의 일수 차이 계산
-  const daysDifference = differenceInDays(cardDate, currentDate);
-
   return (
     <EventDetailsContainer>
       <section>
         <article>
+          <div>memberId:{memberId}</div>
           <div className="card-container">
             <div className="image-container">
               <img
@@ -154,7 +166,9 @@ function InvitePage() {
                 onClick={handleLikeClick}
               ></button>
               <VscHeartFilled className="heart-icon" />
-              <div className="likes-count">{eventData.boardLikesCount}</div>
+              <div className="likes-count">
+                <div>{eventData.boardLikesCount}</div>
+              </div>
             </div>
           </div>
           <div className="user-box">
