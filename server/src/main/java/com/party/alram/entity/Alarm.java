@@ -19,7 +19,8 @@ public class Alarm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private AlarmStatus alarmStatus;
 
     private String content;
@@ -38,9 +39,9 @@ public class Alarm {
         BOARD_CLOSED("모임 마감");
 
         @Getter
-        private String alramStatus;
-        AlarmStatus(String alramStatus){
-            this.alramStatus = alramStatus;
+        private String alarmStatus;
+        AlarmStatus(String alarmStatus){
+            this.alarmStatus = alarmStatus;
         }
 
     }

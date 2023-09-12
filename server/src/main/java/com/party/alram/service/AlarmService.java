@@ -58,8 +58,8 @@ public class AlarmService {
      * 알림 생성, 전송
      * 사용자의 모든 알람을 읽음처리
      */
-    @Async
-    @Transactional
+//    @Async
+//    @Transactional
     public void sendAlarm(Member member, Board board, Alarm.AlarmStatus alarmStatus, String content){
         Alarm alarm = Alarm.create(member, board, alarmStatus,content);
         alarmRepository.save(alarm);
@@ -88,12 +88,13 @@ public class AlarmService {
         }
     }
 
-   public List<AlarmResponse> getAlarms (Long memberId){
-        List<AlarmResponse> alarmList = alarmRepository.findAllById(memberId);
-        return alarmList;
+
+   public List<Alarm> getAlarms (Long memberId){
+        return alarmRepository.findAllById(memberId);
    }
 
     //알림 삭제
+//    @Transactional
     public void deleteAlarmById(Long alarmId){
       alarmRepository.deleteById(alarmId);
     }

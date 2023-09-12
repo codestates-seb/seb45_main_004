@@ -1,15 +1,19 @@
 package com.party.alram.Controller;
 
-import com.party.alram.dto.AlarmResponse;
+import com.party.alram.entity.Alarm;
+import com.party.alram.repository.EmitterRepository;
 import com.party.alram.service.AlarmService;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 클라에서 구독하는 요청을 보내면,
@@ -21,18 +25,21 @@ import java.util.List;
 public class AlarmController {
     private final AlarmService alarmService;
     private final MemberService memberService;
+    private final EmitterRepository emitterRepository;
+
 
     @GetMapping
-    public List<AlarmResponse> getAlram(){
+    public ResponseEntity getAlarm(){
         Long memberId = extractMemberId();
-        List<AlarmResponse> alarmResponseList =alarmService.getAlarms(memberId);
-        return alarmResponseList;
+        //alarmService.getAlarms(memberId);
+        //List<Alarm> alarms = alarmService.getAlarms(memberId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/sub/{memberId}", produces = "text/event-stream")
+    @GetMapping(value = "/sub", produces = "text/event-stream")
     public SseEmitter subscribe(
-            @RequestParam(value = "lastEventId", required = false, defaultValue = "") String lastEventId,
-            @PathVariable Long memberId) {
+            @RequestParam(value = "lastEventId", required = false, defaultValue = "") String lastEventId) {
+        Long memberId = extractMemberId();
         return alarmService.subscribe(memberId, lastEventId);
     }
 
