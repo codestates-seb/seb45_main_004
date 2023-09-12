@@ -10,7 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   justify-content: center;
 
   .main-container {
@@ -18,15 +18,15 @@ const HomePage = styled.div`
   }
 
   .main-header {
-    display: flex;
     justify-content: center;
+    display: flex;
     align-items: center;
     height: 420px;
   }
 
   .main-header h1 {
     color: #ffffff;
-    font-size: 6em;
+    font-size: 80px;
   }
 
   .text-writing {
