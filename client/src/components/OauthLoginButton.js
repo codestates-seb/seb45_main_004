@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 const OauthButton = styled.button`
@@ -31,34 +29,9 @@ const OauthButton = styled.button`
 const OauthLoginButton = () => {
   const handleKakaoBtnClick = () => {
     window.location.assign(
-      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://celebee-bucket.s3-website.ap-northeast-2.amazonaws.com`,
+      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://localhost:3000/oauth/kakao/login`,
     );
   };
-
-  useEffect(() => {
-    const code = new URL(window.location.href).searchParams.get('code');
-    console.log('인가코드', code);
-    if (code) {
-      const data = {
-        provider: 'kakao',
-        code: code,
-      };
-      axios
-        .post(`http://3.39.76.109:8080/oauth/login`, data)
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            const authHeader = response.headers.authorization;
-            const token = authHeader.replace('Bearer ', '');
-            localStorage.setItem('jwtToken', token);
-            console.log('성공했니');
-          }
-        })
-        .catch((error) => {
-          console.log('에러', error);
-        });
-    }
-  }, []);
 
   return (
     <OauthButton onClick={handleKakaoBtnClick}>
