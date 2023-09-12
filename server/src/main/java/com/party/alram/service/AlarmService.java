@@ -1,15 +1,26 @@
 package com.party.alram.service;
 
 import com.party.alram.dto.AlarmResponse;
+import com.party.alram.entity.Alarm;
 import com.party.alram.repository.AlarmRepository;
 import com.party.alram.repository.EmitterRepository;
+import com.party.board.entity.Board;
+import com.party.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * 클라이언트에서 SSE 연결 요청을 보낸다.
+ * 서버에서는 클라이언트와 매핑되는 SSE 통신 객체를 만든다.
+ * 서버에서 이벤트가 발생하면 해당 객체를 통해 클라이언트로 데이터를 전달한다.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +55,27 @@ public class AlarmService {
     }
 
     /**
+     * 알림 생성, 전송
+     * 사용자의 모든 알람을 읽음처리
+     */
+    @Async
+    @Transactional
+    public void sendAlarm(Member member, Board board, Alarm.AlarmStatus alarmStatus, String content){
+        Alarm alarm = Alarm.create(member, board, alarmStatus,content);
+        alarmRepository.save(alarm);
+
+        Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmittersStartWithByMemberId(member.getId());
+        String eventId = makeTimeIncludedId(member.getId());
+
+        sseEmitters.forEach((key, emitter) -> {
+            //데이터 캐시 저장 (유실 데이터 처리를 위해)
+            emitterRepository.saveEventCache(key,alarm);
+            //데이터 전송
+            sendToClient(emitter,eventId, eventId, content);
+        });
+    }
+
+    /**
      * 클라에 데이터 전송 (id -> 데이터를 전달받을 사용자의 id)
      */
     private void sendToClient(SseEmitter emitter, String eventId, String emitterId, Object data) {
@@ -52,6 +84,7 @@ public class AlarmService {
                     .id(eventId).data(data));
         }catch (IOException exception){
             emitterRepository.deleteById(emitterId);
+            throw new RuntimeException("연결오류");
         }
     }
 

@@ -1,5 +1,6 @@
 package com.party.board.service;
 
+import com.party.alram.entity.Alarm;
 import com.party.alram.repository.AlarmRepository;
 import com.party.alram.service.AlarmService;
 import com.party.board.dto.BoardDto;
@@ -41,6 +42,9 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
+
+        //알림 발송
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"🔥작성한 모임이 등록되었습니다!🔥");
 
         return boardRepository.save(board);
     }
@@ -145,8 +149,4 @@ public class BoardService {
         return memberOptional.get();
     }
 
-//    //모임 알림 발송
-//    private SseEmitter notifyBoardInfo(){
-//        alarmService.sendToClient(em)
-//    }
 }
