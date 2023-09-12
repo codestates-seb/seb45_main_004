@@ -1,5 +1,8 @@
 package com.party.board.service;
 
+import com.party.alram.entity.Alarm;
+import com.party.alram.repository.AlarmRepository;
+import com.party.alram.service.AlarmService;
 import com.party.board.dto.BoardDto;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
@@ -12,8 +15,10 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 
 import java.time.LocalDate;
@@ -30,6 +35,7 @@ public class BoardService {
     private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final ApplicantRepository applicantRepository;
+    private final AlarmService alarmService;
 
     // 모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
@@ -37,6 +43,9 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
+
+        //알림 발송
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"🔥작성한 모임이 등록되었습니다!🔥");
 
         return boardRepository.save(board);
     }
@@ -141,7 +150,9 @@ public class BoardService {
         return memberOptional.get();
     }
 
+
     public List<Board> findEventsScheduledForDate(LocalDate eventDate) {
         return boardRepository.findByDate(eventDate);
     }
+
 }

@@ -1,5 +1,7 @@
 package com.party.board.service;
 
+import com.party.alram.entity.Alarm;
+import com.party.alram.service.AlarmService;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.board.repository.ApplicantRepository;
@@ -26,6 +28,7 @@ public class ApplicantService {
     private final ApplicantRepository applicantRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final AlarmService alarmService;
 
 
     //모임 참여
@@ -53,6 +56,9 @@ public class ApplicantService {
 
         //모임 참여 처리
         applicant.setJoin(true);
+
+        //알림 발송
+        alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "💝새로운 인연이 모임에 찾아왔어요💝");
 
         return applicantRepository.save(applicant);
     }
