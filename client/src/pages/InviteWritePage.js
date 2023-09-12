@@ -428,9 +428,12 @@ const StyledWritePage = styled.div`
       height: auto;
     }
     .modal-btn {
-      top: 408px;
+      top: 362px;
     }
 
+    .form-box {
+      margin-top: 60px;
+    }
     .submit-btn {
       left: 0px;
     }
