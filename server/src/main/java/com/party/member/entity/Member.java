@@ -40,7 +40,7 @@ public class Member {
     private String imageUrl;
 
     // 작성하다 보니까 필요가 없어졌음
-//    private String refreshToken;
+    private String refreshToken;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference
