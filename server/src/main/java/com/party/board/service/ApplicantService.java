@@ -1,5 +1,7 @@
 package com.party.board.service;
 
+import com.party.alram.entity.Alarm;
+import com.party.alram.service.AlarmService;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.board.repository.ApplicantRepository;
@@ -26,6 +28,7 @@ public class ApplicantService {
     private final ApplicantRepository applicantRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final AlarmService alarmService;
 
 
     //모임 참여
@@ -47,12 +50,19 @@ public class ApplicantService {
         int count = board.getCurrentNum();
         if(count < board.getTotalNum()){
             board.setCurrentNum(count+1);
+            if (count == board.getTotalNum()){
+                board.setStatus(Board.BoardStatus.BOARD_STATUS);
+            }
         }else {//인원수 다 찼으면 추가 안함
             throw new BusinessLogicException(ExceptionCode.NOT_ALLOW_PARTICIPATE);
         }
 
         //모임 참여 처리
         applicant.setJoin(true);
+
+        //알림 발송
+        alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
 
         return applicantRepository.save(applicant);
     }
@@ -89,4 +99,5 @@ public class ApplicantService {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
     }
+
 }
