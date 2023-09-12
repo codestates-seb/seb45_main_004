@@ -36,9 +36,5 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByCategoryAndTitleContaining(Board.BoardCategory category, String title);
 
     //제목+내용 글 검색(카테고리) 대소문자 구분 없이 검색 가능
-    List<Board> findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(Board.BoardCategory category1,
-                                                                                                String title,
-                                                                                                Board.BoardCategory category2,
-                                                                                                String body);
-
+    List<Board> findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(Board.BoardCategory category1, String title, Board.BoardCategory category2,String body);
 }
