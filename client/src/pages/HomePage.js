@@ -23,7 +23,7 @@ const HomePage = styled.div`
     align-items: center;
     height: 420px;
   }
-
+  
   .main-header h1 {
     margin: 0px 320px;
     color: #ffffff;
@@ -186,7 +186,7 @@ const HomePage = styled.div`
     flex-direction: row;
     align-items: center;
   }
-  .fram1-content {
+  .frame1-content {
     display: flex;
     flex-direction: column;
     gap: 30px;
@@ -233,6 +233,7 @@ const HomePage = styled.div`
   .main-title {
     font-size: 90px;
     line-height: 140px;
+    // margin-right: 20px;
   }
 `;
 
@@ -263,7 +264,6 @@ export default function Homepage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentInvitations, setCurrentInvitations] = useState([]);
   const PER_SCROLL = 10;
-  const [showFrame1, setShowFrame1] = useState(true);
 
   const fetchAllInvitaion = () => {
     axios
@@ -383,14 +383,6 @@ export default function Homepage() {
   const handleLikeSortClick = () => {
     likesSort(selectedCategory);
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFrame1(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <HomePage>
