@@ -50,6 +50,9 @@ public class ApplicantService {
         int count = board.getCurrentNum();
         if(count < board.getTotalNum()){
             board.setCurrentNum(count+1);
+            if (count == board.getTotalNum()){
+                board.setStatus(Board.BoardStatus.BOARD_STATUS);
+            }
         }else {//인원수 다 찼으면 추가 안함
             throw new BusinessLogicException(ExceptionCode.NOT_ALLOW_PARTICIPATE);
         }
