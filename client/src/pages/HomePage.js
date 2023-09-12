@@ -23,9 +23,8 @@ const HomePage = styled.div`
     align-items: center;
     height: 420px;
   }
-  
+
   .main-header h1 {
-    margin: 0px 320px;
     color: #ffffff;
     font-size: 6em;
   }
@@ -181,60 +180,6 @@ const HomePage = styled.div`
     align-items: center;
     justify-content: center;
   }
-  .header-frame1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .frame1-content {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    /* margin-right: 20px; */
-    /* animation: slideText 10s linear infinite; */
-  }
-  /* 
-  @keyframes slideText {
-    0% {
-      opacity: 1;
-    }
-    25% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 0;
-    }
-    75% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-    } 
-  }*/
-
-  /* @keyframes slideTranslate {
-    0% {
-      transform: translateX(0%);
-    }
-    25% {
-      transform: translateX(25%);
-    }
-    50% {
-      transform: translateX(50%);
-    }
-    75% {
-      transform: translateX(75%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  } */
-
-  .main-title {
-    font-size: 90px;
-    line-height: 140px;
-    // margin-right: 20px;
-  }
 `;
 
 const SearchBtn = styled.button`
@@ -386,35 +331,17 @@ export default function Homepage() {
 
   return (
     <HomePage>
-      <div className="main-header">
-        <div className="header-frame1">
-          <div className={`fram1-content${showFrame1 ? 'visible' : ''}`}>
+      <div className="main-container">
+        <div className="main-header">
+          <div className="header-frame1">
             <h1 className="main-title">
               Let&apos;s Make a New Friend
               <br />
               <span className="text-writing" data-text="with Celebee."></span>
             </h1>
-
-            {/* <h3> Value of together Lookinf for a companion to be with me</h3> */}
           </div>
-          {/* <Image
-              src="/assets/Category_Travel1.png"
-              alt="card"
-              className="header-image"
-            /> */}
         </div>
-        {/* <div className="header-frame2">
-            <div className={`fram2-content${showFrame1 ? '' : 'visible'}`}>
-              <h1>make a friend</h1>
-              <h3>친구를 만들어보아요</h3>
-            </div>
-          </div> */}
-      </div>
-      <div
-        className={`main-container ${
-          showFrame1 ? 'show-frame1' : 'show-frame2'
-        }`}
-      >
+
         <div className="categorys-container">
           <ul className="categorys-container">
             {Object.keys(CategoryMappings).map((key) => {
