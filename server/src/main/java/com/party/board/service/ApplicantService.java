@@ -99,4 +99,5 @@ public class ApplicantService {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
     }
+
 }
