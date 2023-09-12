@@ -53,9 +53,9 @@ const ButtonBox = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
-  const dispatch = useDispatch();
   const memberId = useSelector((state) => state.user.memberId);
 
   const handleNewStatus = () => {
