@@ -3,7 +3,6 @@ package com.party.boardlike.repository;
 import com.party.boardlike.entity.BoardLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 
 public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
@@ -16,7 +15,5 @@ public interface BoardLikeRepository extends JpaRepository<BoardLike, Long> {
 
     //특정 게시물과 특정 회원에 대한 좋아요 삭제
     void deleteByBoardIdAndMemberId(Long boardId, Long memberId);
-
-    List<BoardLike> findByMemberId(Long memberId);
 
 }
