@@ -10,7 +10,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
   display: flex;
-  /* flex-direction: column; */
   justify-content: center;
 
   .main-container {
@@ -18,10 +17,10 @@ const HomePage = styled.div`
   }
 
   .main-header {
-    justify-content: center;
     display: flex;
+    justify-content: center;
     align-items: center;
-    height: 420px;
+    height: 380px;
   }
 
   .main-header h1 {
@@ -138,15 +137,72 @@ const HomePage = styled.div`
     margin-left: 5px;
     cursor: pointer;
   }
-  .invitation-image-container {
+  /* .invitation-image-container {
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
+  } */
+
+  /* 추가부분 */
+  .invitation-image-container {
+    perspective: 1000px;
   }
-  .invitation-info-container {
+
+  .card-container {
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+  }
+
+  .card-container:hover {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: white;
+  }
+
+  .invitation-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .back-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  /* 여기까지 추가부분 */
+
+  /* .invitation-info-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -163,14 +219,15 @@ const HomePage = styled.div`
     gap: 10px;
     transition:
       opacity 0.3s,
-      visibility 0.3s; /* 전환 효과를 추가 */
-    opacity: 0; /* 초기에는 보이지 않도록 설정 */
-    visibility: hidden; /* 초기에는 숨김 처리 */
-  }
-  .invitation-image-container:hover .invitation-info-container {
+      visibility 0.3s;
+    opacity: 0; 
+    visibility: hidden;
+  } */
+
+  /* .invitation-image-container:hover .invitation-info-container {
     opacity: 1;
     visibility: visible;
-  }
+  } */
   .likes_icon {
     margin-right: 5px;
   }
@@ -399,19 +456,33 @@ export default function Homepage() {
               className="invitation-item"
             >
               <div className="invitation-image-container">
-                <Image
-                  src={item.imageUrl}
-                  alt="초대장 이미지"
-                  className="invitation-image"
-                />
-                {/* 호버 시 정보를 표시할 컨테이너 */}
-                <div className="invitation-info-container">
-                  <span className="likes-count">{item.title}</span>
-                  <div className="like-container">
-                    <FcLike className="likes_icon" />
-                    <span className="invitation-title">
-                      {item.boardLikesCount}
-                    </span>
+                <div className="card-container">
+                  {/* 앞면: 이미지 */}
+                  <div className="card-face card-front">
+                    <Image
+                      src={item.imageUrl}
+                      alt="초대장 이미지"
+                      className="invitation-image"
+                    />
+                  </div>
+
+                  {/* 뒷면: 정보와 이미지 */}
+                  <div className="card-face card-back">
+                    <Image
+                      src={item.imageUrl}
+                      alt="초대장 이미지"
+                      className="invitation-image"
+                    />
+                    {/* 오버레이 추가 */}
+                    <div className="back-overlay">
+                      <span className="likes-count">{item.title}</span>
+                      <div className="like-container">
+                        <FcLike className="likes_icon" />
+                        <span className="invitation-title">
+                          {item.boardLikesCount}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
