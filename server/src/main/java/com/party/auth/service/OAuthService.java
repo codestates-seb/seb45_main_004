@@ -16,6 +16,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -45,6 +46,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class OAuthService {
     private final InMemoryClientRegistrationRepository inMemoryRepository;
@@ -244,19 +246,23 @@ public class OAuthService {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(json);
-            return null;
+            throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
         }
-
+        System.out.println("서비스 계층에서 보낸 로그입니다" + claims.toString());
         // 유효한 토큰이면 멤버꺼내와서 DB의 토큰과 비교후 맞으면 재생성
-        if (claims != null) {
+        if (claims != null) { // 여기서 claims가 null이 나오는거 같음
             Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
-            if (findmember.isPresent() & memberRepository.findRefreshTokenById(findmember.get().getId()).equals(refreshToken)) {
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()));
+            System.out.println(refreshToken);
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken));
+            if (findmember.isPresent() & memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken)) {
+                System.out.println("DB의 리프레쉬 토큰과는 인증이 성공");
                 Token token = createToken(findmember.get());
-                applicationEventPublisher.publishEvent(new RefreshSaveEvent(findmember.get(), refreshToken));
+                applicationEventPublisher.publishEvent(new RefreshSaveEvent(findmember.get(), token.getRefreshToken()));
                 return token;
             }
         }
-        return null;
+        throw new BusinessLogicException(ExceptionCode.REFRESHTOKEN_IS_NOT_VERIFIED);
     }
 
 

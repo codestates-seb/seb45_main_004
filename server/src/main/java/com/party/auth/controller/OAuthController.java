@@ -42,6 +42,10 @@ public class OAuthController {
     public ResponseEntity refreshForAccess(@RequestBody Refresh refreshToken, HttpServletResponse response) throws IOException {
         Token token = oAuthService.verifyRefreshToken(refreshToken.getRefreshToken(), response);
         // 여긴 ATK랑 RTK를 헤더에 담아서 다시 보내줄거임;
+
+        // 예외발생구간 token 값이 생성이 안 되고 있음
+        System.out.println(token.getRefreshToken().toString());
+        System.out.println(token.getAccessToken().toString());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + token.getAccessToken());
         headers.add("Refresh", "Bearer " + token.getRefreshToken());

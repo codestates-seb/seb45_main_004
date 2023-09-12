@@ -16,7 +16,8 @@ public enum ExceptionCode {
     LIKE_NOT_FOUND(400,"Like doesn't exist"),
     UNAUTHORIZED_FOLLOW(400,"You don't have permission"),
     UNAUTHORIZED_ACCESS(400,"You don't have permission"),
-    FOLLOW_NOT_FOUND(400,"Follow not found");
+    FOLLOW_NOT_FOUND(400,"Follow not found"),
+    REFRESHTOKEN_IS_NOT_VERIFIED(402, "Refresh Token is not verified");
 
 
     @Getter
