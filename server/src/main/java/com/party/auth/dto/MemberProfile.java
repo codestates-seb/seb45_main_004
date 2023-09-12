@@ -8,6 +8,6 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class MemberProfile {
-
+    private String gender;
     private String email;
 }

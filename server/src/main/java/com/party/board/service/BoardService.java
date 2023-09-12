@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -147,6 +148,11 @@ public class BoardService {
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
         return memberOptional.get();
+    }
+
+
+    public List<Board> findEventsScheduledForDate(LocalDate eventDate) {
+        return boardRepository.findByDate(eventDate);
     }
 
 }

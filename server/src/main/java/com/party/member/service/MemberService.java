@@ -92,22 +92,4 @@ public class MemberService {
         Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
         return principal;
     }
-
-    /*
-    public void verifyMemberOwnership(String nickname) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-        }
-        Object principal = authentication.getPrincipal();
-
-        System.out.println(nickname);
-        System.out.println(principal);
-
-        if (!nickname.equals(principal.toString())) {
-            throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
-        }
-    }
-    수정필요
-     */
 }
