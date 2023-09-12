@@ -39,6 +39,9 @@ public class Member {
 
     private String imageUrl;
 
+    // 작성하다 보니까 필요가 없어졌음
+    private String refreshToken;
+
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
@@ -60,12 +63,14 @@ public class Member {
     @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
     private List<Follow> toMembers = new ArrayList<>();
 
-    public static Member createMember(String email, String password, String nickname) {
+    public static Member createMember(String email, String password, String nickname, String gender) {
 
         return Member.builder()
                 .email(email)
                 .password(password)
                 .nickname(nickname)
+                .gender(gender)
+                .introduce("기본 소개글")
                 .roles(List.of("USER"))
                 .build();
     }
