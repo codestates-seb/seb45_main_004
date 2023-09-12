@@ -138,7 +138,7 @@ public class BoardService {
     @Scheduled(cron = "0 0 0 * * *")
     public void checkDate(){
         LocalDate today = LocalDate.now();
-        List<Board> closedList = findEventsScheduledForDate(today.minus(1, ChronoUnit.DAYS));
+        List<Board> closedList = findEventsScheduledForDate(today.plus(2, ChronoUnit.DAYS));
 
         for (Board board : closedList){
             board.setStatus(Board.BoardStatus.BOARD_STATUS);
