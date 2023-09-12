@@ -43,12 +43,13 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
-
         //알림 발송
         alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
 
         return boardRepository.save(board);
     }
+
+
 
     //모임글 상세 조회
     public Board findBoard(long boardId) {
@@ -99,6 +100,7 @@ public class BoardService {
         return boardRepository.findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(category1, title,category2, body);
     }
 
+
     //모임글 생성 로직
     private Board processCreateBoard(BoardDto.Post postDto, Member member) {
         Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
@@ -126,6 +128,7 @@ public class BoardService {
         applicant.setMemberImageUrl(member.getImageUrl());
         applicant.setBoardImageUrl(board.getImageUrl());
         applicantRepository.save(applicant);
+
     }
 
     //memberId 값 형변환

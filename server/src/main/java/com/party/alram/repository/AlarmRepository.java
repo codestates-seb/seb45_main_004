@@ -9,5 +9,5 @@ import java.util.List;
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
     void deleteAllById(Long memberId);
 
-    List<AlarmResponse> findAllById(Long memberId);
+    List<Alarm> findAllById(Long memberId);
 }
