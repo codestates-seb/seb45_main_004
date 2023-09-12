@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/actions';
 
 export default function Kakao() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const code = new URL(window.location.href).searchParams.get('code');
@@ -18,11 +21,11 @@ export default function Kakao() {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            const authHeader = response.headers.authorization;
-            const token = authHeader.replace('Bearer ', '');
+            const token = response.headers.authorization;
+            // const token = authHeader.replace('Bearer ', '');
             localStorage.setItem('jwtToken', token);
             console.log('성공했니');
-
+            dispatch(login(token));
             navigate('/');
           }
         })
