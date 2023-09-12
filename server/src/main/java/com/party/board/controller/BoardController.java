@@ -1,5 +1,6 @@
 package com.party.board.controller;
 
+import com.party.alram.entity.Alarm;
 import com.party.board.dto.BoardDto;
 import com.party.board.entity.Board;
 import com.party.board.mapper.BoardMapper;
@@ -25,6 +26,7 @@ public class BoardController {
 
     private final BoardService boardService;
     private final BoardMapper mapper;
+
 
 
     //모임글 등록

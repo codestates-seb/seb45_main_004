@@ -15,13 +15,16 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.joda.time.Days;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,12 +46,13 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
-
         //알림 발송
-        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"🔥작성한 모임이 등록되었습니다!🔥");
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
 
         return boardRepository.save(board);
     }
+
+
 
     //모임글 상세 조회
     public Board findBoard(long boardId) {
@@ -99,6 +103,7 @@ public class BoardService {
         return boardRepository.findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(category1, title,category2, body);
     }
 
+
     //모임글 생성 로직
     private Board processCreateBoard(BoardDto.Post postDto, Member member) {
         Board.BoardCategory boardCategoryEnum = Board.BoardCategory.valueOf(postDto.getCategory());
@@ -126,6 +131,19 @@ public class BoardService {
         applicant.setMemberImageUrl(member.getImageUrl());
         applicant.setBoardImageUrl(board.getImageUrl());
         applicantRepository.save(applicant);
+
+    }
+
+    //날짜지난 모임 마감처리
+    @Scheduled(cron = "0 0 0 * * *")
+    public void checkDate(){
+        LocalDate today = LocalDate.now();
+        List<Board> closedList = findEventsScheduledForDate(today.minus(1, ChronoUnit.DAYS));
+
+        for (Board board : closedList){
+            board.setStatus(Board.BoardStatus.BOARD_STATUS);
+            boardRepository.save(board);
+        }
     }
 
     //memberId 값 형변환
