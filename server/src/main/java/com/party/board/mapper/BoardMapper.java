@@ -1,6 +1,5 @@
 package com.party.board.mapper;
 
-import com.party.board.dto.BoardDto;
 import com.party.board.dto.BoardResponseDto;
 import com.party.board.entity.Board;
 
@@ -8,7 +7,6 @@ import org.mapstruct.Mapper;
 import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BoardMapper {
-    Board BoardPostDtoToBoard(BoardDto.Post postDto);
 
     default BoardResponseDto boardToBoardResponse(Board board) {
         BoardResponseDto boardResponseDto = new BoardResponseDto();
