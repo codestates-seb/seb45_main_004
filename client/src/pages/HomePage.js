@@ -152,6 +152,8 @@ const HomePage = styled.div`
   }
 
   .card-container {
+    width: 300px;
+    height: 300px;
     transform-style: preserve-3d;
     transition: transform 0.6s;
   }
@@ -175,11 +177,7 @@ const HomePage = styled.div`
 
   .card-back {
     transform: rotateY(180deg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
-    color: white;
   }
 
   .invitation-image {
@@ -199,6 +197,7 @@ const HomePage = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: white;
   }
   /* 여기까지 추가부분 */
 
