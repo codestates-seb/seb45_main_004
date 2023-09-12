@@ -11,7 +11,6 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -166,7 +165,7 @@ public class FollowService {
         Member toMember = memberRepository.getById(toMemberId);
         String title = "CELEBEE의 새로운 팔로워 알림🐝";
         String message = followerNickname + "님이 당신을 팔로우했습니다💘";
-        mailService.sendMail(toMember.getEmail(), title, message,imageUrl);
+        mailService.sendFollowMail(toMember.getEmail(), title, message,imageUrl);
     }
 }
 

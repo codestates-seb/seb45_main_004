@@ -11,7 +11,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,8 +59,6 @@ public class Board {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private BoardStatus status = BoardStatus.BOARD_RECRUITING;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
 
     private long boardLikesCount;
 
