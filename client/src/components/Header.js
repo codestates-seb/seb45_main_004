@@ -9,19 +9,20 @@ import PropTypes from 'prop-types';
 
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
-  width: 100%;
   background-color: rgba(255, 255, 255, 0.2);
   height: 6em;
 
   /* 헤더의 요소 정렬 */
   .header-container {
+    margin: 0px 320px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 80%;
+    /* width: 80%; */
     height: 100%;
-    margin-left: 10%;
-    margin-right: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
   }
 
   /* a태그 타이포그래피 스타일 삭제 */

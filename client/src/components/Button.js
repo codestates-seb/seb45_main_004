@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 
 const StyleButton = styled.button`
   /* 버튼 기본 스타일*/
-  width: 100px;
+  /* width: 100px; */
+  width: 120px;
   height: 42px;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
-
+  border: 1px solid;
   /* 버튼 조건부 스타일 &.{btnType} 
   예) 카테고리 버튼 : &.Button-category
   */
+
+  &.Button-membership:active {
+    transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
+    box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.7);
+  }
 
   &.Button-login {
     width: 430px;

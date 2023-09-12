@@ -40,7 +40,6 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-  console.log(eventData.member.id);
   //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
@@ -107,7 +106,6 @@ function InvitePage() {
   const [isLiked, setIsLiked] = useState();
 
   useEffect(() => {
-    console.log(isLiked);
     axios
       .get(`${api}/members/${memberId}`)
       .then((response) => {
@@ -154,7 +152,7 @@ function InvitePage() {
     <EventDetailsContainer>
       <section>
         <article>
-          <div>memberId:{memberId}</div>
+          {/* <div>memberId:{memberId}</div> */}
           <div className="card-container">
             <div className="image-container">
               <img
@@ -254,7 +252,7 @@ const EventDetailsContainer = styled.div`
   margin: 0px 320px;
   display: flex;
   justify-content: center;
-
+  color: black;
   section {
     margin: 50px 0px;
     display: flex;
@@ -263,21 +261,6 @@ const EventDetailsContainer = styled.div`
     @media (max-width: 768px) {
       flex-direction: column;
       padding: 0px 10px;
-    }
-  }
-
-  @keyframes stampEffect {
-    0% {
-      transform: scale(0.5);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
     }
   }
 
