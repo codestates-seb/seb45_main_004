@@ -15,6 +15,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     @Query("select board from Board board join fetch board.member where board.id = :boardId")
     Optional<Board> findByIdWithAll(@Param("boardId") Long boardId);
 
+    //모임글 날짜 조회
     List<Board> findByDate(LocalDate eventDate);
 
     //카테고리 조회
