@@ -246,12 +246,13 @@ public class OAuthService {
             response.getWriter().write(json);
             return null;
         }
-        // 유효한 토큰이면 멤버꺼내와서 토큰 재생성
+
+        // 유효한 토큰이면 멤버꺼내와서 DB의 토큰과 비교후 맞으면 재생성
         if (claims != null) {
             Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
-            if (findmember.isPresent()) {
+            if (findmember.isPresent() & memberRepository.findRefreshTokenById(findmember.get().getId()).equals(refreshToken)) {
                 Token token = createToken(findmember.get());
-//                memberRepository.updateRefreshToken(findmember.get().getId(), token.getRefreshToken());
+                applicationEventPublisher.publishEvent(new RefreshSaveEvent(findmember.get(), refreshToken));
                 return token;
             }
         }
