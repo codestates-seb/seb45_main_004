@@ -152,7 +152,7 @@ function InvitePage() {
     <EventDetailsContainer>
       <section>
         <article>
-          <div>memberId:{memberId}</div>
+          {/* <div>memberId:{memberId}</div> */}
           <div className="card-container">
             <div className="image-container">
               <img
@@ -252,7 +252,7 @@ const EventDetailsContainer = styled.div`
   margin: 0px 320px;
   display: flex;
   justify-content: center;
-
+  color: black;
   section {
     margin: 50px 0px;
     display: flex;
@@ -261,21 +261,6 @@ const EventDetailsContainer = styled.div`
     @media (max-width: 768px) {
       flex-direction: column;
       padding: 0px 10px;
-    }
-  }
-
-  @keyframes stampEffect {
-    0% {
-      transform: scale(0.5);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
     }
   }
 
