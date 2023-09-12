@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 const OauthButton = styled.button`
@@ -31,32 +29,9 @@ const OauthButton = styled.button`
 const OauthLoginButton = () => {
   const handleKakaoBtnClick = () => {
     window.location.assign(
-      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://localhost:3000`,
+      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://localhost:3000/oauth/kakao/login`,
     );
   };
-  // const code = new URLSearchParams(window.location.search).get('code');
-  // console.log('인가코드', code);
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get('code');
-    if (code) {
-      axios
-        .post(`http://3.39.76.109:8080/oauth/login`, {
-          provider: 'kakao',
-          code: code,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            const token = response.headers.authorization;
-            localStorage.setItem('jwtToken', token);
-          }
-        })
-        .catch((error) => {
-          console.log('에러', error);
-        });
-    }
-  }, []);
 
   return (
     <OauthButton onClick={handleKakaoBtnClick}>

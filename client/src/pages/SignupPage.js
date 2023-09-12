@@ -129,6 +129,10 @@ export default function Signuppage() {
       return;
     }
 
+    if (!isPasswordValid(password)) {
+      window.alert('패스워드를 확인해주세요');
+      return;
+    }
     try {
       const userData = {
         email: email,
