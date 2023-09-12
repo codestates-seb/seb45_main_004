@@ -3,6 +3,7 @@ package com.party.auth.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.dto.MemberProfile;
 import com.party.auth.dto.Token;
+import com.party.auth.event.RefreshSaveEvent;
 import com.party.auth.fliter.JwtAuthenticationFilter;
 import com.party.auth.provider.OAuthProvider;
 import com.party.auth.token.JwtTokenizer;
@@ -15,6 +16,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -43,6 +46,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class OAuthService {
     private final InMemoryClientRegistrationRepository inMemoryRepository;
@@ -51,6 +55,7 @@ public class OAuthService {
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final RestTemplate restTemplate;
     private final AwsService awsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Token login(OAuthProvider provider, String code) {
@@ -76,6 +81,7 @@ public class OAuthService {
 
 //        // jwt토큰의 refreshToken을 Member의 refresh 칼럼에 저장
 //        memberRepository.updateRefreshToken(member.getId(), jwtToken.getRefreshToken());
+        applicationEventPublisher.publishEvent(new RefreshSaveEvent(member, jwtToken.getRefreshToken()));
 
         return jwtToken;
     }
@@ -240,18 +246,23 @@ public class OAuthService {
             response.setContentType("application/json;charset=UTF-8");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(json);
-            return null;
+            throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
         }
-        // 유효한 토큰이면 멤버꺼내와서 토큰 재생성
-        if (claims != null) {
+        System.out.println("서비스 계층에서 보낸 로그입니다" + claims.toString());
+        // 유효한 토큰이면 멤버꺼내와서 DB의 토큰과 비교후 맞으면 재생성
+        if (claims != null) { // 여기서 claims가 null이 나오는거 같음
             Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
-            if (findmember.isPresent()) {
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()));
+            System.out.println(refreshToken);
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken));
+            if (findmember.isPresent() & memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken)) {
+                System.out.println("DB의 리프레쉬 토큰과는 인증이 성공");
                 Token token = createToken(findmember.get());
-//                memberRepository.updateRefreshToken(findmember.get().getId(), token.getRefreshToken());
+                applicationEventPublisher.publishEvent(new RefreshSaveEvent(findmember.get(), token.getRefreshToken()));
                 return token;
             }
         }
-        return null;
+        throw new BusinessLogicException(ExceptionCode.REFRESHTOKEN_IS_NOT_VERIFIED);
     }
 
 
