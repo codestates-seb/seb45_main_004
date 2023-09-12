@@ -3,6 +3,7 @@ package com.party.auth.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.dto.MemberProfile;
 import com.party.auth.dto.Token;
+import com.party.auth.event.RefreshSaveEvent;
 import com.party.auth.fliter.JwtAuthenticationFilter;
 import com.party.auth.provider.OAuthProvider;
 import com.party.auth.token.JwtTokenizer;
@@ -15,6 +16,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,6 +53,7 @@ public class OAuthService {
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final RestTemplate restTemplate;
     private final AwsService awsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Token login(OAuthProvider provider, String code) {
@@ -76,6 +79,7 @@ public class OAuthService {
 
 //        // jwt토큰의 refreshToken을 Member의 refresh 칼럼에 저장
 //        memberRepository.updateRefreshToken(member.getId(), jwtToken.getRefreshToken());
+        applicationEventPublisher.publishEvent(new RefreshSaveEvent(member, jwtToken.getRefreshToken()));
 
         return jwtToken;
     }
