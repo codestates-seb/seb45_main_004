@@ -316,7 +316,7 @@ const StyledWritePage = styled.div`
   }
   .date-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .body-date {
@@ -349,8 +349,8 @@ const StyledWritePage = styled.div`
   .category-btn {
     margin: 16px 0px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    grid-gap: 14px; // 버튼 사이의 간격을 조절할 수 있습니다.
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 14px;
   }
 
   .modal-btn {

@@ -40,7 +40,6 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-  console.log(eventData.member.id);
   //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
@@ -107,7 +106,6 @@ function InvitePage() {
   const [isLiked, setIsLiked] = useState();
 
   useEffect(() => {
-    console.log(isLiked);
     axios
       .get(`${api}/members/${memberId}`)
       .then((response) => {

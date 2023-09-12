@@ -10,6 +10,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
 
   .main-container {
@@ -19,20 +20,51 @@ const HomePage = styled.div`
   .main-header {
     display: flex;
     justify-content: center;
-    height: 350px;
-    margin-top: 50px;
     align-items: center;
-    /* animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite) */
+    height: 420px;
   }
-  // 오른쪽에서 왼쪽으로 이동하게끔 효과주기
-  /* @keyframes slideTExt {
+
+  .main-header h1 {
+    margin: 0px 320px;
+    color: #ffffff;
+    font-size: 6em;
+  }
+
+  .text-writing {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    animation: type 5s steps(13, end) forwards;
+  }
+
+  @keyframes type {
     0% {
-      transform: translateX(100%);
+      width: 0;
     }
     100% {
-      transform: translateX(-100%);
+      width: 100%;
     }
-  } */
+  }
+
+  .text-writing:before {
+    content: attr(data-text);
+    display: inline-block;
+    animation: blink 1.5s infinite;
+    height: 130px;
+    border-right: 10px solid;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: inherit;
+    }
+  }
+
   .service-introduction {
     color: white;
   }
@@ -158,10 +190,10 @@ const HomePage = styled.div`
     display: flex;
     flex-direction: column;
     gap: 30px;
-    margin-right: 20px;
-    animation: slideText 10s linear infinite;
+    /* margin-right: 20px; */
+    /* animation: slideText 10s linear infinite; */
   }
-
+  /* 
   @keyframes slideText {
     0% {
       opacity: 1;
@@ -177,8 +209,8 @@ const HomePage = styled.div`
     }
     100% {
       opacity: 1;
-    }
-  }
+    } 
+  }*/
 
   /* @keyframes slideTranslate {
     0% {
@@ -197,6 +229,11 @@ const HomePage = styled.div`
       transform: translateX(100%);
     }
   } */
+
+  .main-title {
+    font-size: 90px;
+    line-height: 140px;
+  }
 `;
 
 const SearchBtn = styled.button`
@@ -357,30 +394,35 @@ export default function Homepage() {
 
   return (
     <HomePage>
-      <div
-        className={`main-container ${
-          showFrame1 ? 'show-frame1' : 'show-frame2'
-        }`}
-      >
-        <div className="main-header">
-          <div className="header-frame1">
-            <div className={`fram1-content${showFrame1 ? 'visible' : ''}`}>
-              <h1> Let&apos;s make a new friend at celebee 🐝</h1>
-              <h3> Value of together Lookinf for a companion to be with me</h3>
-            </div>
-            <Image
+      <div className="main-header">
+        <div className="header-frame1">
+          <div className={`fram1-content${showFrame1 ? 'visible' : ''}`}>
+            <h1 className="main-title">
+              Let&apos;s Make a New Friend
+              <br />
+              <span className="text-writing" data-text="with Celebee."></span>
+            </h1>
+
+            {/* <h3> Value of together Lookinf for a companion to be with me</h3> */}
+          </div>
+          {/* <Image
               src="/assets/Category_Travel1.png"
               alt="card"
               className="header-image"
-            />
-          </div>
-          {/* <div className="header-frame2">
+            /> */}
+        </div>
+        {/* <div className="header-frame2">
             <div className={`fram2-content${showFrame1 ? '' : 'visible'}`}>
               <h1>make a friend</h1>
               <h3>친구를 만들어보아요</h3>
             </div>
           </div> */}
-        </div>
+      </div>
+      <div
+        className={`main-container ${
+          showFrame1 ? 'show-frame1' : 'show-frame2'
+        }`}
+      >
         <div className="categorys-container">
           <ul className="categorys-container">
             {Object.keys(CategoryMappings).map((key) => {
