@@ -25,7 +25,8 @@ public class AlarmController {
     @GetMapping
     public List<AlarmResponse> getAlram(){
         Long memberId = extractMemberId();
-        return null;
+        List<AlarmResponse> alarmResponseList =alarmService.getAlarms(memberId);
+        return alarmResponseList;
     }
 
     @GetMapping(value = "/sub/{memberId}", produces = "text/event-stream")
@@ -33,11 +34,6 @@ public class AlarmController {
             @RequestParam(value = "lastEventId", required = false, defaultValue = "") String lastEventId,
             @PathVariable Long memberId) {
         return alarmService.subscribe(memberId, lastEventId);
-    }
-
-    @PostMapping("/send-data/{id}")
-    public void sendData(@PathVariable Long id){
-        //alarmService.notify(id, "data");
     }
 
     //memberId 추출

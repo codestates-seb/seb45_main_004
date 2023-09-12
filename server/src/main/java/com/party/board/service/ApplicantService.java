@@ -58,7 +58,8 @@ public class ApplicantService {
         applicant.setJoin(true);
 
         //알림 발송
-        alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "💝새로운 인연이 모임에 찾아왔어요💝");
+        alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
 
         return applicantRepository.save(applicant);
     }

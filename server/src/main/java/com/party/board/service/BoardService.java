@@ -45,7 +45,7 @@ public class BoardService {
         saveApplicantForBoardCreat(board, member);
 
         //알림 발송
-        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"🔥작성한 모임이 등록되었습니다!🔥");
+        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
 
         return boardRepository.save(board);
     }
