@@ -89,13 +89,17 @@ function InviteWritePage() {
     return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
   };
 
-  const currentDate = getTwoDaysAfter();
+  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
+  const currentDate = new Date().toISOString().split('T')[0];
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'date' && new Date(value) < new Date(currentDate)) {
+    if (
+      name === 'date' &&
+      new Date(value) < new Date(TwoDaysAfterCurrentDate)
+    ) {
       alert(
-        '모임 작성은 오늘로부터 3일 후부터 가능합니다. 작성하시려는 모임의 마감일은 오늘입니다.',
+        '작성하시려는 모임의 마감일은 오늘입니다. 모집일은 오늘로부터 3일 후부터 가능합니다. ',
       );
       return;
     }
@@ -137,8 +141,6 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
-
-  // const currentDate = new Date().toISOString().split('T')[0];
 
   return (
     <StyledWritePage>
