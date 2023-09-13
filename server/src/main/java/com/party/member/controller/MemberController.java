@@ -2,8 +2,7 @@ package com.party.member.controller;
 
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
-import com.party.member.dto.MemberPatchDto;
-import com.party.member.dto.MemberPostDto;
+import com.party.member.dto.*;
 import com.party.member.entity.Member;
 import com.party.member.mapper.MemberMapper;
 import com.party.member.repository.MemberRepository;
@@ -20,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Transactional
 @RestController
@@ -51,7 +52,22 @@ public class MemberController {
         log.info("memberRepository: " + memberRepository);
         log.info("mapper: " + mapper);
         Member member = memberService.findMember(memberId);
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(member);
+
+        // applicants 정렬
+        responseDto.setApplicants(
+                responseDto.getApplicants().stream()
+                        .sorted(Comparator.comparing(MemberApplicantResponseDto::getBoardId).reversed())
+                        .collect(Collectors.toList())
+        );
+
+        // boardLikes 정렬
+        responseDto.setBoardLikes(
+                responseDto.getBoardLikes().stream()
+                        .sorted(Comparator.comparing(MemberBoardLikeResponseDto::getBoardId).reversed())
+                        .collect(Collectors.toList())
+        );
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     // 간단하게 회원의 id와 nickname email만 조회해서 목록화
