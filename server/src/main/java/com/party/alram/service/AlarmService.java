@@ -1,18 +1,17 @@
 package com.party.alram.service;
 
-import com.party.alram.dto.AlarmResponse;
 import com.party.alram.entity.Alarm;
 import com.party.alram.repository.AlarmRepository;
 import com.party.alram.repository.EmitterRepository;
 import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.security.acl.NotOwnerException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,20 +34,19 @@ public class AlarmService {
      * 클라가 구독을 위해 호출하는 메서드
      */
     public SseEmitter subscribe(Long memberId, String lastEventId) {
-        String emitterId = makeTimeIncludedId(memberId);
-        SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+        String id = makeTimeIncludedId(memberId);
+        SseEmitter emitter = emitterRepository.save(id, new SseEmitter(DEFAULT_TIMEOUT));
         //emitter 가 완료될 때 emitter를 삭제 (모든 데이터가 성공적으로 전송된 상태)
-        emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
+        emitter.onCompletion(() -> emitterRepository.deleteById(id));
         //emitter 가 타임아웃되었으면 emitter 삭제 (지정된 시간동안 어떤 이벤트도 전송 x)
-        emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
+        emitter.onTimeout(() -> emitterRepository.deleteById(id));
 
        //503 에러 방지하고자 더미 이벤트 전달
-        String eventId = makeTimeIncludedId(memberId);
-        sendToClient(emitter, eventId, emitterId, "EventStream Created. [memberId=" + memberId + "]");
+        sendToClient(emitter, id, "EventStream Created. [memberId=" + memberId + "]");
 
         //클라가 미수신한 event가 존재할 경우 전송 (유실 방지)
         if (hasLostData(lastEventId)){
-            sendLostdata(lastEventId, memberId, emitterId, emitter);
+            sendLostdata(lastEventId, memberId, emitter);
         }
 
         return emitter;
@@ -66,42 +64,38 @@ public class AlarmService {
 
         Map<String, SseEmitter> sseEmitters = emitterRepository.findAllEmittersStartWithByMemberId(member.getId());
         String eventId = makeTimeIncludedId(member.getId());
+        System.out.println(eventId);
 
         sseEmitters.forEach((key, emitter) -> {
             //데이터 캐시 저장 (유실 데이터 처리를 위해)
             emitterRepository.saveEventCache(key,alarm);
             //데이터 전송
-            sendToClient(emitter,eventId, eventId, content);
+            sendToClient(emitter,eventId, content);
         });
     }
 
     /**
      * 클라에 데이터 전송 (id -> 데이터를 전달받을 사용자의 id)
      */
-    private void sendToClient(SseEmitter emitter, String eventId, String emitterId, Object data) {
+    private void sendToClient(SseEmitter emitter, String eventId, Object data) {
         try {
             emitter.send(SseEmitter.event()
                     .id(eventId).data(data));
         }catch (IOException exception){
-            emitterRepository.deleteById(emitterId);
+            emitterRepository.deleteById(eventId);
             throw new RuntimeException("연결오류");
         }
     }
 
 
    public List<Alarm> getAlarms (Long memberId){
-        return alarmRepository.findAllById(memberId);
+        return alarmRepository.findAlarmByMember_Id(memberId);
    }
 
-    //알림 삭제
-//    @Transactional
-    public void deleteAlarmById(Long alarmId){
-      alarmRepository.deleteById(alarmId);
-    }
-
     //알림 모두 삭제
-    public void deleteAllAlarm (Long memberId){
-        alarmRepository.deleteAllById(memberId);
+    @Transactional
+    public void deleteAllAlarm (Long memberId) {
+        alarmRepository.deleteAllByMember_Id(memberId);
     }
 
 
@@ -113,11 +107,11 @@ public class AlarmService {
         return !lastEventId.isEmpty();
      }
 
-     private void sendLostdata(String lastEventId, Long memberId, String emitterId, SseEmitter emitter){
+     private void sendLostdata(String lastEventId, Long memberId, SseEmitter emitter){
     Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByMemberId(memberId);
        eventCaches.entrySet().stream()
             .filter(entry -> lastEventId.compareTo(entry.getKey())<0)
-            .forEach(entry -> sendToClient(emitter, entry.getKey(), emitterId, entry.getValue()));
+            .forEach(entry -> sendToClient(emitter, entry.getKey(), entry.getValue()));
     }
 
 }

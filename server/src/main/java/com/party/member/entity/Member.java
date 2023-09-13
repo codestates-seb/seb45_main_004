@@ -1,6 +1,7 @@
 package com.party.member.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.party.alram.entity.Alarm;
 import com.party.board.entity.Applicant;
 import com.party.board.entity.Board;
 import com.party.boardlike.entity.BoardLike;
@@ -62,6 +63,10 @@ public class Member {
     // 팔로우
     @OneToMany(mappedBy = "toMember", cascade = CascadeType.ALL)
     private List<Follow> toMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Alarm> alarms = new ArrayList<>();
 
     public static Member createMember(String email, String password, String nickname, String gender) {
 

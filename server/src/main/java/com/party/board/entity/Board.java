@@ -2,6 +2,7 @@ package com.party.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.party.alram.entity.Alarm;
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.member.entity.Member;
@@ -79,6 +80,10 @@ public class Board {
     @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Alarm> alarms = new ArrayList<>();
 
     public enum BoardCategory {
         CATEGORY_LEISURE("CATEGORY_LEISURE"),

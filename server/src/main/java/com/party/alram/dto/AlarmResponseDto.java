@@ -3,12 +3,14 @@ package com.party.alram.dto;
 
 import com.party.alram.entity.Alarm;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
-public class AlarmResponse {
-    private Long id;
+@Setter
+public class AlarmResponseDto {
+    private Long memberId;
+
+    private Long boardId;
 
     private String content;
 

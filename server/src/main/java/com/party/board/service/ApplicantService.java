@@ -47,11 +47,18 @@ public class ApplicantService {
         applicant.setMemberImageUrl(member.getImageUrl());
 
         //현재 모임 참여 인원 수 업데이트
-        int count = board.getCurrentNum();
-        if(count < board.getTotalNum()){
-            board.setCurrentNum(count+1);
-            if (count == board.getTotalNum()){
+        if(board.getCurrentNum() < board.getTotalNum()){
+            board.setCurrentNum(board.getCurrentNum()+1);
+            //알림 발송
+            alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
+            alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
+
+            if (board.getCurrentNum() == board.getTotalNum()){
                 board.setStatus(Board.BoardStatus.BOARD_STATUS);
+                boardRepository.save(board);
+                //알림 발송
+                alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
+                alarmService.sendAlarm(member,board,Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
             }
         }else {//인원수 다 찼으면 추가 안함
             throw new BusinessLogicException(ExceptionCode.NOT_ALLOW_PARTICIPATE);
@@ -59,10 +66,6 @@ public class ApplicantService {
 
         //모임 참여 처리
         applicant.setJoin(true);
-
-        //알림 발송
-        alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
-        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
 
         return applicantRepository.save(applicant);
     }
