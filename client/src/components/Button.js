@@ -30,14 +30,7 @@ const StyleButton = styled.button`
     margin-bottom: 10px;
   }
 
-  &.Button-membership {
-    font-weight: 700;
-    padding: 2px 10px;
-    margin-left: 20px;
-    background-color: rgba(246, 246, 246, 0);
-  }
-
-  &.Button-newCard {
+  &.Button-based {
     width: 110px;
     height: 42px;
     font-weight: 700;
@@ -56,38 +49,63 @@ const StyleButton = styled.button`
     margin-left: 20px;
   }
 
-  &.Button-like,
-  &.Button-participations {
-    width: 150px;
-    height: 50px;
-    background-color: ${(props) => props.color || 'white'};
+  &.Button-like {
+    width: 180px;
+    height: 60px;
+    background-color: #ff6ac6;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     padding: 0px;
     margin-left: 30px;
     margin-right: 30px;
+    color: white;
+    font-size: 1.2rem;
+  }
+  &.Button-participations {
+    width: 180px;
+    height: 60px;
+    background-color: #ffa472;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    padding: 0px;
+    margin-left: 30px;
+    margin-right: 30px;
+    color: white;
+    font-size: 1.2rem;
+  }
+
+  &.Button-text {
+    background-color: rgba(246, 246, 246, 0);
+    border: none;
+    color: white;
+    border-radius: 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+    text-align: right;
+    position: absolute;
+    bottom: 1px;
+    right: 10px;
+    cursor: pointer;
   }
 `;
 
-const Button = ({ type, text, onClick, color }) => {
+const Button = ({ type, text, onClick }) => {
   const btnType = [
-    'membership',
+    'based',
     'newCard',
     'notification',
     'like',
     'participations',
     'login',
+    'text',
   ].includes(type)
     ? type
     : 'default';
 
   return (
-    <StyleButton
-      className={`Button-${btnType}`}
-      color={color}
-      onClick={onClick}
-    >
+    <StyleButton className={`Button-${btnType}`} onClick={onClick}>
       {text}
     </StyleButton>
   );
@@ -99,8 +117,7 @@ Button.defaultProps = {
 
 Button.propTypes = {
   type: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  text: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

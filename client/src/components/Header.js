@@ -54,9 +54,9 @@ const ButtonBox = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
-  const dispatch = useDispatch();
   const memberId = useSelector((state) => state.user.memberId);
 
   const handleNewStatus = () => {
@@ -84,11 +84,7 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <Button
-                type="newCard"
-                text="New Card!"
-                onClick={handleWriteClick}
-              />
+              <Button type="based" text="New Card!" onClick={handleWriteClick} />
             </Link>
             {isNew ? (
               <Button
@@ -104,18 +100,15 @@ const Header = () => {
             <Link to={`/members/${memberId}`} className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
-            <Button type="membership" text="Logout" onClick={handleLogout} />
+            <Button type="based" text="Logout" onClick={handleLogout} />
           </ButtonBox>
         ) : (
           <ButtonBox>
-            <Link to="/boards/new-boards">
-              <Button type="membership" text="New Card" />
-            </Link>
             <Link to="/members/login">
-              <Button type="membership" text="Log In" />
+              <Button type="based" text="Log In" />
             </Link>
             <Link to="/members">
-              <Button type="membership" text="Sign Up" />
+              <Button type="based" text="Sign Up" />
             </Link>
           </ButtonBox>
         )}

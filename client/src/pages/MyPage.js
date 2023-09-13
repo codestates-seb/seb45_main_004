@@ -17,7 +17,19 @@ const MyPageSection = styled.section`
 
 //레이아웃 부터 잡기!
 const MyPage = () => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    id: 0,
+    nickname: '',
+    email: '',
+    gender: '',
+    introduce: '',
+    imageUrl: '',
+    follower: 0,
+    following: 0,
+    applicants: [{ boardId: 0, imgUrl: '' }],
+    boardLikes: [{ boardId: 0, imgUrl: '' }],
+  });
+
   const [activetab, setActiveTab] = useState('tab1');
 
   const memberId = useSelector((state) => state.user.memberId);
@@ -28,14 +40,27 @@ const MyPage = () => {
         `http://3.39.76.109:8080/members/${memberId}`,
       );
       const myInfo = response.data;
-      setUser(myInfo);
+      const userData = {
+        id: myInfo.id,
+        nickname: myInfo.nickname,
+        email: myInfo.email,
+        gender: myInfo.gender,
+        introduce: myInfo.introduce,
+        imageUrl: myInfo.imageUrl,
+        follower: myInfo.follower,
+        following: myInfo.following,
+      };
+      setUser(userData);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchMyInfo();
+    // user 데이터가 비어있을 때만 API 호출
+    if (!user.id) {
+      fetchMyInfo();
+    }
   }, []);
 
   const handleTabClick = (tabId) => {
@@ -44,7 +69,7 @@ const MyPage = () => {
 
   return (
     <MyPageSection>
-      <Profile user={user} />
+      <Profile user={user} setUser={setUser} />
       <MyPageTab
         activetab={activetab}
         handleTabClick={handleTabClick}

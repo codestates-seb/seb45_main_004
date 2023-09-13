@@ -8,6 +8,7 @@ const MyTabContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 75vw;
   margin-top: 50px;
 `;
 
@@ -18,7 +19,7 @@ const MyTabBtn = styled.div`
 
 const TabContentContainer = styled.div`
   margin-top: 40px;
-  width: 75vw;
+  width: 70vw;
 `;
 const MyPageTab = ({ activetab, handleTabClick, user }) => {
   return (
@@ -26,7 +27,6 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
       <MyTabBtn>
         <Button
           text="Like It"
-          color="hotpink"
           type="like"
           label="tab1"
           onClick={() => {
@@ -35,7 +35,6 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
         />
         <Button
           text="Participation"
-          color="orange"
           type="participations"
           label="tab2"
           onClick={() => {
@@ -52,7 +51,7 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
 };
 
 MyPageTab.propTypes = {
-  activetab: PropTypes.func.isRequired,
+  activetab: PropTypes.string.isRequired,
   handleTabClick: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
