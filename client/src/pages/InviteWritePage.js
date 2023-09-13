@@ -28,7 +28,7 @@ function InviteWritePage() {
     address: '',
     imageUrl: selectedImage,
   });
-
+  console.log(formData);
   const handleSubmit = (e) => {
     e.preventDefault();
     const fieldValidations = [
@@ -91,9 +91,13 @@ function InviteWritePage() {
 
   const TwoDaysAfterCurrentDate = getTwoDaysAfter();
   const currentDate = new Date().toISOString().split('T')[0];
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     if (
       name === 'date' &&
       new Date(value) < new Date(TwoDaysAfterCurrentDate)
@@ -104,10 +108,19 @@ function InviteWritePage() {
       return;
     }
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === 'money') {
+      const pureNumber = value.replace(/,/g, ''); // 콤마 제거
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: parseInt(pureNumber, 10),
+      }));
+    } else {
+      // 다른 필드들의 처리 로직
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleLocationSelect = (latitude, longitude, address) => {
@@ -215,9 +228,9 @@ function InviteWritePage() {
                 Money:
                 <input
                   className="money-date"
-                  type="number"
+                  type="text"
                   name="money"
-                  value={formData.money}
+                  value={numberWithCommas(formData.money)}
                   min="0"
                   onChange={handleInputChange}
                 />

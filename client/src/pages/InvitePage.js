@@ -149,6 +149,10 @@ function InvitePage() {
       });
   };
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return (
     <EventDetailsContainer>
       <section>
@@ -180,7 +184,7 @@ function InvitePage() {
                   alt="host-img"
                 />
               </button>
-              <div>금액: {eventData.money}</div>
+              <div>금액: {numberWithCommas(eventData.money)}</div>
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
