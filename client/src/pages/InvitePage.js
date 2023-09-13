@@ -112,6 +112,7 @@ function InvitePage() {
         const userLikedBoards = response.data.boardLikes;
         const liked = userLikedBoards.some((board) => board.id === boardId);
         setIsLiked(liked);
+        console.log('성공');
       })
       .catch((error) => {
         console.error('에러 Error fetching member like status:', error);
@@ -148,6 +149,10 @@ function InvitePage() {
       });
   };
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return (
     <EventDetailsContainer>
       <section>
@@ -179,7 +184,7 @@ function InvitePage() {
                   alt="host-img"
                 />
               </button>
-              <div>금액: {eventData.money}</div>
+              <div>금액: {numberWithCommas(eventData.money)}</div>
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}

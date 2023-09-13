@@ -72,6 +72,9 @@ const Header = () => {
     navigate('/');
   };
 
+  const handleWriteClick = () => {
+    alert('모집날짜로부터 2일 전 모집이 마감됩니다.');
+  };
   return (
     <ServieceHeader>
       <div className="header-container">
@@ -81,7 +84,11 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <Button type="newCard" text="New Card!" />
+              <Button
+                type="newCard"
+                text="New Card!"
+                onClick={handleWriteClick}
+              />
             </Link>
             {isNew ? (
               <Button
