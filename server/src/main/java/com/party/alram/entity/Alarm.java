@@ -1,5 +1,6 @@
 package com.party.alram.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class Alarm {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
+    @JsonBackReference
     private Member member;
 
     @ManyToOne

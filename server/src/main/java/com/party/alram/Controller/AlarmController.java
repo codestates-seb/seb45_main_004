@@ -1,10 +1,12 @@
 package com.party.alram.Controller;
 
+import com.party.alram.dto.AlarmMapper;
 import com.party.alram.entity.Alarm;
 import com.party.alram.repository.EmitterRepository;
 import com.party.alram.service.AlarmService;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.member.entity.Member;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,21 +28,31 @@ public class AlarmController {
     private final AlarmService alarmService;
     private final MemberService memberService;
     private final EmitterRepository emitterRepository;
+    private final AlarmMapper mapper;
 
 
+    //특정 멤버 모든 알림 불러오기
     @GetMapping
     public ResponseEntity getAlarm(){
         Long memberId = extractMemberId();
         //alarmService.getAlarms(memberId);
-        //List<Alarm> alarms = alarmService.getAlarms(memberId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        List<Alarm> alarms = alarmService.getAlarms(memberId);
+        return new ResponseEntity<>(mapper.alarmToAlarmResponseDto(alarms), HttpStatus.OK);
     }
 
+    //알림 구독
     @GetMapping(value = "/sub", produces = "text/event-stream")
     public SseEmitter subscribe(
             @RequestParam(value = "lastEventId", required = false, defaultValue = "") String lastEventId) {
         Long memberId = extractMemberId();
         return alarmService.subscribe(memberId, lastEventId);
+    }
+
+    //알림 모두 삭제
+    @DeleteMapping
+    public void deleteAlarmAll(){
+        Long memberId = extractMemberId();
+        alarmService.deleteAllAlarm(memberId);
     }
 
     //memberId 추출

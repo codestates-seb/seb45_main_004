@@ -143,6 +143,8 @@ public class BoardService {
         for (Board board : closedList){
             board.setStatus(Board.BoardStatus.BOARD_STATUS);
             boardRepository.save(board);
+            //알림 발송
+            alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
         }
     }
 
