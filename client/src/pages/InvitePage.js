@@ -112,6 +112,7 @@ function InvitePage() {
         const userLikedBoards = response.data.boardLikes;
         const liked = userLikedBoards.some((board) => board.id === boardId);
         setIsLiked(liked);
+        console.log('성공');
       })
       .catch((error) => {
         console.error('에러 Error fetching member like status:', error);
