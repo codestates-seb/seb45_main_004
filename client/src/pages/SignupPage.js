@@ -129,6 +129,10 @@ export default function Signuppage() {
       return;
     }
 
+    if (!isPasswordValid(password)) {
+      window.alert('패스워드를 확인해주세요');
+      return;
+    }
     try {
       const userData = {
         email: email,
@@ -141,18 +145,6 @@ export default function Signuppage() {
           'Content-Type': 'application/json',
         },
       });
-
-      // const response = await fetch(`http://3.39.76.109:8080/members`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(userData),
-      // });
-
-      // const data = await response.json();
-      // const { token } = data;
-      // localStorage.setItem('token', token);
 
       setNickname('');
       setEmail('');

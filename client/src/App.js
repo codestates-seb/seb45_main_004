@@ -9,6 +9,7 @@ import MyPage from './pages/MyPage';
 import InviteWritePage from './pages/InviteWritePage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import Kakao from './pages/KakaoRedirect';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/members/:memberId" element={<MyPage />} />
         <Route path="/members/login" element={<LoginPage />} />
         <Route path="/members/" element={<SignupPage />} />
+        <Route path="oauth/kakao/login" element={<Kakao />} />
       </Routes>
       <Footer />
     </BrowserRouter>

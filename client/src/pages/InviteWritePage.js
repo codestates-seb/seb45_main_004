@@ -28,7 +28,7 @@ function InviteWritePage() {
     address: '',
     imageUrl: selectedImage,
   });
-
+  console.log(formData);
   const handleSubmit = (e) => {
     e.preventDefault();
     const fieldValidations = [
@@ -83,12 +83,44 @@ function InviteWritePage() {
     }
   };
 
+  const getTwoDaysAfter = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  };
+
+  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
+  const currentDate = new Date().toISOString().split('T')[0];
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+
+    if (
+      name === 'date' &&
+      new Date(value) < new Date(TwoDaysAfterCurrentDate)
+    ) {
+      alert(
+        '작성하시려는 모임의 마감일은 오늘입니다. 모집일은 오늘로부터 3일 후부터 가능합니다. ',
+      );
+      return;
+    }
+
+    if (name === 'money') {
+      const pureNumber = value.replace(/,/g, ''); // 콤마 제거
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: parseInt(pureNumber, 10),
+      }));
+    } else {
+      // 다른 필드들의 처리 로직
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleLocationSelect = (latitude, longitude, address) => {
@@ -122,8 +154,6 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
-
-  const currentDate = new Date().toISOString().split('T')[0];
 
   return (
     <StyledWritePage>
@@ -198,9 +228,9 @@ function InviteWritePage() {
                 Money:
                 <input
                   className="money-date"
-                  type="number"
+                  type="text"
                   name="money"
-                  value={formData.money}
+                  value={numberWithCommas(formData.money)}
                   min="0"
                   onChange={handleInputChange}
                 />
@@ -316,7 +346,7 @@ const StyledWritePage = styled.div`
   }
   .date-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); // 한 줄에 3개의 열을 생성합니다.
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .body-date {
@@ -349,8 +379,8 @@ const StyledWritePage = styled.div`
   .category-btn {
     margin: 16px 0px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr); // 한 줄에 3개의 열을 생성합니다.
-    grid-gap: 14px; // 버튼 사이의 간격을 조절할 수 있습니다.
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 14px;
   }
 
   .modal-btn {
@@ -428,9 +458,12 @@ const StyledWritePage = styled.div`
       height: auto;
     }
     .modal-btn {
-      top: 408px;
+      top: 362px;
     }
 
+    .form-box {
+      margin-top: 60px;
+    }
     .submit-btn {
       left: 0px;
     }

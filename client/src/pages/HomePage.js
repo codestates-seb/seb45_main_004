@@ -19,20 +19,50 @@ const HomePage = styled.div`
   .main-header {
     display: flex;
     justify-content: center;
-    height: 350px;
-    margin-top: 50px;
     align-items: center;
-    /* animation: slideTExt 10s linear infinite; // 5초 동안 일정한 속도(linear)로 애니매이션이 적용되고 무한 반복됨 (infinite) */
+    height: 380px;
   }
-  // 오른쪽에서 왼쪽으로 이동하게끔 효과주기
-  /* @keyframes slideTExt {
+
+  .main-header h1 {
+    color: #ffffff;
+    font-size: 80px;
+  }
+
+  .text-writing {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    animation: type 5s steps(13, end) forwards;
+  }
+
+  @keyframes type {
     0% {
-      transform: translateX(100%);
+      width: 0;
     }
     100% {
-      transform: translateX(-100%);
+      width: 100%;
     }
-  } */
+  }
+
+  .text-writing:before {
+    content: attr(data-text);
+    display: inline-block;
+    animation: blink 1.5s infinite;
+    height: 130px;
+    border-right: 10px solid;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: inherit;
+    }
+  }
+
   .service-introduction {
     color: white;
   }
@@ -107,15 +137,71 @@ const HomePage = styled.div`
     margin-left: 5px;
     cursor: pointer;
   }
-  .invitation-image-container {
+  /* .invitation-image-container {
     position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
+  } */
+
+  /* 추가부분 */
+  .invitation-image-container {
+    perspective: 1000px;
   }
-  .invitation-info-container {
+
+  .card-container {
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+  }
+
+  .card-container:hover {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    position: relative;
+  }
+
+  .invitation-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .back-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  /* 여기까지 추가부분 */
+
+  /* .invitation-info-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -132,14 +218,15 @@ const HomePage = styled.div`
     gap: 10px;
     transition:
       opacity 0.3s,
-      visibility 0.3s; /* 전환 효과를 추가 */
-    opacity: 0; /* 초기에는 보이지 않도록 설정 */
-    visibility: hidden; /* 초기에는 숨김 처리 */
-  }
-  .invitation-image-container:hover .invitation-info-container {
+      visibility 0.3s;
+    opacity: 0; 
+    visibility: hidden;
+  } */
+
+  /* .invitation-image-container:hover .invitation-info-container {
     opacity: 1;
     visibility: visible;
-  }
+  } */
   .likes_icon {
     margin-right: 5px;
   }
@@ -149,54 +236,6 @@ const HomePage = styled.div`
     align-items: center;
     justify-content: center;
   }
-  .header-frame1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-  .fram1-content {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-right: 20px;
-    animation: slideText 10s linear infinite;
-  }
-
-  @keyframes slideText {
-    0% {
-      opacity: 1;
-    }
-    25% {
-      opacity: 0;
-    }
-    50% {
-      opacity: 0;
-    }
-    75% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  /* @keyframes slideTranslate {
-    0% {
-      transform: translateX(0%);
-    }
-    25% {
-      transform: translateX(25%);
-    }
-    50% {
-      transform: translateX(50%);
-    }
-    75% {
-      transform: translateX(75%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  } */
 `;
 
 const SearchBtn = styled.button`
@@ -212,6 +251,8 @@ const SearchBtn = styled.button`
 const Image = styled.img`
   width: 300px;
   height: 300px;
+  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
+
   &.header-image {
     border-radius: 20px;
   }
@@ -226,7 +267,6 @@ export default function Homepage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentInvitations, setCurrentInvitations] = useState([]);
   const PER_SCROLL = 10;
-  const [showFrame1, setShowFrame1] = useState(true);
 
   const fetchAllInvitaion = () => {
     axios
@@ -347,40 +387,19 @@ export default function Homepage() {
     likesSort(selectedCategory);
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowFrame1(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <HomePage>
-      <div
-        className={`main-container ${
-          showFrame1 ? 'show-frame1' : 'show-frame2'
-        }`}
-      >
+      <div className="main-container">
         <div className="main-header">
           <div className="header-frame1">
-            <div className={`fram1-content${showFrame1 ? 'visible' : ''}`}>
-              <h1> Let&apos;s make a new friend at celebee 🐝</h1>
-              <h3> Value of together Lookinf for a companion to be with me</h3>
-            </div>
-            <Image
-              src="/assets/Category_Travel1.png"
-              alt="card"
-              className="header-image"
-            />
+            <h1 className="main-title">
+              Let&apos;s Make a New Friend
+              <br />
+              <span className="text-writing" data-text="with Celebee."></span>
+            </h1>
           </div>
-          {/* <div className="header-frame2">
-            <div className={`fram2-content${showFrame1 ? '' : 'visible'}`}>
-              <h1>make a friend</h1>
-              <h3>친구를 만들어보아요</h3>
-            </div>
-          </div> */}
         </div>
+
         <div className="categorys-container">
           <ul className="categorys-container">
             {Object.keys(CategoryMappings).map((key) => {
@@ -438,19 +457,33 @@ export default function Homepage() {
               className="invitation-item"
             >
               <div className="invitation-image-container">
-                <Image
-                  src={item.imageUrl}
-                  alt="초대장 이미지"
-                  className="invitation-image"
-                />
-                {/* 호버 시 정보를 표시할 컨테이너 */}
-                <div className="invitation-info-container">
-                  <span className="likes-count">{item.title}</span>
-                  <div className="like-container">
-                    <FcLike className="likes_icon" />
-                    <span className="invitation-title">
-                      {item.boardLikesCount}
-                    </span>
+                <div className="card-container">
+                  {/* 앞면: 이미지 */}
+                  <div className="card-face card-front">
+                    <Image
+                      src={item.imageUrl}
+                      alt="초대장 이미지"
+                      className="invitation-image"
+                    />
+                  </div>
+
+                  {/* 뒷면: 정보와 이미지 */}
+                  <div className="card-face card-back">
+                    <Image
+                      src={item.imageUrl}
+                      alt="초대장 이미지"
+                      className="invitation-image"
+                    />
+                    {/* 오버레이 추가 */}
+                    <div className="back-overlay">
+                      <span className="likes-count">{item.title}</span>
+                      <div className="like-container">
+                        <FcLike className="likes_icon" />
+                        <span className="invitation-title">
+                          {item.boardLikesCount}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

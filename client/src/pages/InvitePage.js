@@ -19,6 +19,7 @@ function InvitePage() {
 
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
+    memberId: '',
     title: '', // 카드의 제목
     date: '', // 카드의 날짜
     body: '', // 카드의 본문 내용
@@ -30,7 +31,7 @@ function InvitePage() {
     boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
     imageUrl: '', // 카드의 이미지
     member: {
-      memberId: 0, // 멤버의 아이디
+      id: 0, // 멤버의 아이디
       memberNickname: '', // 멤버의 닉네임
       imageUrl: '', // 호스트의 이미지
     },
@@ -39,7 +40,6 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
@@ -48,8 +48,8 @@ function InvitePage() {
 
   // 호스트 페이지 이동
   const hostPageClick = () => {
-    const memberId = eventData.member.id;
-    navigate(`/members/${memberId}`);
+    // const memberId = eventData.member.id;
+    navigate(`/members/${eventData.member.id}`);
   };
 
   // 참여자 목록을 가져오는 함수
@@ -106,13 +106,13 @@ function InvitePage() {
   const [isLiked, setIsLiked] = useState();
 
   useEffect(() => {
-    console.log(isLiked);
     axios
       .get(`${api}/members/${memberId}`)
       .then((response) => {
         const userLikedBoards = response.data.boardLikes;
         const liked = userLikedBoards.some((board) => board.id === boardId);
         setIsLiked(liked);
+        console.log('성공');
       })
       .catch((error) => {
         console.error('에러 Error fetching member like status:', error);
@@ -149,11 +149,15 @@ function InvitePage() {
       });
   };
 
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   return (
     <EventDetailsContainer>
       <section>
         <article>
-          <div>memberId:{memberId}</div>
+          {/* <div>memberId:{memberId}</div> */}
           <div className="card-container">
             <div className="image-container">
               <img
@@ -180,7 +184,7 @@ function InvitePage() {
                   alt="host-img"
                 />
               </button>
-              <div>금액: {eventData.money}</div>
+              <div>금액: {numberWithCommas(eventData.money)}</div>
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
@@ -253,7 +257,7 @@ const EventDetailsContainer = styled.div`
   margin: 0px 320px;
   display: flex;
   justify-content: center;
-
+  color: black;
   section {
     margin: 50px 0px;
     display: flex;
@@ -262,21 +266,6 @@ const EventDetailsContainer = styled.div`
     @media (max-width: 768px) {
       flex-direction: column;
       padding: 0px 10px;
-    }
-  }
-
-  @keyframes stampEffect {
-    0% {
-      transform: scale(0.5);
-      opacity: 0;
-    }
-    50% {
-      transform: scale(1.1);
-      opacity: 0.7;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
     }
   }
 
