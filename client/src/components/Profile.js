@@ -20,7 +20,7 @@ const AvatarContainer = styled.div`
   height: 150px;
   border: 1px solid rgba(245, 245, 245, 1);
   border-radius: 50%;
-  background-color: #f5f5f5;
+  background-color: rgba(256, 256, 256, 0);
   box-shadow: 0px 3px 7px 1px rgba(105, 105, 105, 0.4);
   display: flex;
   justify-content: center;
@@ -37,6 +37,7 @@ const AvatarContainer = styled.div`
 
   .profile-img {
     width: 150px;
+    height: 150px;
     border-radius: 50%;
   }
 `;
@@ -64,6 +65,7 @@ const ImgBox = styled.div`
     margin-left: 10px;
     margin-right: 10px;
   }
+
   img {
     width: 150px;
     height: 150px;
@@ -152,8 +154,7 @@ const BtnBox = styled.div`
 `;
 
 const Profile = ({ user, setUser }) => {
-  const { email, gender, introduce, nickname, follower, following, imageUrl } =
-    user;
+  const { email, gender, introduce, nickname, follower, following } = user;
   const isLogin = useSelector((state) => state.auth.isLogin);
   const [isIntroEditing, setIsIntroEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -199,7 +200,7 @@ const Profile = ({ user, setUser }) => {
         // 서버에 이미지 업로드 요청을 보냅니다.
         const response = await axios.patch(
           `http://3.39.76.109:8080/members/${memberId}`,
-          { imageUrl: imageUrl }, // 이미지 URL을 보냅니다.
+          { imageUrl }, // 이미지 URL을 보냅니다.
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -265,14 +266,21 @@ const Profile = ({ user, setUser }) => {
           <EditIconBox onClick={openModal}>
             <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
           </EditIconBox>
-          {imageUrl ? (
-            <img src={imageUrl} alt="프로필 이미지" className="profile-img" />
+          {user.imageUrl ? (
+            <img
+              src={user.imageUrl}
+              alt="프로필 이미지"
+              className="profile-img"
+            />
           ) : (
             <Icon icon="mingcute:ghost-line" className="avatar-img" />
           )}
         </AvatarContainer>
       ) : (
         <AvatarContainer>
+          <EditIconBox onClick={openModal}>
+            <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
+          </EditIconBox>
           <Icon icon="mingcute:ghost-line" className="avatar-img" />
         </AvatarContainer>
       )}

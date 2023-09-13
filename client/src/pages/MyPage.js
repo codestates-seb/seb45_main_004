@@ -40,7 +40,17 @@ const MyPage = () => {
         `http://3.39.76.109:8080/members/${memberId}`,
       );
       const myInfo = response.data;
-      setUser(myInfo);
+      const userData = {
+        id: myInfo.id,
+        nickname: myInfo.nickname,
+        email: myInfo.email,
+        gender: myInfo.gender,
+        introduce: myInfo.introduce,
+        imageUrl: myInfo.imageUrl,
+        follower: myInfo.follower,
+        following: myInfo.following,
+      };
+      setUser(userData);
     } catch (error) {
       console.error(error);
     }
