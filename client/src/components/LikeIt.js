@@ -1,27 +1,22 @@
 import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
-const DibsOnPost = styled.div`
+const ContentList = styled.ul`
   display: flex;
-  flex-direction: column;
-`;
-
-const ContentRow = styled.li`
   list-style-type: none;
-  display: flex;
+  width: 70vw;
   flex-wrap: wrap;
   margin-top: 20px;
-  margin-bottom: 30px;
 `;
 
-const ContentItem = styled.div`
+const ContentItem = styled.li`
   width: 16em;
   height: 16em;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 45px;
-  margin-right: 45px;
+  margin-left: 30px;
+  margin-right: 30px;
   margin-bottom: 20px;
 
   img {
@@ -36,17 +31,15 @@ const LikeIt = ({ user }) => {
   }
 
   return (
-    <DibsOnPost>
-      <ContentRow>
-        {user.boardLikes.map((el, boardId) => {
-          return (
-            <ContentItem key={boardId}>
-              <img src={el.imgUrl} alt="찜한 목록" />
-            </ContentItem>
-          );
-        })}
-      </ContentRow>
-    </DibsOnPost>
+    <ContentList>
+      {user.boardLikes.map((el, boardId) => {
+        return (
+          <ContentItem key={boardId}>
+            <img src={el.imgUrl} alt="찜한 목록" />
+          </ContentItem>
+        );
+      })}
+    </ContentList>
   );
 };
 

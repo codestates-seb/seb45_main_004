@@ -80,7 +80,7 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <Button type="newCard" text="New Card!" />
+              <Button type="based" text="New Card!" />
             </Link>
             {isNew ? (
               <Button
@@ -96,18 +96,15 @@ const Header = () => {
             <Link to={`/members/${memberId}`} className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
-            <Button type="membership" text="Logout" onClick={handleLogout} />
+            <Button type="based" text="Logout" onClick={handleLogout} />
           </ButtonBox>
         ) : (
           <ButtonBox>
-            <Link to="/boards/new-boards">
-              <Button type="membership" text="New Card" />
-            </Link>
             <Link to="/members/login">
-              <Button type="membership" text="Log In" />
+              <Button type="based" text="Log In" />
             </Link>
             <Link to="/members">
-              <Button type="membership" text="Sign Up" />
+              <Button type="based" text="Sign Up" />
             </Link>
           </ButtonBox>
         )}
