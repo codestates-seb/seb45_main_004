@@ -251,6 +251,8 @@ const SearchBtn = styled.button`
 const Image = styled.img`
   width: 300px;
   height: 300px;
+  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
+
   &.header-image {
     border-radius: 20px;
   }
