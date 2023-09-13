@@ -146,18 +146,6 @@ export default function Signuppage() {
         },
       });
 
-      // const response = await fetch(`http://3.39.76.109:8080/members`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(userData),
-      // });
-
-      // const data = await response.json();
-      // const { token } = data;
-      // localStorage.setItem('token', token);
-
       setNickname('');
       setEmail('');
       setPassword('');
