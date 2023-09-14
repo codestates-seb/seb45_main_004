@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, newStatus } from '../redux/actions';
+import { login, logout, newStatus } from '../redux/actions';
 import Button from './Button';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
@@ -74,6 +75,15 @@ const Header = () => {
   const handleWriteClick = () => {
     alert('모집날짜로부터 2일 전 모집이 마감됩니다.');
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+
+    if (token) {
+      dispatch(login(token));
+    }
+  }, []);
+
   return (
     <ServieceHeader>
       <div className="header-container">
