@@ -372,6 +372,10 @@ export default function Homepage() {
     }
   };
 
+  const handleSearchIconClick = () => {
+    titleSearch(selectedCategory);
+  };
+
   // 전체 초대글 좋아요 순
   const likesSort = (category) => {
     const apiUrl =
@@ -443,7 +447,7 @@ export default function Homepage() {
               onChange={(e) => setSearch(e.target.value)}
               onKeyPress={handleKeyPress}
             />
-            <SearchBtn className="icon-search" onClick={titleSearch}>
+            <SearchBtn className="icon-search" onClick={handleSearchIconClick}>
               <FaSearch />
             </SearchBtn>
           </div>
