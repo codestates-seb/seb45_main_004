@@ -18,6 +18,17 @@ function InvitePage() {
   const [participants, setParticipants] = useState([]);
   const memberId = localStorage.getItem('myId');
   const dispatch = useDispatch();
+  const [showDropdown, setShowDropdown] = useState(false);
+  // 드롭다운을 토글하는 함수
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+  // 클릭된 요소가 모달 배경인지 확인하고 모달을 닫는 함수
+  const handleModalBackgroundClick = () => {
+    if (!event.target.classList.contains('dropdown-toggle')) {
+      setShowDropdown(false);
+    }
+  };
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     memberId: '',
@@ -58,12 +69,18 @@ function InvitePage() {
   const fetchParticipants = async () => {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
+      console.log(response.data);
       setParticipants(response.data); // 참여자 목록을 상태에 저장
+      console.log(response);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
   };
-
+  // 참여자 이미지 클릭 시 멤버 아이디를 리덕스 스토어에 저장
+  const handleParticipantImageClick = (memberId) => {
+    dispatch(fetchUserData(memberId)); // 멤버 아이디를 리덕스 스토어에 저장
+    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+  };
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴
   }, []);
@@ -157,7 +174,7 @@ function InvitePage() {
   };
 
   return (
-    <EventDetailsContainer>
+    <EventDetailsContainer onClick={handleModalBackgroundClick}>
       <section>
         <article>
           <div className="card-container">
@@ -190,15 +207,53 @@ function InvitePage() {
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
-              {participants.slice(0, 4).map((participant, index) => (
-                <img
-                  className={`user-img ${index !== 0 ? 'user-img-offset' : ''}`}
+              {participants.slice(0, 5).map((participant, index) => (
+                <button
+                  className={`user-btn ${index !== 0 ? 'user-img-offset' : ''}`}
                   key={index}
-                  src={participant.memberImageUrl}
-                  alt="user-img"
-                />
+                  onClick={() => {
+                    handleParticipantImageClick(participant.memberId);
+                  }}
+                >
+                  <img
+                    className="user-img"
+                    src={participant.memberImageUrl}
+                    alt="user-img"
+                  />
+                </button>
               ))}
-              {participants.length > 3 && <span>...</span>}
+              {/* 추가: 드롭다운 토글 버튼 */}
+              {participants.length > 5 && ( // ... 버튼 4명 부터 나오게하기
+                <button className="dropdown-toggle" onClick={toggleDropdown}>
+                  ...
+                </button>
+              )}
+              {/* 드롭다운으로 표시되는 참여자 목록 */}
+              {showDropdown && (
+                <div className="dropdown">
+                  {participants.slice(0).map((participant, index) => (
+                    <div className="participation-data" key={index}>
+                      <button
+                        className="user-btn"
+                        key={index + 1}
+                        onClick={() => {
+                          handleParticipantImageClick(participant.memberId);
+                        }}
+                      >
+                        <img
+                          className="user-img"
+                          src={participant.memberImageUrl}
+                          alt="user-img"
+                        />
+                      </button>
+                      <span className="nickname-box">
+                        {participant.memberNickname}
+                      </span>{' '}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* 참여자 수 표시 */}
               <div>
                 {eventData.currentNum}/{eventData.totalNum}
               </div>
@@ -219,6 +274,7 @@ function InvitePage() {
             </div>
           </div>
         </article>
+
         <article className="form-box">
           <div className="data title-box">
             <h1>{eventData.title}</h1>
@@ -316,13 +372,6 @@ const EventDetailsContainer = styled.div`
     left: 370px;
   }
 
-  .user-box {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
-  }
-
   .host-container {
     display: flex;
     align-items: center;
@@ -331,11 +380,38 @@ const EventDetailsContainer = styled.div`
     height: 50px;
   }
 
+  .host-btn {
+    cursor: pointer;
+    border: none;
+    height: 50px;
+    padding: 0px;
+    background-color: transparent;
+  }
+
+  .user-box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
   .user-container {
     display: flex;
     align-items: center;
     gap: 5px;
-    width: 100%;
+    height: 50px;
+  }
+
+  .user-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    width: 50px;
+    height: 50px;
+  }
+  .user-btn :active {
+    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.5);
+    transform: translateY(1px);
   }
 
   .host-img,
@@ -347,14 +423,40 @@ const EventDetailsContainer = styled.div`
 
   .user-img-offset {
     margin-left: -30px;
+    width: 50px;
+    height: 50px;
   }
 
-  .host-btn {
+  .participation-data {
+    display: flex;
+    align-items: center;
+  }
+
+  .nickname-box {
+    margin-left: 10px;
+  }
+  /* 드롭다운 버튼 스타일 */
+  .dropdown-toggle {
+    position: relative;
     cursor: pointer;
-    border: none;
-    height: 50px;
-    padding: 0px;
     background-color: transparent;
+    height: 30px;
+    width: 50px;
+    text-align: start;
+  }
+
+  /* 드롭다운 목록 스타일 */
+  .dropdown {
+    position: absolute;
+    width: 300px;
+    left: 35%;
+    z-index: 2;
+    padding: 20px;
+    overflow: scroll;
+    max-height: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.8);
   }
 
   .title-box {

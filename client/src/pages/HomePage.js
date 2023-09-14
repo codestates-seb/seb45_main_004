@@ -9,6 +9,11 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
+  /* 스크롤바를 숨기는 스타일 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   display: flex;
   justify-content: center;
 
