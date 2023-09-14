@@ -8,6 +8,7 @@ import com.party.board.repository.ApplicantRepository;
 import com.party.board.repository.BoardRepository;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
@@ -29,6 +30,7 @@ public class ApplicantService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final AlarmService alarmService;
+    private final AwsService awsService;
 
 
     //모임 참여
@@ -55,6 +57,10 @@ public class ApplicantService {
 
             if (board.getCurrentNum() == board.getTotalNum()){
                 board.setStatus(Board.BoardStatus.BOARD_STATUS);
+                String rootImagePath = board.getImageUrl();
+                String cutPath = rootImagePath.substring(0, rootImagePath.length()-4);
+                System.out.println(cutPath);
+                board.setImageUrl(cutPath+"-closed.png");
                 boardRepository.save(board);
                 //알림 발송
                 alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
