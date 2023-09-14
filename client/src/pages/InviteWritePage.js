@@ -110,9 +110,13 @@ function InviteWritePage() {
 
     if (name === 'money') {
       const pureNumber = value.replace(/,/g, ''); // 콤마 제거
+      const numericValue = isNaN(parseInt(pureNumber, 10))
+        ? 0
+        : parseInt(pureNumber, 10);
+
       setFormData((prevData) => ({
         ...prevData,
-        [name]: parseInt(pureNumber, 10),
+        [name]: numericValue,
       }));
     } else {
       // 다른 필드들의 처리 로직
