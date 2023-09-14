@@ -18,6 +18,7 @@ public class Applicant {
     private Long id;
 
     private String memberImageUrl;
+    private String memberNickname;
 
     private String boardImageUrl;
 
