@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 const MailLoginform = styled.form`
   display: flex;
   flex-direction: column;
-  margin-top: 35px;
 
   .title-box {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 15px;
+    color: red;
 
     a {
       color: white;
@@ -18,8 +18,16 @@ const MailLoginform = styled.form`
       font-size: 1rem;
     }
   }
+  .password {
+    margin-bottom: 10px;
+  }
+  p {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: red;
+  }
 
-  .input-box {
+  /* .input-box {
     margin-bottom: 30px;
 
     input {
@@ -30,13 +38,28 @@ const MailLoginform = styled.form`
       padding-left: 10px;
       padding-right: 10px;
       font-size: 1.2rem;
+      color: red;
     }
 
     p {
       margin-top: 10px;
       font-size: 0.9rem;
+      color: red;
     }
-  }
+  } */
+`;
+
+const InputStyle = styled.input`
+  border: none;
+  border-bottom: 1px solid black;
+  background: transparent;
+  width: 340px;
+  height: 50px;
+  font-size: 15px;
+  margin-bottom: 20px;
+  caret-color: black;
+  padding-left: 10px;
+  outline: none;
 `;
 
 const EmailLoginForm = ({
@@ -49,26 +72,25 @@ const EmailLoginForm = ({
 }) => {
   return (
     <MailLoginform>
-      <div className="title-box">
-        <b>Email</b>
-      </div>
+      <div className="title-box"></div>
       <div className="input-box">
-        <input
+        <InputStyle
           type="text"
           id="userId"
+          placeholder="E-mail"
           value={username}
           onChange={handleUsernameChange}
         />
         {eamilError && <p className="error">{eamilError}</p>}
       </div>
       <div className="title-box">
-        <b>Password</b>
         <a href="/">Forgot password?</a>
       </div>
-      <div className="input-box">
-        <input
+      <div className="input-box password">
+        <InputStyle
           type="password"
           id="userPassword"
+          placeholder="Password"
           value={password}
           onChange={handlePasswordChange}
         />
