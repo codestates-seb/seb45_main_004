@@ -33,6 +33,9 @@ public class MemberService {
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
+        if(memberRepository.findByNickname(member.getNickname()).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
+        }
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 

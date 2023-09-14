@@ -17,6 +17,7 @@ public enum ExceptionCode {
     UNAUTHORIZED_FOLLOW(400,"You don't have permission"),
     UNAUTHORIZED_ACCESS(400,"You don't have permission"),
     FOLLOW_NOT_FOUND(400,"Follow not found"),
+    NICKNAME_EXIST(409, "Nickname exist"),
     REFRESHTOKEN_IS_NOT_VERIFIED(402, "Refresh Token is not verified");
 
 

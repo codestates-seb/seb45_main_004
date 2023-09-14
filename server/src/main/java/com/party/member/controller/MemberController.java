@@ -1,5 +1,6 @@
 package com.party.member.controller;
 
+import com.party.board.entity.Board;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
 import com.party.member.dto.*;
@@ -54,22 +55,26 @@ public class MemberController {
     public ResponseEntity getMember(@PathVariable("member-id") long memberId) {
         log.info("memberRepository: " + memberRepository);
         log.info("mapper: " + mapper);
+
         Member member = memberService.findMember(memberId);
+
         MemberResponseDto responseDto = mapper.memberToMemberResponseDto(member);
 
-        // applicants 정렬
-        responseDto.setApplicants(
-                responseDto.getApplicants().stream()
-                        .sorted(Comparator.comparing(MemberApplicantResponseDto::getBoardId).reversed())
-                        .collect(Collectors.toList())
-        );
+        if (responseDto.getBoardLikes() != null) {
+            responseDto.getBoardLikes().sort(Comparator
+                    .comparing(MemberBoardLikeResponseDto::getBoardStatus,
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                    .thenComparing(MemberBoardLikeResponseDto::getBoardId).reversed());
+        }
 
-        // boardLikes 정렬
-        responseDto.setBoardLikes(
-                responseDto.getBoardLikes().stream()
-                        .sorted(Comparator.comparing(MemberBoardLikeResponseDto::getBoardId).reversed())
-                        .collect(Collectors.toList())
-        );
+        if (responseDto.getApplicants() != null) {
+            responseDto.getApplicants().sort(Comparator
+                    .comparing(MemberApplicantResponseDto::getBoardStatus,
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                    .thenComparing(MemberApplicantResponseDto::getBoardId).reversed());
+        }
+
+
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
@@ -108,7 +113,7 @@ public class MemberController {
     // 파라미터의 회원 id와 토큰의 id를 비교해서 동일한 회원이면 update실행
     @PatchMapping("/{member-id}")
     public ResponseEntity patchMember(@PathVariable("member-id") long memberId,
-                                      @RequestBody MemberPatchDto memberPatchDto) {
+                                      @RequestBody @Valid MemberPatchDto memberPatchDto) {
         int loginMemberEmail = (int) memberService.extractMemberInfo().get("id");
         if(loginMemberEmail != memberId) throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
 
