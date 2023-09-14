@@ -23,12 +23,17 @@ function InvitePage() {
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
-  // 클릭된 요소가 모달 배경인지 확인하고 모달을 닫는 함수
-  const handleModalBackgroundClick = () => {
+  const handleContainerClick = (event) => {
     if (!event.target.classList.contains('dropdown-toggle')) {
       setShowDropdown(false);
     }
   };
+
+  // 드롭다운 내부 요소의 클릭 이벤트 전파를 중단
+  const handleDropdownClick = (event) => {
+    event.stopPropagation();
+  };
+
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     memberId: '',
@@ -174,7 +179,7 @@ function InvitePage() {
   };
 
   return (
-    <EventDetailsContainer onClick={handleModalBackgroundClick}>
+    <EventDetailsContainer onClick={handleContainerClick}>
       <section>
         <article>
           <div className="card-container">
@@ -196,14 +201,30 @@ function InvitePage() {
           </div>
           <div className="user-box">
             <div className="host-container">
-              <button className="host-btn" onClick={hostPageClick}>
-                <img
-                  className="host-img" // 호스트 이미지 표시
-                  src={eventData.member.imageUrl}
-                  alt="host-img"
-                />
+              <div className="host-box">
+                <button className="host-btn" onClick={hostPageClick}>
+                  <img
+                    className="host-img" // 호스트 이미지 표시
+                    src={eventData.member.imageUrl}
+                    alt="host-img"
+                  />
+                </button>
+                <div>금액: {numberWithCommas(eventData.money)}</div>
+              </div>
+              <button
+                className="join-btn"
+                onClick={sendJoinStatus}
+                // 참여버튼 비활성화
+                disabled={
+                  eventData.currentNum === eventData.totalNum ||
+                  (daysDifference >= 0 && daysDifference <= 2)
+                }
+              >
+                {eventData.currentNum === eventData.totalNum ||
+                (daysDifference >= 0 && daysDifference <= 2)
+                  ? 'Closed'
+                  : 'Participation'}
               </button>
-              <div>금액: {numberWithCommas(eventData.money)}</div>
             </div>
             <div className="user-container">
               {/* 참여자 표시 */}
@@ -223,54 +244,48 @@ function InvitePage() {
                 </button>
               ))}
               {/* 추가: 드롭다운 토글 버튼 */}
-              {participants.length > 5 && ( // ... 버튼 4명 부터 나오게하기
-                <button className="dropdown-toggle" onClick={toggleDropdown}>
-                  ...
-                </button>
-              )}
-              {/* 드롭다운으로 표시되는 참여자 목록 */}
-              {showDropdown && (
-                <div className="dropdown">
-                  {participants.slice(0).map((participant, index) => (
-                    <div className="participation-data" key={index}>
-                      <button
-                        className="user-btn"
-                        key={index + 1}
-                        onClick={() => {
-                          handleParticipantImageClick(participant.memberId);
-                        }}
-                      >
-                        <img
-                          className="user-img"
-                          src={participant.memberImageUrl}
-                          alt="user-img"
-                        />
-                      </button>
-                      <span className="nickname-box">
-                        {participant.memberNickname}
-                      </span>{' '}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div className="dropdown-container">
+                {participants.length > 5 && ( // ... 버튼 4명 부터 나오게하기
+                  <button className="dropdown-toggle" onClick={toggleDropdown}>
+                    ...
+                  </button>
+                )}
+                {/* 드롭다운으로 표시되는 참여자 목록 */}
+                {showDropdown && (
+                  <div
+                    className="dropdown"
+                    onClick={handleDropdownClick}
+                    onKeyDown={handleDropdownClick}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {participants.slice(0).map((participant, index) => (
+                      <div className="participation-data" key={index}>
+                        <button
+                          className="user-btn"
+                          key={index + 1}
+                          onClick={() => {
+                            handleParticipantImageClick(participant.memberId);
+                          }}
+                        >
+                          <img
+                            className="user-img"
+                            src={participant.memberImageUrl}
+                            alt="user-img"
+                          />
+                        </button>
+                        <span className="nickname-box">
+                          {participant.memberNickname}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               {/* 참여자 수 표시 */}
               <div>
                 {eventData.currentNum}/{eventData.totalNum}
               </div>
-              <button
-                className="join-btn"
-                onClick={sendJoinStatus}
-                // 참여버튼 비활성화
-                disabled={
-                  eventData.currentNum === eventData.totalNum ||
-                  (daysDifference >= 0 && daysDifference <= 2)
-                }
-              >
-                {eventData.currentNum === eventData.totalNum ||
-                (daysDifference >= 0 && daysDifference <= 2)
-                  ? 'Closed'
-                  : 'Participation'}
-              </button>
             </div>
           </div>
         </article>
@@ -375,24 +390,21 @@ const EventDetailsContainer = styled.div`
   .host-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5px;
-    width: 100%;
+    width: 400px;
     height: 50px;
   }
-
-  .host-btn {
-    cursor: pointer;
-    border: none;
-    height: 50px;
-    padding: 0px;
-    background-color: transparent;
+  .host-box {
+    display: flex;
+    align-items: center;
+    gap: 30px;
   }
-
   .user-box {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .user-container {
@@ -402,16 +414,19 @@ const EventDetailsContainer = styled.div`
     height: 50px;
   }
 
-  .user-btn {
+  .user-btn,
+  .host-btn {
     background-color: transparent;
     cursor: pointer;
     border: none;
     width: 50px;
     height: 50px;
   }
-  .user-btn :active {
+  .user-btn:active,
+  .host-btn:active {
     box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.5);
     transform: translateY(1px);
+    border-radius: 50px;
   }
 
   .host-img,
@@ -435,28 +450,83 @@ const EventDetailsContainer = styled.div`
   .nickname-box {
     margin-left: 10px;
   }
+
+  .dropdown-container {
+    position: relative;
+  }
   /* 드롭다운 버튼 스타일 */
   .dropdown-toggle {
-    position: relative;
-    cursor: pointer;
-    background-color: transparent;
     height: 30px;
-    width: 50px;
+    width: 30px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 5px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 20px;
     text-align: start;
+    cursor: pointer;
   }
 
+  .dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .dropdown-toggle:active {
+    box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.2);
+  }
   /* 드롭다운 목록 스타일 */
   .dropdown {
-    position: absolute;
-    width: 300px;
-    left: 35%;
-    z-index: 2;
-    padding: 20px;
-    overflow: scroll;
-    max-height: 300px;
     display: flex;
     flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.8);
+    position: absolute;
+    top: -80px;
+    left: 30px;
+    width: 200px;
+    height: 200px;
+    padding: 20px 20px 0px 20px;
+    gap: 12px;
+    z-index: 2;
+    overflow: scroll;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+  }
+  /* 수직 스크롤바 */
+  .dropdown::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  /* 수직 스크롤바 슬라이더 (막대) */
+  .dropdown::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 10px;
+  }
+
+  /* 수평 스크롤바의 끝 부분 코너 */
+  .dropdown::-webkit-scrollbar-corner {
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 위 여백 */
+  .dropdown::-webkit-scrollbar-button:start {
+    display: block;
+    height: 10px; /* 위 여백 높이 조절 */
+  }
+
+  /* 스크롤바 아래 여백 */
+  .dropdown::-webkit-scrollbar-button:end {
+    display: block;
+    height: 2px; /* 아래 여백 높이 조절 */
+  }
+
+  /* 수평 스크롤바 너비 조절 */
+  .dropdown::-webkit-scrollbar-horizontal {
+    height: 8px;
+  }
+
+  /* 수평 스크롤바 슬라이더 (막대) */
+  .dropdown::-webkit-scrollbar-thumb:horizontal {
+    background-color: #999;
+    border-radius: 10px;
   }
 
   .title-box {
