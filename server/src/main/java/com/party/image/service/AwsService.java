@@ -47,10 +47,11 @@ public class AwsService {
 
         for (S3ObjectSummary objectSummary : objectSummaries) {
             String key = objectSummary.getKey();
-            if (!key.equals(directory + "/")) {
+            if (!key.equals(directory + "/") && !key.contains("closed")) {
                 fileList.add("https://"+bucketName+".s3."+region+".amazonaws.com/" + key);
+                }
             }
-        }
+
 
         return fileList;
     }
