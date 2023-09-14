@@ -7,7 +7,7 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUserData } from '../redux/actions';
 
 function InvitePage() {
@@ -16,9 +16,8 @@ function InvitePage() {
   const navigate = useNavigate();
   const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
-  const memberId = useSelector((state) => state.user.myId);
+  const memberId = localStorage.getItem('myId');
   const dispatch = useDispatch();
-
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     memberId: '',
@@ -50,8 +49,8 @@ function InvitePage() {
 
   // 호스트 페이지 이동
   const hostPageClick = () => {
-    const memberId = eventData.member.id;
-    dispatch(fetchUserData(memberId));
+    const hostId = eventData.member.id;
+    dispatch(fetchUserData(hostId));
     navigate(`/members/${eventData.member.id}`);
   };
 
@@ -113,9 +112,10 @@ function InvitePage() {
       .get(`${api}/members/${memberId}`)
       .then((response) => {
         const userLikedBoards = response.data.boardLikes;
-        const liked = userLikedBoards.some((board) => board.id === boardId);
+        const liked = userLikedBoards.some(
+          (board) => board.boardId === Number(boardId),
+        );
         setIsLiked(liked);
-        console.log('성공');
       })
       .catch((error) => {
         console.error('에러 Error fetching member like status:', error);
@@ -160,7 +160,7 @@ function InvitePage() {
     <EventDetailsContainer>
       <section>
         <article>
-          {/* <div>memberId:{memberId}</div> */}
+          <div>memberId:{memberId}</div>
           <div className="card-container">
             <div className="image-container">
               <img
