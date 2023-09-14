@@ -352,6 +352,7 @@ const EventDetailsContainer = styled.div`
     width: 400px;
     height: 400px;
   }
+
   .image-container {
     position: relative;
   }
@@ -383,8 +384,8 @@ const EventDetailsContainer = styled.div`
     text-align: center;
     position: absolute;
     color: whitesmoke;
-    top: 369px;
-    left: 370px;
+    top: 368px;
+    left: 371px;
   }
 
   .host-container {
@@ -550,13 +551,14 @@ const EventDetailsContainer = styled.div`
 
   .title-body {
     background-color: white;
-    height: 200px;
+    height: 300px;
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(244, 227, 233, 0.4);
     border: none;
+    margin-bottom: 23px;
   }
   .map-box {
     height: 300px;
@@ -591,9 +593,10 @@ const EventDetailsContainer = styled.div`
   }
 
   .join-btn {
-    height: 32px;
+    height: 40px;
     border: none;
     padding: 0px 12px;
+    font-size: 14px;
     background-color: rgba(244, 227, 233, 0.4);
   }
 
@@ -612,14 +615,32 @@ const EventDetailsContainer = styled.div`
     }
 
     .user-box {
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
+
       justify-content: space-between;
       margin-top: 10px;
     }
 
+    .host-container {
+      width: 100%;
+    }
+
     .form-box {
       margin-top: 20px;
+    }
+    .main-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .heart-icon {
+      top: 390px;
+      left: 390px;
+    }
+
+    .likes-count {
+      top: 397px;
+      left: 406px;
     }
   }
 `;

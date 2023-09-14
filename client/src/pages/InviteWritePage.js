@@ -311,11 +311,6 @@ const StyledWritePage = styled.div`
     padding: 0px 200px;
   }
 
-  .card-container {
-    width: 400px;
-    height: 400px;
-  }
-
   .btn-box {
     display: flex;
     justify-content: space-between;
@@ -324,7 +319,8 @@ const StyledWritePage = styled.div`
   .form-box {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
+    margin-bottom: -7px;
   }
   input,
   textarea {
@@ -410,6 +406,7 @@ const StyledWritePage = styled.div`
     height: 28px;
     color: whitesmoke;
     margin-top: 1px;
+    cursor: pointer;
   }
   .submit-btn {
     position: relative;
@@ -462,14 +459,16 @@ const StyledWritePage = styled.div`
       height: auto;
     }
     .modal-btn {
-      top: 362px;
+      top: 410px;
     }
 
-    .form-box {
-      margin-top: 60px;
-    }
     .submit-btn {
       left: 0px;
+    }
+
+    .main-img {
+      width: 100%;
+      height: 100%;
     }
   }
 `;
