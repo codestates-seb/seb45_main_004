@@ -3,25 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, newStatus } from '../redux/actions';
+import { login, logout, newStatus } from '../redux/actions';
 import Button from './Button';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
-  width: 100%;
   background-color: rgba(255, 255, 255, 0.2);
   height: 6em;
 
   /* 헤더의 요소 정렬 */
   .header-container {
+    margin: 0px 320px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 80%;
+    /* width: 80%; */
     height: 100%;
-    margin-left: 10%;
-    margin-right: 10%;
+    /* margin-left: 10%;
+    margin-right: 10%; */
   }
 
   /* a태그 타이포그래피 스타일 삭제 */
@@ -53,9 +55,9 @@ const ButtonBox = styled.div`
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
-  const dispatch = useDispatch();
 
   const handleNewStatus = () => {
     dispatch(newStatus(!isNew));
@@ -64,9 +66,23 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('isLogin');
     dispatch(logout());
     navigate('/');
   };
+
+  const handleWriteClick = () => {
+    alert('모집날짜로부터 2일 전 모집이 마감됩니다.');
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+
+    if (token) {
+      dispatch(login(token));
+    }
+  }, []);
 
   return (
     <ServieceHeader>
@@ -77,7 +93,11 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <Button type="newCard" text="New Card!" />
+              <Button
+                type="based"
+                text="New Card!"
+                onClick={handleWriteClick}
+              />
             </Link>
             {isNew ? (
               <Button
@@ -90,21 +110,18 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to="/members/:memberId" className="user-info">
+            <Link to="/members/me" className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
-            <Button type="membership" text="Logout" onClick={handleLogout} />
+            <Button type="based" text="Logout" onClick={handleLogout} />
           </ButtonBox>
         ) : (
           <ButtonBox>
-            <Link to="/boards/new-boards">
-              <Button type="membership" text="New Card" />
-            </Link>
             <Link to="/members/login">
-              <Button type="membership" text="Log In" />
+              <Button type="based" text="Log In" />
             </Link>
             <Link to="/members">
-              <Button type="membership" text="Sign Up" />
+              <Button type="based" text="Sign Up" />
             </Link>
           </ButtonBox>
         )}

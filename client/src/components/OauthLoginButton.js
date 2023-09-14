@@ -1,24 +1,24 @@
-import axios from 'axios';
-import { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 const OauthButton = styled.button`
   background-color: white;
-  border: 0;
-  border-radius: 10px;
-  width: 430px;
-  height: 80px;
+  border: 1px solid #d9d9d9;
+  border-radius: 20px;
+  width: auto;
+  padding: 30px 10px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 15px;
   cursor: pointer;
+  box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
 
   .brand-logo {
     margin-left: 0;
     img {
-      width: 52px;
-      height: 52px;
+      width: 40px;
+      height: 40px;
     }
   }
 
@@ -31,32 +31,9 @@ const OauthButton = styled.button`
 const OauthLoginButton = () => {
   const handleKakaoBtnClick = () => {
     window.location.assign(
-      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://localhost:3000`,
+      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://localhost:3000/oauth/kakao/login`,
     );
   };
-  // const code = new URLSearchParams(window.location.search).get('code');
-  // console.log('인가코드', code);
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get('code');
-    if (code) {
-      axios
-        .post(`http://3.39.76.109:8080/oauth/login`, {
-          provider: 'kakao',
-          code: code,
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            const token = response.headers.authorization;
-            localStorage.setItem('jwtToken', token);
-          }
-        })
-        .catch((error) => {
-          console.log('에러', error);
-        });
-    }
-  }, []);
 
   return (
     <OauthButton onClick={handleKakaoBtnClick}>

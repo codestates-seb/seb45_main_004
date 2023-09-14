@@ -6,7 +6,7 @@ const SignupPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 80vh;
   font-size: 16px;
   margin: 0px 320px;
   .signup-form-sex {
@@ -16,14 +16,16 @@ const SignupPage = styled.div`
     margin-bottom: 10px;
   }
   .singup-submit-btn {
-    width: 300px;
+    width: 340px;
     height: 50px;
-    border-radius: 10px;
+    border-radius: 20px;
     border: none;
     color: white;
     font-size: 15px;
+    font-weight: 500;
     background-color: #0a95ff;
     cursor: pointer;
+    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
   .agree-text {
     font-size: 15px;
@@ -45,7 +47,7 @@ const SignupPage = styled.div`
     margin-bottom: 20px;
   }
   p {
-    font-size: 13px;
+    font-size: 0.9rem;
     color: red;
   }
 `;
@@ -54,7 +56,7 @@ const InputStyle = styled.input`
   border: none;
   border-bottom: 1px solid black;
   background: transparent;
-  width: 300px;
+  width: 340px;
   height: 50px;
   font-size: 15px;
   margin-bottom: 20px;
@@ -129,6 +131,10 @@ export default function Signuppage() {
       return;
     }
 
+    if (!isPasswordValid(password)) {
+      window.alert('패스워드를 확인해주세요');
+      return;
+    }
     try {
       const userData = {
         email: email,
@@ -141,18 +147,6 @@ export default function Signuppage() {
           'Content-Type': 'application/json',
         },
       });
-
-      // const response = await fetch(`http://3.39.76.109:8080/members`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(userData),
-      // });
-
-      // const data = await response.json();
-      // const { token } = data;
-      // localStorage.setItem('token', token);
 
       setNickname('');
       setEmail('');

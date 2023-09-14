@@ -1,13 +1,12 @@
 import Button from '../components/Button';
 import OauthLoginButton from '../components/OauthLoginButton';
 import EmailLoginForm from '../components/EmailLoginForm';
-// import api from '../api/api';
 import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { fetchUserData, login } from '../redux/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMyData, login } from '../redux/actions';
 
 const LoginBody = styled.section`
   display: flex;
@@ -15,10 +14,13 @@ const LoginBody = styled.section`
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+  height: 80vh;
 `;
 
 const Logincontainer = styled.div`
-  width: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 100px;
   margin-bottom: 100px;
 `;
@@ -32,7 +34,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const isLogin = useSelector((state) => state.auth.loginStatus);
   //이메일 형식 검사 규칙 정의
   const isEmailValid = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -81,14 +83,18 @@ const LoginPage = () => {
             password,
           },
         );
-        console.log(response);
         if (response.status === 200) {
           const token = response.headers.authorization;
-          const memberId = response.headers.memberid;
+          const refresh = response.headers.refresh;
+          const myId = response.headers.memberid;
           localStorage.setItem('jwtToken', token);
+          localStorage.setItem('refresh', refresh);
+          localStorage.setItem('isLogin', isLogin);
+          localStorage.setItem('myId', myId);
+
           console.log('성공');
           dispatch(login(token));
-          dispatch(fetchUserData(memberId));
+          dispatch(fetchMyData(myId));
           navigate('/');
         }
       } catch (error) {
@@ -97,13 +103,6 @@ const LoginPage = () => {
         throw error;
       }
     }
-    // try {
-    //   const responseData = await api.EmailLogin(username, password);
-    //   return responseData;
-    // } catch (error) {
-    //   setIsError('아이디와 비밀번호를 확인해주세요.');
-    //   console.error('비동기 요청 에러', error);
-    // }
   };
 
   return (
