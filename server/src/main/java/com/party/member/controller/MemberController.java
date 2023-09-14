@@ -87,8 +87,22 @@ public class MemberController {
     public ResponseEntity myPage() {
         int loginMemberId = (int) memberService.extractMemberInfo().get("id");
         Member member = memberService.findMember(loginMemberId);
+        MemberResponseDto responseDto = mapper.memberToMemberResponseDto(member);
+        // applicants 정렬
+        responseDto.setApplicants(
+                responseDto.getApplicants().stream()
+                        .sorted(Comparator.comparing(MemberApplicantResponseDto::getBoardId).reversed())
+                        .collect(Collectors.toList())
+        );
 
-        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
+        // boardLikes 정렬
+        responseDto.setBoardLikes(
+                responseDto.getBoardLikes().stream()
+                        .sorted(Comparator.comparing(MemberBoardLikeResponseDto::getBoardId).reversed())
+                        .collect(Collectors.toList())
+        );
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     // 파라미터의 회원 id와 토큰의 id를 비교해서 동일한 회원이면 update실행
