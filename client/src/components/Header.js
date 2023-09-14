@@ -57,7 +57,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
-  const memberId = useSelector((state) => state.user.memberId);
 
   const handleNewStatus = () => {
     dispatch(newStatus(!isNew));
@@ -84,7 +83,11 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <Link to="/boards/new-boards">
-              <Button type="based" text="New Card!" onClick={handleWriteClick} />
+              <Button
+                type="based"
+                text="New Card!"
+                onClick={handleWriteClick}
+              />
             </Link>
             {isNew ? (
               <Button
@@ -97,7 +100,7 @@ const Header = () => {
                 text={<MdNotificationsNone className="noti-icon" />}
               />
             )}
-            <Link to={`/members/${memberId}`} className="user-info">
+            <Link to="/members/me" className="user-info">
               <FaRegUserCircle className="user-info-icon" />
             </Link>
             <Button type="based" text="Logout" onClick={handleLogout} />

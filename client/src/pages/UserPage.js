@@ -3,7 +3,7 @@ import Profile from '../components/Profile';
 import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-//import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const MyPageSection = styled.section`
   width: 100vw;
@@ -15,8 +15,7 @@ const MyPageSection = styled.section`
   align-items: center;
 `;
 
-//레이아웃 부터 잡기!
-const MyPage = () => {
+const UserPage = () => {
   const [user, setUser] = useState({
     id: 0,
     nickname: '',
@@ -31,28 +30,26 @@ const MyPage = () => {
   });
 
   const [activetab, setActiveTab] = useState('tab1');
-  const token = localStorage.getItem('jwtToken');
-  //  const myId = useSelector((state) => state.user.myId);
 
-  const fetchMyInfo = async () => {
+  const memberId = useSelector((state) => state.user.memberId);
+
+  const fetchUserInfo = async () => {
     try {
-      const response = await axios.get(`http://3.39.76.109:8080/members/me`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      const myInfo = response.data;
+      const response = await axios.get(
+        `http://3.39.76.109:8080/members/${memberId}`,
+      );
+      const userInfo = response.data;
       const userData = {
-        id: myInfo.id,
-        nickname: myInfo.nickname,
-        email: myInfo.email,
-        gender: myInfo.gender,
-        introduce: myInfo.introduce,
-        imageUrl: myInfo.imageUrl,
-        follower: myInfo.follower,
-        following: myInfo.following,
-        applicants: myInfo.applicants,
-        boardLikes: myInfo.boardLikes,
+        id: userInfo.id,
+        nickname: userInfo.nickname,
+        email: userInfo.email,
+        gender: userInfo.gender,
+        introduce: userInfo.introduce,
+        imageUrl: userInfo.imageUrl,
+        follower: userInfo.follower,
+        following: userInfo.following,
+        applicants: userInfo.applicants,
+        boardLikes: userInfo.boardLikes,
       };
       setUser(userData);
     } catch (error) {
@@ -61,10 +58,7 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    // user 데이터가 비어있을 때만 API 호출
-    if (!user.id) {
-      fetchMyInfo();
-    }
+    fetchUserInfo();
   }, []);
 
   const handleTabClick = (tabId) => {
@@ -82,5 +76,4 @@ const MyPage = () => {
     </MyPageSection>
   );
 };
-
-export default MyPage;
+export default UserPage;

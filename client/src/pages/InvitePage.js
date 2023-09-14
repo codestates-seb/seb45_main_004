@@ -7,7 +7,8 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserData } from '../redux/actions';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -15,7 +16,8 @@ function InvitePage() {
   const navigate = useNavigate();
   const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
-  const memberId = useSelector((state) => state.user.memberId);
+  const memberId = useSelector((state) => state.user.myId);
+  const dispatch = useDispatch();
 
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
@@ -48,7 +50,8 @@ function InvitePage() {
 
   // 호스트 페이지 이동
   const hostPageClick = () => {
-    // const memberId = eventData.member.id;
+    const memberId = eventData.member.id;
+    dispatch(fetchUserData(memberId));
     navigate(`/members/${eventData.member.id}`);
   };
 

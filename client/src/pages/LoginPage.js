@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserData, login } from '../redux/actions';
+import { fetchMyData, login } from '../redux/actions';
 
 const LoginBody = styled.section`
   display: flex;
@@ -80,17 +80,16 @@ const LoginPage = () => {
             password,
           },
         );
-        console.log(response);
         if (response.status === 200) {
           const token = response.headers.authorization;
           const refresh = response.headers.refresh;
-          const memberId = response.headers.memberid;
+          const myId = response.headers.memberid;
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('refresh', refresh);
           localStorage.setItem('isLogin', isLogin);
           console.log('성공');
           dispatch(login(token));
-          dispatch(fetchUserData(memberId));
+          dispatch(fetchMyData(myId));
           navigate('/');
         }
       } catch (error) {
