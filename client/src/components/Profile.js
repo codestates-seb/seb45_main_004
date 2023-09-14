@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from './Button';
 import Modal from './Modal';
+import Follow from './Follow';
 
 const ProfileContainer = styled.div`
   width: 76vw;
@@ -155,14 +156,17 @@ const BtnBox = styled.div`
 
 const Profile = ({ user, setUser }) => {
   const { email, gender, introduce, nickname, follower, following } = user;
-  const isLogin = useSelector((state) => state.auth.isLogin);
+
   const [isIntroEditing, setIsIntroEditing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImages, setisImages] = useState([]);
+  // const [isFollowing, setIsFollowing] = useState(0);
 
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
   const myId = JSON.parse(useSelector((state) => state.user.myId));
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  const toMemberId = useSelector((state) => state.user.memberId);
 
   const patchData = {
     introduce,
@@ -197,8 +201,6 @@ const Profile = ({ user, setUser }) => {
     if (token) {
       try {
         const imageUrl = e.target.currentSrc; // 클릭한 이미지의 URL 가져오기
-
-        // 서버에 이미지 업로드 요청을 보냅니다.
         const response = await axios.patch(
           `http://3.39.76.109:8080/members/${myId}`,
           { imageUrl }, // 이미지 URL을 보냅니다.
@@ -208,14 +210,8 @@ const Profile = ({ user, setUser }) => {
             },
           },
         );
-
-        // 서버에서 업로드된 이미지의 URL을 받아옵니다.
         const newImageUrl = response.data.imageUrl;
-
-        // 이미지 URL을 state에 업데이트합니다.
         setUser({ ...user, imageUrl: newImageUrl }); // imageUrl 업데이트
-
-        // 모달을 닫습니다.
         closeModal();
 
         console.log('프로필 이미지 업로드 성공');
@@ -260,6 +256,53 @@ const Profile = ({ user, setUser }) => {
     }
   };
 
+  /* 팔로잉, 언팔로잉 */
+  const followData = {
+    following,
+    follower,
+  };
+
+  const handleFollowChange = async () => {
+    if (token) {
+      try {
+        const response = await axios.post(
+          `http://3.39.76.109:8080/follows/${toMemberId}`,
+          followData,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+        console.log('POST 요청 성공!', response.data);
+      } catch (error) {
+        console.log('PATCH 요청 실패!', error);
+      }
+    } else {
+      console.error('토큰이 없으므로 PATCH 요청을 보낼 수 없습니다.');
+    }
+  };
+
+  const handleUnFollowChange = async () => {
+    if (token) {
+      try {
+        const response = await axios.delete(
+          `http://3.39.76.109:8080/follows/${toMemberId}`,
+          {
+            headers: {
+              Authorization: token,
+            },
+          },
+        );
+        console.log('DELETE 요청 성공!', response.data);
+      } catch (error) {
+        console.log('PATCH 요청 실패!', error);
+      }
+    } else {
+      console.error('토큰이 없으므로 PATCH 요청을 보낼 수 없습니다.');
+    }
+  };
+
   return (
     <ProfileContainer>
       {isLogin ? (
@@ -268,7 +311,12 @@ const Profile = ({ user, setUser }) => {
             <EditIconBox onClick={openModal}>
               <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
             </EditIconBox>
-          ) : null}
+          ) : (
+            <Follow
+              handleFollowChange={handleFollowChange}
+              handleUnFollowChange={handleUnFollowChange}
+            />
+          )}
 
           {user.imageUrl ? (
             <img
@@ -282,9 +330,6 @@ const Profile = ({ user, setUser }) => {
         </AvatarContainer>
       ) : (
         <AvatarContainer>
-          <EditIconBox onClick={openModal}>
-            <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
-          </EditIconBox>
           <Icon icon="mingcute:ghost-line" className="avatar-img" />
         </AvatarContainer>
       )}

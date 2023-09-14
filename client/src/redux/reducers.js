@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 const initialState = {
   isLogin: false,
   token: null,
-  userId: 0,
+  memberId: 0,
   myId: 0,
   isNew: false,
 };
