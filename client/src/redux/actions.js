@@ -16,3 +16,8 @@ export const fetchUserData = (memberId) => ({
   type: 'FETCH_USER_DATA',
   payload: memberId,
 });
+
+export const fetchMyData = (myId) => ({
+  type: 'FETCH_MY_DATA',
+  payload: myId,
+});

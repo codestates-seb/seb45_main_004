@@ -20,7 +20,7 @@ const AvatarContainer = styled.div`
   height: 150px;
   border: 1px solid rgba(245, 245, 245, 1);
   border-radius: 50%;
-  background-color: rgba(256, 256, 256, 0);
+  background-color: rgba(256, 256, 256);
   box-shadow: 0px 3px 7px 1px rgba(105, 105, 105, 0.4);
   display: flex;
   justify-content: center;
@@ -163,6 +163,7 @@ const Profile = ({ user, setUser }) => {
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
   const memberId = useSelector((state) => state.user.memberId);
+  const myId = useSelector((state) => state.user.myId);
   const patchData = {
     introduce,
   };
@@ -263,9 +264,12 @@ const Profile = ({ user, setUser }) => {
     <ProfileContainer>
       {isLogin ? (
         <AvatarContainer>
-          <EditIconBox onClick={openModal}>
-            <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
-          </EditIconBox>
+          {myId && isLogin ? (
+            <EditIconBox onClick={openModal}>
+              <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
+            </EditIconBox>
+          ) : null}
+
           {user.imageUrl ? (
             <img
               src={user.imageUrl}

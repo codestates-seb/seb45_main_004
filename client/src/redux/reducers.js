@@ -3,7 +3,8 @@ import { combineReducers } from 'redux';
 const initialState = {
   isLogin: false,
   token: null,
-  memberId: null,
+  userId: 0,
+  myId: 0,
   isNew: false,
 };
 
@@ -32,6 +33,11 @@ const userReducer = (state = initialState, action) => {
       return {
         ...state,
         memberId: action.payload,
+      };
+    case 'FETCH_MY_DATA':
+      return {
+        ...state,
+        myId: action.payload,
       };
     default:
       return state;
