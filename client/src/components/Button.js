@@ -21,13 +21,14 @@ const StyleButton = styled.button`
   }
 
   &.Button-login {
-    width: 430px;
-    height: 60px;
+    width: 340px;
+    height: 50px;
     border: 0;
     color: white;
-    font-weight: 600;
+    font-weight: 500;
     background-color: rgb(10, 149, 255);
     margin-bottom: 10px;
+    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
 
   &.Button-based {

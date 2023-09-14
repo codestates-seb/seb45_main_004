@@ -14,10 +14,13 @@ const LoginBody = styled.section`
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+  height: 80vh;
 `;
 
 const Logincontainer = styled.div`
-  width: 430px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   margin-top: 100px;
   margin-bottom: 100px;
 `;
