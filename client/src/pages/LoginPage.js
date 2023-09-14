@@ -87,6 +87,8 @@ const LoginPage = () => {
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('refresh', refresh);
           localStorage.setItem('isLogin', isLogin);
+          localStorage.setItem('myId', myId);
+
           console.log('성공');
           dispatch(login(token));
           dispatch(fetchMyData(myId));
