@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
@@ -77,6 +80,15 @@ public class MemberController {
         log.info("mapper: " + mapper);
         List<Member> members = memberService.findMembers();
         return new ResponseEntity(mapper.memberToSimpleMemberResponseDto(members), HttpStatus.OK);
+    }
+
+    // 토큰에 있는 사용자 정보를 리턴합니다.
+    @GetMapping("/me")
+    public ResponseEntity myPage() {
+        int loginMemberId = (int) memberService.extractMemberInfo().get("id");
+        Member member = memberService.findMember(loginMemberId);
+
+        return new ResponseEntity(mapper.memberToMemberResponseDto(member), HttpStatus.OK);
     }
 
     // 파라미터의 회원 id와 토큰의 id를 비교해서 동일한 회원이면 update실행
