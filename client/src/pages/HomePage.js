@@ -9,6 +9,11 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const HomePage = styled.div`
+  /* 스크롤바를 숨기는 스타일 */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   display: flex;
   justify-content: center;
 
@@ -18,14 +23,11 @@ const HomePage = styled.div`
 
   .main-header {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 380px;
-  }
-
-  .main-header h1 {
+    width: 100%;
+    height: 350px;
     color: #ffffff;
-    font-size: 80px;
+    font-size: 47px;
   }
 
   .text-writing {
@@ -97,18 +99,17 @@ const HomePage = styled.div`
     justify-content: center;
     padding: 0;
     margin: 20px 0px;
-    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
   }
+
   .invitation-container {
     display: grid;
-    flex-direction: row;
     margin-top: 20px;
+    grid-gap: 110px;
     grid-template-columns: repeat(3, 1fr);
   }
   .invitation-item {
-    display: flex;
-    justify-content: center;
-    height: 300px;
     margin-bottom: 30px;
     position: relative;
   }
@@ -251,7 +252,7 @@ const SearchBtn = styled.button`
 const Image = styled.img`
   width: 300px;
   height: 300px;
-  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 8px 1px rgb(0, 0, 0, 0.3);
 
   &.header-image {
     border-radius: 20px;
