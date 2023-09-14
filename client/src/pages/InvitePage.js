@@ -160,7 +160,6 @@ function InvitePage() {
     <EventDetailsContainer>
       <section>
         <article>
-          <div>memberId:{memberId}</div>
           <div className="card-container">
             <div className="image-container">
               <img
