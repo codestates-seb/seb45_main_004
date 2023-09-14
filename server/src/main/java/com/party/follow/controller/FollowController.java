@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,7 +21,7 @@ public class FollowController {
 
     //팔로잉
     @PostMapping("/{toMemberId}")
-    public ResponseEntity postFollow(@PathVariable Long toMemberId) {
+    public ResponseEntity postFollow(@PathVariable Long toMemberId) throws MessagingException, IOException {
 
         followService.followMember(toMemberId);
         return new ResponseEntity<>("FOLLOW💗", HttpStatus.OK);

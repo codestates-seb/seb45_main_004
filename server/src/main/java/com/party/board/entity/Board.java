@@ -2,6 +2,7 @@ package com.party.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.party.alram.entity.Alarm;
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.member.entity.Member;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +61,6 @@ public class Board {
     @Enumerated(value = EnumType.STRING)
     private BoardStatus status = BoardStatus.BOARD_RECRUITING;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     private long boardLikesCount;
 
     private String imageUrl;
@@ -82,6 +80,10 @@ public class Board {
     @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Alarm> alarms = new ArrayList<>();
 
     public enum BoardCategory {
         CATEGORY_LEISURE("CATEGORY_LEISURE"),
@@ -113,8 +115,9 @@ public class Board {
     @PrePersist
     public void validateDate() {
         LocalDate today = LocalDate.now();
-        if (date.isBefore(today)) {
-            throw new IllegalArgumentException("Past date cannot be selected");
+        LocalDate allowedStartDate = today.plusDays(3);
+        if (date.isBefore(allowedStartDate)) {
+            throw new IllegalArgumentException("You can only select a date starting from " + allowedStartDate);
         }
     }
 }
