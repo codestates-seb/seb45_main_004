@@ -273,10 +273,22 @@ export default function Homepage() {
       .get('http://3.39.76.109:8080/boards')
       .then((response) => {
         const newData = response.data;
-        const sortedInvitation = newData.sort(
+        const closedInvitations = newData.filter(
+          (item) => item.boardStatus === '모집 마감',
+        );
+        const openInvitations = newData.filter(
+          (item) => item.boardStatus !== '모집 마감',
+        );
+
+        // 그 외 초대장을 정렬
+        const sortedInvitation = openInvitations.sort(
           (a, b) => new Date(b.boardId) - new Date(a.boardId),
         );
-        setInvitation(sortedInvitation);
+
+        // 모집 마감 초대장을 그 뒤에 추가
+        const lastInviation = [...sortedInvitation, ...closedInvitations];
+        setInvitation(lastInviation);
+        console.log(lastInviation);
       })
       .then(() => {
         getInvitations(PER_SCROLL);
