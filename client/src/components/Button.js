@@ -41,13 +41,9 @@ const StyleButton = styled.button`
   }
 
   &.Button-notification {
-    width: 42px;
-    background-color: rgba(246, 246, 246, 0);
-    border: 0;
+    background-color: transparent;
+    border: none;
     font-size: 42px;
-    text-align: center;
-    padding: 0;
-    margin-left: 20px;
   }
 
   &.Button-like {

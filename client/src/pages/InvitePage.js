@@ -598,7 +598,6 @@ const EventDetailsContainer = styled.div`
     padding: 0px 12px;
     font-size: 14px;
     background-color: rgba(244, 227, 233, 0.4);
-    pointer-events: none;
   }
 
   .join-btn:active {
