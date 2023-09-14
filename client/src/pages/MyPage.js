@@ -54,6 +54,7 @@ const MyPage = () => {
         applicants: myInfo.applicants,
         boardLikes: myInfo.boardLikes,
       };
+      console.log(userData);
       setUser(userData);
     } catch (error) {
       console.error(error);

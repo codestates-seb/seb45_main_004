@@ -79,7 +79,7 @@ const StyleButton = styled.button`
   &.Button-text {
     background-color: rgba(246, 246, 246, 0);
     border: none;
-    color: white;
+    color: ${(props) => (props ? props.color : 'default')};
     border-radius: 0;
     font-weight: 600;
     font-size: 1.2rem;

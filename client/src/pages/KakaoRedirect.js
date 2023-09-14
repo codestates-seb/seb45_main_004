@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/actions';
+import { login, fetchMyData } from '../redux/actions';
 import { styled } from 'styled-components';
 
 export default function Kakao() {
@@ -23,9 +23,11 @@ export default function Kakao() {
           console.log(response);
           if (response.status === 200) {
             const token = response.headers.authorization;
+            const myId = response.headers.memberid;
             localStorage.setItem('jwtToken', token);
             console.log('성공했니');
             dispatch(login(token));
+            dispatch(fetchMyData(myId));
             navigate('/');
           }
         })

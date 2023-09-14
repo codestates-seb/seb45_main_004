@@ -162,8 +162,8 @@ const Profile = ({ user, setUser }) => {
 
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
-  const memberId = useSelector((state) => state.user.memberId);
-  const myId = useSelector((state) => state.user.myId);
+  const myId = JSON.parse(useSelector((state) => state.user.myId));
+
   const patchData = {
     introduce,
   };
@@ -200,7 +200,7 @@ const Profile = ({ user, setUser }) => {
 
         // 서버에 이미지 업로드 요청을 보냅니다.
         const response = await axios.patch(
-          `http://3.39.76.109:8080/members/${memberId}`,
+          `http://3.39.76.109:8080/members/${myId}`,
           { imageUrl }, // 이미지 URL을 보냅니다.
           {
             headers: {
@@ -242,11 +242,11 @@ const Profile = ({ user, setUser }) => {
     if (token) {
       try {
         const response = await axios.patch(
-          `http://3.39.76.109:8080/members/${memberId}`,
+          `http://3.39.76.109:8080/members/${myId}`,
           patchData,
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: token,
             },
           },
         );
@@ -264,7 +264,7 @@ const Profile = ({ user, setUser }) => {
     <ProfileContainer>
       {isLogin ? (
         <AvatarContainer>
-          {myId && isLogin ? (
+          {user.id === myId ? (
             <EditIconBox onClick={openModal}>
               <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
             </EditIconBox>
@@ -350,7 +350,7 @@ const Profile = ({ user, setUser }) => {
             <IntorBox className="introduction-box">
               <p>{introduce}</p>
             </IntorBox>
-            {isLogin ? (
+            {user.id === myId ? (
               <BtnBox>
                 <Button
                   type="text"
