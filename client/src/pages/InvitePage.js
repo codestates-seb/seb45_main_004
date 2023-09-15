@@ -589,10 +589,19 @@ const EventDetailsContainer = styled.div`
     padding: 0px 12px;
     font-size: 14px;
     background-color: rgba(244, 227, 233, 0.4);
+    cursor: pointer;
   }
 
   .join-btn:active {
     box-shadow: inset 1px 1px 3px rgb(0, 0, 0, 0.4);
+  }
+
+  .join-btn[disabled] {
+    cursor: not-allowed;
+  }
+
+  .join-btn:disabled:active {
+    box-shadow: none;
   }
 
   #map {

@@ -156,7 +156,7 @@ export default function Homepage() {
     let index = 0;
 
     function typeText() {
-      if (index < fullText.length) {
+      if (textRef.current && index < fullText.length) {
         textRef.current.textContent = fullText.substring(0, index + 1);
         index++;
 
