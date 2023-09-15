@@ -7,6 +7,8 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
+import { fetchUserData } from '../redux/actions';
+import { useDispatch } from 'react-redux';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -16,6 +18,7 @@ function InvitePage() {
   const [participants, setParticipants] = useState([]);
   const memberId = localStorage.getItem('myId');
   const dispatch = useDispatch();
+
   const [showDropdown, setShowDropdown] = useState(false);
   // 드롭다운을 토글하는 함수
   const toggleDropdown = () => {

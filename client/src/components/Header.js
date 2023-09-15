@@ -64,7 +64,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
-  const isNew = useSelector((state) => state.new.isNew);
+  //const isNew = useSelector((state) => state.new.isNew);
 
   /*const handleNewStatus = () => {
     dispatch(newStatus(!isNew));
