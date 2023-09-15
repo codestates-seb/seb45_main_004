@@ -47,6 +47,7 @@ public class ApplicantService {
         Member member = memberRepository.getById(memberId); //멤버 정보 가져오기
         applicant.setMember(member);
         applicant.setMemberImageUrl(member.getImageUrl());
+        applicant.setMemberNickname(member.getNickname());
 
         //현재 모임 참여 인원 수 업데이트
         if(board.getCurrentNum() < board.getTotalNum()){

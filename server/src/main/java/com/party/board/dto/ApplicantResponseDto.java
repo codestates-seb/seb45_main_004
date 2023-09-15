@@ -13,6 +13,7 @@ public class ApplicantResponseDto {
     private Long id;
     private String memberImageUrl;
     private Long memberId;
+    private String memberNickname;
     private Long boardId;
     private String boardImageUrl;
 
