@@ -3,7 +3,7 @@ import { FaSearch } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -16,6 +16,7 @@ export default function Homepage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentInvitations, setCurrentInvitations] = useState([]);
   const PER_SCROLL = 10;
+  const textRef = useRef(null);
 
   const fetchAllInvitaion = () => {
     axios
@@ -150,6 +151,22 @@ export default function Homepage() {
     likesSort(selectedCategory);
   };
 
+  useEffect(() => {
+    const fullText = 'with Celebee.';
+    let index = 0;
+
+    function typeText() {
+      if (index < fullText.length) {
+        textRef.current.textContent = fullText.substring(0, index + 1);
+        index++;
+
+        setTimeout(typeText, 200);
+      }
+    }
+
+    typeText();
+  }, []);
+
   return (
     <HomePage>
       <div className="main-container">
@@ -158,7 +175,7 @@ export default function Homepage() {
             <h1 className="main-title">
               Let&apos;s Make a New Friend
               <br />
-              <span className="text-writing" data-text="with Celebee."></span>
+              <span className="text-writing" ref={textRef}></span>
             </h1>
           </div>
         </div>
@@ -282,37 +299,22 @@ const HomePage = styled.div`
   }
 
   .text-writing {
-    white-space: nowrap;
-    overflow: hidden;
     display: inline-block;
     vertical-align: middle;
-    animation: type 5s steps(13, end) forwards;
   }
 
-  @keyframes type {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  .text-writing:before {
-    content: attr(data-text);
-    display: inline-block;
-    animation: blink 1.5s infinite;
-    height: 130px;
-    border-right: 10px solid;
+  .text-writing:after {
+    content: '|';
+    animation: blink 1s infinite;
   }
 
   @keyframes blink {
     0%,
     100% {
-      border-color: transparent;
+      opacity: 1;
     }
     50% {
-      border-color: inherit;
+      opacity: 0;
     }
   }
 
