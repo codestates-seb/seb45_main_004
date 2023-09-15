@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
-import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
+// import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout, newStatus } from '../redux/actions';
 import Button from './Button';
@@ -12,26 +12,42 @@ const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
   background-color: rgba(255, 255, 255, 0.2);
   height: 6em;
-
+  width: 100%;
   /* 헤더의 요소 정렬 */
   .header-container {
-    margin: 0px 320px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    margin: 0 auto;
+    max-width: 1260px; // 원하는 너비로 조절 가능
+  }
+  @media (max-width: 968px) {
+    .header-container {
+      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
+    }
   }
 
+  /* 브레이크 포인트: 768px */
+  @media (max-width: 768px) {
+    .header-container {
+      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
+    }
+  }
   .button-box {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100%;
+    gap: 20px;
+  }
+
+  .user-info-icon {
+    width: 42px;
+    height: 42px;
+    color: #000;
   }
   /* a태그 타이포그래피 스타일 삭제 */
   .title-box {
-    text-decoration: none;
-    /* 서비스명 글자크기 변경 */
+    width: 100px;
     h1 {
       margin: 0;
       font-size: 2.5rem;
@@ -41,14 +57,7 @@ const ServieceHeader = styled.header`
 `;
 
 const ButtonBox = styled.div`
-  display: flex;
-
-  .user-info-icon,
-  .noti-icon {
-    width: 42px;
-    height: 42px;
-    color: black;
-  }
+  gap: 20px;
 `;
 
 const Header = () => {
@@ -91,6 +100,9 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <div className="button-box">
+              <Link to="/members/me" className="user-info-icon">
+                <FaRegUserCircle className="user-info-icon" />
+              </Link>
               <Link to="/boards/new-boards">
                 <Button
                   type="based"
@@ -98,7 +110,7 @@ const Header = () => {
                   onClick={handleWriteClick}
                 />
               </Link>
-              {isNew ? (
+              {/* {isNew ? (
                 <Button
                   type="notification"
                   text={<MdNotificationsActive className="noti-icon" />}
@@ -108,21 +120,20 @@ const Header = () => {
                   type="notification"
                   text={<MdNotificationsNone className="noti-icon" />}
                 />
-              )}
-              <Link to="/members/me" className="user-info">
-                <FaRegUserCircle className="user-info-icon" />
-              </Link>
+              )} */}
               <Button type="based" text="Logout" onClick={handleLogout} />
             </div>
           </ButtonBox>
         ) : (
           <ButtonBox>
-            <Link to="/members/login">
-              <Button type="based" text="Log In" />
-            </Link>
-            <Link to="/members">
-              <Button type="based" text="Sign Up" />
-            </Link>
+            <div className="button-box">
+              <Link to="/members/login">
+                <Button type="based" text="Log In" />
+              </Link>
+              <Link to="/members">
+                <Button type="based" text="Sign Up" />
+              </Link>
+            </div>
           </ButtonBox>
         )}
       </div>
