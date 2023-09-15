@@ -159,6 +159,22 @@ function InviteWritePage() {
     }
   };
 
+  const [currentIndex, setCurrentIndex] = useState(1);
+
+  const handleNextImage = () => {
+    if (currentIndex < imageFromServer.length - 1) {
+      // 마지막 이미지가 아니라면
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentIndex > 0) {
+      // 첫 번째 이미지가 아니라면
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
   return (
     <StyledWritePage>
       <section>
@@ -259,16 +275,27 @@ function InviteWritePage() {
               tabIndex="0"
             >
               <div className="modal">
-                {imageFromServer.map((imageUrl, index) => (
-                  <button
-                    className="card-img"
-                    key={index}
-                    onClick={() => handleImageClick(imageUrl)}
-                  >
-                    <img className="card-img" src={imageUrl} alt="카드이미지" />
-                  </button>
-                ))}
-              </div>
+                <button onClick={handlePrevImage}>이전</button>
+                <button onClick={handleNextImage}>다음</button>
+                <div
+                  className="slider-container"
+                  style={{ transform: `translateX(-${currentIndex * 220}px)` }}
+                >
+                  {imageFromServer.map((imageUrl, index) => (
+                    <button
+                      className="card-img-container" // 변경된 부분
+                      key={index}
+                      onClick={() => handleImageClick(imageUrl)}
+                    >
+                      <img
+                        className="card-img"
+                        src={imageUrl}
+                        alt="카드이미지"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>{' '}
             </div>
           )}
 
@@ -383,6 +410,60 @@ const StyledWritePage = styled.div`
     grid-gap: 14px;
   }
 
+  .edit-btn {
+    width: 28px;
+    height: 28px;
+    color: whitesmoke;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+
+  .submit-btn {
+    position: relative;
+    width: 100px;
+    height: 38px;
+    border: none;
+    background-color: rgba(244, 227, 233, 0.4);
+    left: 300px;
+    margin-top: 10px;
+  }
+
+  .modal {
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    width: 600px;
+    height: 430px;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    box-shadow: 1px 1px 7px 5px rgb(0, 0, 0, 0.3);
+  }
+
+  .modal button {
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .modal button:hover {
+    background-color: #ddd;
+  }
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.3s;
+    width: 100%;
+  }
+
   .modal-btn {
     position: absolute;
     width: 38px;
@@ -401,47 +482,23 @@ const StyledWritePage = styled.div`
     box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
   }
 
-  .edit-btn {
-    width: 28px;
-    height: 28px;
-    color: whitesmoke;
-    margin-top: 1px;
-    cursor: pointer;
-  }
-  .submit-btn {
-    position: relative;
-    width: 100px;
-    height: 38px;
+  .card-img-container {
+    width: 320px;
+    height: 320px;
     border: none;
-    background-color: rgba(244, 227, 233, 0.4);
-    left: 300px;
-    margin-top: 10px;
-  }
-  .modal {
-    position: absolute;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 20px 20px;
-    width: 450px;
-    height: 550px;
-    flex-wrap: wrap;
-    border-radius: 20px;
-    background-color: whitesmoke;
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 10px;
   }
 
   .card-img {
-    width: 200px;
-    height: 200px;
-    border: none;
-    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    height: 300px;
   }
+
   .card-img:active {
     transform: translateY(1px);
   }
 
-  /* 모달의 배경 */
   .modal-background {
     position: fixed;
     top: 0;
@@ -450,9 +507,9 @@ const StyledWritePage = styled.div`
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    z-index: 1000; /* 다른 요소 위에 표시 */
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
   }
 
   @media (max-width: 768px) {
