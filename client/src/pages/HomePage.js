@@ -23,11 +23,13 @@ const HomePage = styled.div`
 
   .main-header {
     display: flex;
+    justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 350px;
+    height: 380px;
+  }
+  .main-header h1 {
     color: #ffffff;
-    font-size: 47px;
+    font-size: 80px;
   }
 
   .text-writing {
@@ -99,17 +101,19 @@ const HomePage = styled.div`
     justify-content: center;
     padding: 0;
     margin: 20px 0px;
-    width: 100%;
-    justify-content: space-between;
+    gap: 20px;
   }
 
   .invitation-container {
     display: grid;
+    flex-direction: row;
     margin-top: 20px;
-    grid-gap: 110px;
     grid-template-columns: repeat(3, 1fr);
   }
   .invitation-item {
+    display: flex;
+    justify-content: center;
+    height: 300px;
     margin-bottom: 30px;
     position: relative;
   }
@@ -252,8 +256,7 @@ const SearchBtn = styled.button`
 const Image = styled.img`
   width: 300px;
   height: 300px;
-  box-shadow: 1px 1px 8px 1px rgb(0, 0, 0, 0.3);
-
+  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
   &.header-image {
     border-radius: 20px;
   }
