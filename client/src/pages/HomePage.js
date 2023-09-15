@@ -27,6 +27,7 @@ const HomePage = styled.div`
     align-items: center;
     height: 380px;
   }
+
   .main-header h1 {
     color: #ffffff;
     font-size: 80px;

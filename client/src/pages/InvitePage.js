@@ -245,7 +245,7 @@ function InvitePage() {
               ))}
               {/* 추가: 드롭다운 토글 버튼 */}
               <div className="dropdown-container">
-                {participants.length > 5 && ( // ... 버튼 4명 부터 나오게하기
+                {participants.length > 1 && ( // ... 버튼 2명 부터 나오게하기
                   <button className="dropdown-toggle" onClick={toggleDropdown}>
                     ...
                   </button>
@@ -410,7 +410,7 @@ const EventDetailsContainer = styled.div`
 
   .user-container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 5px;
     height: 50px;
   }
