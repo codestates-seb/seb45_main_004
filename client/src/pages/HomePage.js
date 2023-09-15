@@ -201,6 +201,42 @@ const HomePage = styled.div`
     align-items: center;
     justify-content: center;
   }
+
+  @media screen and (max-width: 768px) {
+    .main-container {
+      margin: 0px 20px;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: center;
+    }
+    .main-header h1 {
+      font-size: 40px;
+    }
+
+    .text-writing:before {
+      height: 50px;
+    }
+
+    .categorys-container {
+      display: grid;
+      padding: 0px 110px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .invitation-container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .likes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
 `;
 
 const SearchBtn = styled.button`
