@@ -16,16 +16,18 @@ const ServieceHeader = styled.header`
   /* 헤더의 요소 정렬 */
   .header-container {
     margin: 0px 320px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* width: 80%; */
     height: 100%;
-    /* margin-left: 10%;
-    margin-right: 10%; */
   }
 
+  .button-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
   /* a태그 타이포그래피 스타일 삭제 */
   .title-box {
     text-decoration: none;
@@ -41,17 +43,13 @@ const ServieceHeader = styled.header`
 const ButtonBox = styled.div`
   display: flex;
 
-  .user-info-icon {
+  .user-info-icon,
+  .noti-icon {
     width: 42px;
     height: 42px;
     color: black;
-    margin-left: 20px;
   }
 `;
-
-// const LinkBox = styled.a`
-//   height: 42px;
-// `;
 
 const Header = () => {
   const navigate = useNavigate();
@@ -92,28 +90,30 @@ const Header = () => {
         </Link>
         {isLogin ? (
           <ButtonBox>
-            <Link to="/boards/new-boards">
-              <Button
-                type="based"
-                text="New Card!"
-                onClick={handleWriteClick}
-              />
-            </Link>
-            {isNew ? (
-              <Button
-                type="notification"
-                text={<MdNotificationsActive className="noti-icon" />}
-              />
-            ) : (
-              <Button
-                type="notification"
-                text={<MdNotificationsNone className="noti-icon" />}
-              />
-            )}
-            <Link to="/members/me" className="user-info">
-              <FaRegUserCircle className="user-info-icon" />
-            </Link>
-            <Button type="based" text="Logout" onClick={handleLogout} />
+            <div className="button-box">
+              <Link to="/boards/new-boards">
+                <Button
+                  type="based"
+                  text="New Card!"
+                  onClick={handleWriteClick}
+                />
+              </Link>
+              {isNew ? (
+                <Button
+                  type="notification"
+                  text={<MdNotificationsActive className="noti-icon" />}
+                />
+              ) : (
+                <Button
+                  type="notification"
+                  text={<MdNotificationsNone className="noti-icon" />}
+                />
+              )}
+              <Link to="/members/me" className="user-info">
+                <FaRegUserCircle className="user-info-icon" />
+              </Link>
+              <Button type="based" text="Logout" onClick={handleLogout} />
+            </div>
           </ButtonBox>
         ) : (
           <ButtonBox>
