@@ -94,18 +94,19 @@ public class MemberController {
         Member member = memberService.findMember(loginMemberId);
         MemberResponseDto responseDto = mapper.memberToMemberResponseDto(member);
         // applicants 정렬
-        responseDto.setApplicants(
-                responseDto.getApplicants().stream()
-                        .sorted(Comparator.comparing(MemberApplicantResponseDto::getBoardId).reversed())
-                        .collect(Collectors.toList())
-        );
+        if (responseDto.getBoardLikes() != null) {
+            responseDto.getBoardLikes().sort(Comparator
+                    .comparing(MemberBoardLikeResponseDto::getBoardStatus,
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                    .thenComparing(MemberBoardLikeResponseDto::getBoardId).reversed());
+        }
 
-        // boardLikes 정렬
-        responseDto.setBoardLikes(
-                responseDto.getBoardLikes().stream()
-                        .sorted(Comparator.comparing(MemberBoardLikeResponseDto::getBoardId).reversed())
-                        .collect(Collectors.toList())
-        );
+        if (responseDto.getApplicants() != null) {
+            responseDto.getApplicants().sort(Comparator
+                    .comparing(MemberApplicantResponseDto::getBoardStatus,
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                    .thenComparing(MemberApplicantResponseDto::getBoardId).reversed());
+        }
 
         return new ResponseEntity(responseDto, HttpStatus.OK);
     }
