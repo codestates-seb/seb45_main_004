@@ -8,257 +8,6 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const HomePage = styled.div`
-  display: flex;
-  justify-content: center;
-
-  .main-container {
-    margin: 0px 320px;
-  }
-
-  .main-header {
-    display: flex;
-    align-items: center;
-    height: 380px;
-    padding: 0px 50px;
-  }
-
-  .main-header h1 {
-    color: #ffffff;
-    font-size: 92px;
-  }
-
-  .text-writing {
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    animation: type 5s steps(13, end) forwards;
-  }
-
-  @keyframes type {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  .text-writing:before {
-    content: attr(data-text);
-    display: inline-block;
-    animation: blink 1.5s infinite;
-    height: 130px;
-    border-right: 10px solid;
-  }
-
-  @keyframes blink {
-    0%,
-    100% {
-      border-color: transparent;
-    }
-    50% {
-      border-color: inherit;
-    }
-  }
-
-  .service-introduction {
-    color: white;
-  }
-  .search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .search {
-    display: flex;
-    width: 500px;
-    height: 40px;
-    border: solid 1px black;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .search-text {
-    background: none;
-    border: none;
-    width: 500px;
-    height: 40px;
-    caret-color: black; // 검색창 cursor 효과
-    padding-left: 20px;
-    outline: none;
-    // 검색시 input ouline 없애주기
-  }
-  .categorys-container {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    justify-content: center;
-    padding: 0;
-    margin: 20px 24px;
-    gap: 20px;
-  }
-  .invitation-container {
-    display: grid;
-    flex-direction: row;
-    margin-top: 20px;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .invitation-item {
-    display: flex;
-    justify-content: center;
-    height: 300px;
-    margin-bottom: 30px;
-    position: relative;
-  }
-  .likes-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 25px;
-    padding-right: 48px;
-  }
-  .likes-sort {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 25px;
-    border: solid 1px #d9d9d9;
-    padding: 3px 5px;
-    border-radius: 20px;
-  }
-  .likes-text {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    font-weight: 800;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-
-  /* 추가부분 */
-  .invitation-image-container {
-    perspective: 1000px;
-  }
-
-  .card-container {
-    width: 300px;
-    height: 300px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-  }
-
-  .card-container:hover {
-    transform: rotateY(180deg);
-  }
-
-  .card-face {
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-front {
-    transform: rotateY(0deg);
-  }
-
-  .card-back {
-    transform: rotateY(180deg);
-    position: relative;
-  }
-
-  .invitation-image {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-  }
-
-  .back-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-  .likes_icon {
-    margin-right: 5px;
-  }
-  .like-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-
-  @media screen and (max-width: 768px) {
-    .main-container {
-      margin: 0px 20px;
-    }
-
-    .main-header {
-      display: flex;
-      justify-content: center;
-    }
-    .main-header h1 {
-      font-size: 40px;
-    }
-
-    .text-writing:before {
-      height: 50px;
-    }
-
-    .categorys-container {
-      display: grid;
-      padding: 0px 110px;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .invitation-container {
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-    }
-    .likes-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      margin: 0px;
-      padding: 0px;
-    }
-  }
-`;
-
-const SearchBtn = styled.button`
-  display: flex;
-  align-items: center;
-  padding-right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-`;
-
-const Image = styled.img`
-  width: 300px;
-  height: 300px;
-  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
-
-  &.header-image {
-    border-radius: 20px;
-  }
-`;
-
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
   const [selectedCategory, setSelectedCategory] = useState('CATEGORY_ALL'); // 선택된 카테고리를 저장
@@ -507,3 +256,282 @@ export default function Homepage() {
     </HomePage>
   );
 }
+
+const HomePage = styled.div`
+  display: flex;
+  justify-content: center;
+
+  .main-container {
+    margin: 0px 320px;
+  }
+
+  .main-header {
+    display: flex;
+    align-items: center;
+    height: 380px;
+    padding: 0px 50px;
+  }
+
+  .main-header h1 {
+    color: #ffffff;
+    font-size: 92px;
+  }
+
+  .text-writing {
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    animation: type 5s steps(13, end) forwards;
+  }
+
+  @keyframes type {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  .text-writing:before {
+    content: attr(data-text);
+    display: inline-block;
+    animation: blink 1.5s infinite;
+    height: 130px;
+    border-right: 10px solid;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      border-color: transparent;
+    }
+    50% {
+      border-color: inherit;
+    }
+  }
+
+  .service-introduction {
+    color: white;
+  }
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .search {
+    display: flex;
+    width: 500px;
+    height: 40px;
+    border: solid 1px black;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-text {
+    background: none;
+    border: none;
+    width: 500px;
+    height: 40px;
+    caret-color: black; // 검색창 cursor 효과
+    padding-left: 20px;
+    outline: none;
+    // 검색시 input ouline 없애주기
+  }
+  .categorys-container {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 24px;
+    gap: 20px;
+  }
+  .invitation-container {
+    display: grid;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .invitation-item {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  .likes-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-right: 48px;
+  }
+  .likes-sort {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    border: solid 1px #d9d9d9;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+  .likes-text {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  /* 추가부분 */
+  .invitation-image-container {
+    perspective: 1000px;
+  }
+
+  .card-container {
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+  }
+
+  .card-container:hover {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    position: relative;
+  }
+
+  .invitation-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .back-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .likes_icon {
+    margin-right: 5px;
+  }
+  .like-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-container {
+      margin: 0px 20px;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: center;
+    }
+    .main-header h1 {
+      font-size: 5vh;
+    }
+
+    .text-writing:before {
+      height: 50px;
+    }
+
+    .categorys-container {
+      display: grid;
+      padding: 0px 110px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .invitation-container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .likes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+  @media screen and (min-width: 769px) and (max-width: 1100px) {
+    .categorys-container {
+      display: grid;
+      padding: 0px 110px;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .invitation-container {
+      display: grid;
+      flex-direction: row;
+      margin-top: 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .likes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0px;
+      padding: 0px;
+    }
+    .main-header {
+      display: flex;
+      justify-content: center;
+    }
+    .main-header h1 {
+      font-size: 8vh;
+    }
+  }
+`;
+
+const SearchBtn = styled.button`
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
+const Image = styled.img`
+  width: 300px;
+  height: 300px;
+  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
+
+  &.header-image {
+    border-radius: 20px;
+  }
+`;
