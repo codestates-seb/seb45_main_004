@@ -446,10 +446,12 @@ const EventDetailsContainer = styled.div`
   .participation-data {
     display: flex;
     align-items: center;
+    width: 200px;
   }
 
   .nickname-box {
     margin-left: 10px;
+    width: 100%;
   }
 
   .dropdown-container {
@@ -484,16 +486,16 @@ const EventDetailsContainer = styled.div`
     left: 30px;
     width: 200px;
     height: 200px;
-    padding: 20px 20px 0px 20px;
+    padding: 20px 20px 20px 20px;
     gap: 12px;
-    z-index: 2;
     overflow: scroll;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
   }
-  /* 수직 스크롤바 */
+  /* 스크롤바 높낮이 */
   .dropdown::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
 
   /* 수직 스크롤바 슬라이더 (막대) */
@@ -517,17 +519,6 @@ const EventDetailsContainer = styled.div`
   .dropdown::-webkit-scrollbar-button:end {
     display: block;
     height: 2px; /* 아래 여백 높이 조절 */
-  }
-
-  /* 수평 스크롤바 너비 조절 */
-  .dropdown::-webkit-scrollbar-horizontal {
-    height: 8px;
-  }
-
-  /* 수평 스크롤바 슬라이더 (막대) */
-  .dropdown::-webkit-scrollbar-thumb:horizontal {
-    background-color: #999;
-    border-radius: 10px;
   }
 
   .title-box {
