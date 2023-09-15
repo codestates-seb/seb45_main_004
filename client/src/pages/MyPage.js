@@ -1,23 +1,26 @@
 import { styled } from 'styled-components';
-import Profile from '../components/Profile';
 import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import MyProfile from '../components/MyProfile';
 //import { useSelector } from 'react-redux';
 
 const MyPageSection = styled.section`
-  width: 100vw;
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentsContainer = styled.div`
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-left: 320px;
+  margin-right: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 //레이아웃 부터 잡기!
 const MyPage = () => {
-  const [user, setUser] = useState({
+  const [myData, setMyData] = useState({
     id: 0,
     nickname: '',
     email: '',
@@ -32,37 +35,38 @@ const MyPage = () => {
 
   const [activetab, setActiveTab] = useState('tab1');
   const token = localStorage.getItem('jwtToken');
-  //  const myId = useSelector((state) => state.user.myId);
-
-  const fetchMyInfo = async () => {
-    try {
-      const response = await axios.get(`http://3.39.76.109:8080/members/me`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-      const myInfo = response.data;
-      const userData = {
-        id: myInfo.id,
-        nickname: myInfo.nickname,
-        email: myInfo.email,
-        gender: myInfo.gender,
-        introduce: myInfo.introduce,
-        imageUrl: myInfo.imageUrl,
-        follower: myInfo.follower,
-        following: myInfo.following,
-        applicants: myInfo.applicants,
-        boardLikes: myInfo.boardLikes,
-      };
-      setUser(userData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   useEffect(() => {
     // user 데이터가 비어있을 때만 API 호출
-    if (!user.id) {
+    if (!myData.id) {
+      const fetchMyInfo = async () => {
+        try {
+          const response = await axios.get(
+            `http://3.39.76.109:8080/members/me`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            },
+          );
+          const myInfo = response.data;
+          const userData = {
+            id: myInfo.id,
+            nickname: myInfo.nickname,
+            email: myInfo.email,
+            gender: myInfo.gender,
+            introduce: myInfo.introduce,
+            imageUrl: myInfo.imageUrl,
+            follower: myInfo.follower,
+            following: myInfo.following,
+            applicants: myInfo.applicants,
+            boardLikes: myInfo.boardLikes,
+          };
+          setMyData(userData);
+        } catch (error) {
+          console.error(error);
+        }
+      };
       fetchMyInfo();
     }
   }, []);
@@ -73,12 +77,14 @@ const MyPage = () => {
 
   return (
     <MyPageSection>
-      <Profile user={user} setUser={setUser} />
-      <MyPageTab
-        activetab={activetab}
-        handleTabClick={handleTabClick}
-        user={user}
-      />
+      <ContentsContainer>
+        <MyProfile myData={myData} setMyData={setMyData} />
+        <MyPageTab
+          activetab={activetab}
+          handleTabClick={handleTabClick}
+          myData={myData}
+        />
+      </ContentsContainer>
     </MyPageSection>
   );
 };

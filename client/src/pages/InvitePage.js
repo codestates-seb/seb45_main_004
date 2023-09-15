@@ -7,8 +7,6 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { fetchUserData } from '../redux/actions';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -66,8 +64,14 @@ function InvitePage() {
   // 호스트 페이지 이동
   const hostPageClick = () => {
     const hostId = eventData.member.id;
-    dispatch(fetchUserData(hostId));
-    navigate(`/members/${eventData.member.id}`);
+    localStorage.setItem('memberId', hostId);
+    const userId = localStorage.getItem('memberId');
+
+    if (memberId === userId) {
+      navigate('/members/me');
+    } else {
+      navigate(`/members/${userId}`);
+    }
   };
 
   // 참여자 목록을 가져오는 함수

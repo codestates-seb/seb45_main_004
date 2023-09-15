@@ -25,26 +25,39 @@ const ContentItem = styled.li`
   }
 `;
 
-const LikeIt = ({ user }) => {
-  if (!user || !user.boardLikes || user.boardLikes.length === 0) {
-    return null;
-  }
-
+const LikeIt = ({ myData, memberData, handleMovingBoard }) => {
+  console.log(memberData, myData);
   return (
     <ContentList>
-      {user.boardLikes.map((el, boardId) => {
-        return (
-          <ContentItem key={boardId}>
-            <img src={el.imgUrl} alt="찜한 목록" />
-          </ContentItem>
-        );
-      })}
+      {memberData
+        ? memberData.boardLikes.map((el) => {
+            return (
+              <ContentItem
+                key={el.boardId}
+                onClick={() => handleMovingBoard(el.boardId)}
+              >
+                <img src={el.imgUrl} alt="찜한 목록" />
+              </ContentItem>
+            );
+          })
+        : myData.boardLikes.map((el) => {
+            return (
+              <ContentItem
+                key={el.boardId}
+                onClick={() => handleMovingBoard(el.boardId)}
+              >
+                <img src={el.imgUrl} alt="찜한 목록" />
+              </ContentItem>
+            );
+          })}
     </ContentList>
   );
 };
 
 LikeIt.propTypes = {
-  user: PropTypes.object.isRequired,
+  myData: PropTypes.object.isRequired,
+  memberData: PropTypes.object.isRequired,
+  handleMovingBoard: PropTypes.func.isRequired,
 };
 
 export default LikeIt;
