@@ -47,7 +47,6 @@ const ServieceHeader = styled.header`
   }
   /* a태그 타이포그래피 스타일 삭제 */
   .title-box {
-    width: 100px;
     h1 {
       margin: 0;
       font-size: 2.5rem;

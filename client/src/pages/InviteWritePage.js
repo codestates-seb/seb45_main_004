@@ -422,13 +422,23 @@ const StyledWritePage = styled.div`
     z-index: 999;
     display: flex;
     align-items: center;
-
     gap: 10px;
     padding: 20px 20px;
     width: 450px;
     height: 550px;
     flex-wrap: wrap;
-    background-color: rgb(218, 170, 245, 0.26);
+    border-radius: 20px;
+    background-color: whitesmoke;
+  }
+
+  .card-img {
+    width: 200px;
+    height: 200px;
+    border: none;
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+  }
+  .card-img:active {
+    transform: translateY(1px);
   }
 
   /* 모달의 배경 */
@@ -443,11 +453,6 @@ const StyledWritePage = styled.div`
     align-items: center; /* 세로 중앙 정렬 */
     justify-content: center; /* 가로 중앙 정렬 */
     z-index: 1000; /* 다른 요소 위에 표시 */
-  }
-
-  .card-img {
-    width: 200px;
-    height: 200px;
   }
 
   @media (max-width: 768px) {
