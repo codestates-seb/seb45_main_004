@@ -6,8 +6,11 @@ import PropTypes from 'prop-types';
 const FollowIconBox = styled.span`
   background-color: white;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -25,8 +28,8 @@ const FollowIconBox = styled.span`
   }
 
   .follow-icon {
-    width: 30px;
-    height: 30px;
+    width: 38px;
+    height: 38px;
     color: red;
   }
 `;
@@ -36,23 +39,25 @@ const Follow = ({ handleFollowChange, handleUnFollowChange }) => {
 
   const handleFollowClick = () => {
     setSelectedFollow(true);
+    handleFollowChange();
   };
 
   const handleUnfollowClick = () => {
     setSelectedFollow(false);
+    handleUnFollowChange();
   };
 
   return (
     <>
       {!selectedFollow ? (
-        <FollowIconBox onClick={handleFollowClick}>
-          <button className="follow-btn" onClick={handleFollowChange}>
+        <FollowIconBox>
+          <button className="follow-btn" onClick={handleFollowClick}>
             <Icon icon="mdi:heart-plus" className="follow-icon" />
           </button>
         </FollowIconBox>
       ) : (
-        <FollowIconBox onClick={handleUnfollowClick}>
-          <button className="follow-btn" onClick={handleUnFollowChange}>
+        <FollowIconBox>
+          <button className="follow-btn" onClick={handleUnfollowClick}>
             <Icon icon="mdi:heart-minus" className="follow-icon" />
           </button>
         </FollowIconBox>

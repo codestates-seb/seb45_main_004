@@ -7,8 +7,6 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { fetchUserData } from '../redux/actions';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -18,6 +16,22 @@ function InvitePage() {
   const [participants, setParticipants] = useState([]);
   const memberId = localStorage.getItem('myId');
   const dispatch = useDispatch();
+  const [showDropdown, setShowDropdown] = useState(false);
+  // 드롭다운을 토글하는 함수
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+  const handleContainerClick = (event) => {
+    if (!event.target.classList.contains('dropdown-toggle')) {
+      setShowDropdown(false);
+    }
+  };
+
+  // 드롭다운 내부 요소의 클릭 이벤트 전파를 중단
+  const handleDropdownClick = (event) => {
+    event.stopPropagation();
+  };
+
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     memberId: '',
@@ -50,20 +64,32 @@ function InvitePage() {
   // 호스트 페이지 이동
   const hostPageClick = () => {
     const hostId = eventData.member.id;
-    dispatch(fetchUserData(hostId));
-    navigate(`/members/${eventData.member.id}`);
+    localStorage.setItem('memberId', hostId);
+    const userId = localStorage.getItem('memberId');
+
+    if (memberId === userId) {
+      navigate('/members/me');
+    } else {
+      navigate(`/members/${userId}`);
+    }
   };
 
   // 참여자 목록을 가져오는 함수
   const fetchParticipants = async () => {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
+      console.log(response.data);
       setParticipants(response.data); // 참여자 목록을 상태에 저장
+      console.log(response);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
   };
-
+  // 참여자 이미지 클릭 시 멤버 아이디를 리덕스 스토어에 저장
+  const handleParticipantImageClick = (memberId) => {
+    dispatch(fetchUserData(memberId)); // 멤버 아이디를 리덕스 스토어에 저장
+    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+  };
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴
   }, []);
@@ -157,7 +183,7 @@ function InvitePage() {
   };
 
   return (
-    <EventDetailsContainer>
+    <EventDetailsContainer onClick={handleContainerClick}>
       <section>
         <article>
           <div className="card-container">
@@ -179,28 +205,15 @@ function InvitePage() {
           </div>
           <div className="user-box">
             <div className="host-container">
-              <button className="host-btn" onClick={hostPageClick}>
-                <img
-                  className="host-img" // 호스트 이미지 표시
-                  src={eventData.member.imageUrl}
-                  alt="host-img"
-                />
-              </button>
-              <div>금액: {numberWithCommas(eventData.money)}</div>
-            </div>
-            <div className="user-container">
-              {/* 참여자 표시 */}
-              {participants.slice(0, 4).map((participant, index) => (
-                <img
-                  className={`user-img ${index !== 0 ? 'user-img-offset' : ''}`}
-                  key={index}
-                  src={participant.memberImageUrl}
-                  alt="user-img"
-                />
-              ))}
-              {participants.length > 3 && <span>...</span>}
-              <div>
-                {eventData.currentNum}/{eventData.totalNum}
+              <div className="host-box">
+                <button className="host-btn" onClick={hostPageClick}>
+                  <img
+                    className="host-img" // 호스트 이미지 표시
+                    src={eventData.member.imageUrl}
+                    alt="host-img"
+                  />
+                </button>
+                <div>금액: {numberWithCommas(eventData.money)}</div>
               </div>
               <button
                 className="join-btn"
@@ -217,8 +230,70 @@ function InvitePage() {
                   : 'Participation'}
               </button>
             </div>
+            <div className="user-container">
+              {/* 참여자 표시 */}
+              {participants.slice(0, 5).map((participant, index) => (
+                <button
+                  className={`user-btn ${index !== 0 ? 'user-img-offset' : ''}`}
+                  key={index}
+                  onClick={() => {
+                    handleParticipantImageClick(participant.memberId);
+                  }}
+                >
+                  <img
+                    className="user-img"
+                    src={participant.memberImageUrl}
+                    alt="user-img"
+                  />
+                </button>
+              ))}
+              {/* 추가: 드롭다운 토글 버튼 */}
+              <div className="dropdown-container">
+                {participants.length > 1 && ( // ... 버튼 2명 부터 나오게하기
+                  <button className="dropdown-toggle" onClick={toggleDropdown}>
+                    ...
+                  </button>
+                )}
+                {/* 드롭다운으로 표시되는 참여자 목록 */}
+                {showDropdown && (
+                  <div
+                    className="dropdown"
+                    onClick={handleDropdownClick}
+                    onKeyDown={handleDropdownClick}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    {participants.slice(0).map((participant, index) => (
+                      <div className="participation-data" key={index}>
+                        <button
+                          className="user-btn"
+                          key={index + 1}
+                          onClick={() => {
+                            handleParticipantImageClick(participant.memberId);
+                          }}
+                        >
+                          <img
+                            className="user-img"
+                            src={participant.memberImageUrl}
+                            alt="user-img"
+                          />
+                        </button>
+                        <span className="nickname-box">
+                          {participant.memberNickname}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+              {/* 참여자 수 표시 */}
+              <div>
+                {eventData.currentNum}/{eventData.totalNum}
+              </div>
+            </div>
           </div>
         </article>
+
         <article className="form-box">
           <div className="data title-box">
             <h1>{eventData.title}</h1>
@@ -281,6 +356,7 @@ const EventDetailsContainer = styled.div`
     width: 400px;
     height: 400px;
   }
+
   .image-container {
     position: relative;
   }
@@ -312,30 +388,50 @@ const EventDetailsContainer = styled.div`
     text-align: center;
     position: absolute;
     color: whitesmoke;
-    top: 369px;
-    left: 370px;
-  }
-
-  .user-box {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    margin-top: 20px;
+    top: 368px;
+    left: 371px;
   }
 
   .host-container {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5px;
-    width: 100%;
+    width: 400px;
     height: 50px;
+  }
+  .host-box {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+  .user-box {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 10px;
   }
 
   .user-container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 5px;
-    width: 100%;
+    height: 50px;
+  }
+
+  .user-btn,
+  .host-btn {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    width: 50px;
+    height: 50px;
+  }
+  .user-btn:active,
+  .host-btn:active {
+    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.5);
+    transform: translateY(1px);
+    border-radius: 50px;
   }
 
   .host-img,
@@ -347,14 +443,86 @@ const EventDetailsContainer = styled.div`
 
   .user-img-offset {
     margin-left: -30px;
+    width: 50px;
+    height: 50px;
   }
 
-  .host-btn {
-    cursor: pointer;
+  .participation-data {
+    display: flex;
+    align-items: center;
+    width: 200px;
+  }
+
+  .nickname-box {
+    margin-left: 10px;
+    width: 100%;
+  }
+
+  .dropdown-container {
+    position: relative;
+  }
+  /* 드롭다운 버튼 스타일 */
+  .dropdown-toggle {
+    height: 30px;
+    width: 30px;
     border: none;
-    height: 50px;
-    padding: 0px;
+    border-radius: 5px;
+    padding: 10px 5px;
     background-color: transparent;
+    color: #fff;
+    font-size: 20px;
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .dropdown-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .dropdown-toggle:active {
+    box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.2);
+  }
+  /* 드롭다운 목록 스타일 */
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: -80px;
+    left: 30px;
+    width: 200px;
+    height: 200px;
+    padding: 20px 20px 20px 20px;
+    gap: 12px;
+    overflow: scroll;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+  }
+  /* 스크롤바 높낮이 */
+  .dropdown::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* 수직 스크롤바 슬라이더 (막대) */
+  .dropdown::-webkit-scrollbar-thumb {
+    background-color: #999;
+    border-radius: 10px;
+  }
+
+  /* 수평 스크롤바의 끝 부분 코너 */
+  .dropdown::-webkit-scrollbar-corner {
+    border-radius: 10px;
+  }
+
+  /* 스크롤바 위 여백 */
+  .dropdown::-webkit-scrollbar-button:start {
+    display: block;
+    height: 10px; /* 위 여백 높이 조절 */
+  }
+
+  /* 스크롤바 아래 여백 */
+  .dropdown::-webkit-scrollbar-button:end {
+    display: block;
+    height: 2px; /* 아래 여백 높이 조절 */
   }
 
   .title-box {
@@ -378,13 +546,14 @@ const EventDetailsContainer = styled.div`
 
   .title-body {
     background-color: white;
-    height: 200px;
+    height: 300px;
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(244, 227, 233, 0.4);
     border: none;
+    margin-bottom: 23px;
   }
   .map-box {
     height: 300px;
@@ -419,14 +588,24 @@ const EventDetailsContainer = styled.div`
   }
 
   .join-btn {
-    height: 32px;
+    height: 40px;
     border: none;
     padding: 0px 12px;
+    font-size: 14px;
     background-color: rgba(244, 227, 233, 0.4);
+    cursor: pointer;
   }
 
   .join-btn:active {
     box-shadow: inset 1px 1px 3px rgb(0, 0, 0, 0.4);
+  }
+
+  .join-btn[disabled] {
+    cursor: not-allowed;
+  }
+
+  .join-btn:disabled:active {
+    box-shadow: none;
   }
 
   #map {
@@ -440,14 +619,32 @@ const EventDetailsContainer = styled.div`
     }
 
     .user-box {
-      flex-direction: row;
-      align-items: center;
+      flex-direction: column;
+
       justify-content: space-between;
       margin-top: 10px;
     }
 
+    .host-container {
+      width: 100%;
+    }
+
     .form-box {
       margin-top: 20px;
+    }
+    .main-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .heart-icon {
+      top: 390px;
+      left: 390px;
+    }
+
+    .likes-count {
+      top: 397px;
+      left: 406px;
     }
   }
 `;

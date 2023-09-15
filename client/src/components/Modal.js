@@ -8,8 +8,8 @@ const ModalContainer = styled.div`
   border: 1px black solid;
   position: absolute;
   z-index: 999;
-  top: 125px;
-  left: 110px;
+  top: 160px;
+  left: 150px;
   padding-top: 30px;
   display: flex;
   justify-content: center;

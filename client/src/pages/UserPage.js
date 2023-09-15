@@ -1,22 +1,24 @@
 import { styled } from 'styled-components';
-import Profile from '../components/Profile';
-import MyPageTab from '../components/MyPageTab';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import MemberProfile from '../components/MemberProfile';
+import MyPageTab from '../components/MyPageTab';
 
-const MyPageSection = styled.section`
-  width: 100vw;
+const MemberPageSection = styled.section`
+  display: flex;
+  justify-content: center;
+`;
+
+const ContentsContainer = styled.div`
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-left: 320px;
+  margin-right: 320px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
 
 const UserPage = () => {
-  const [user, setUser] = useState({
+  const [memberData, setMemberData] = useState({
     id: 0,
     nickname: '',
     email: '',
@@ -31,49 +33,55 @@ const UserPage = () => {
 
   const [activetab, setActiveTab] = useState('tab1');
 
-  const memberId = useSelector((state) => state.user.memberId);
-
-  const fetchUserInfo = async () => {
-    try {
-      const response = await axios.get(
-        `http://3.39.76.109:8080/members/${memberId}`,
-      );
-      const userInfo = response.data;
-      const userData = {
-        id: userInfo.id,
-        nickname: userInfo.nickname,
-        email: userInfo.email,
-        gender: userInfo.gender,
-        introduce: userInfo.introduce,
-        imageUrl: userInfo.imageUrl,
-        follower: userInfo.follower,
-        following: userInfo.following,
-        applicants: userInfo.applicants,
-        boardLikes: userInfo.boardLikes,
-      };
-      setUser(userData);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const memberId = localStorage.getItem('memberId');
 
   useEffect(() => {
-    fetchUserInfo();
-  }, []);
+    if (!memberData.id) {
+      const fetchUserInfo = async () => {
+        try {
+          const response = await axios.get(
+            `http://3.39.76.109:8080/members/${memberId}`,
+          );
+          const memberInfo = response.data;
+          console.log(memberInfo);
+          const userData = {
+            id: memberInfo.id,
+            nickname: memberInfo.nickname,
+            email: memberInfo.email,
+            gender: memberInfo.gender,
+            introduce: memberInfo.introduce,
+            imageUrl: memberInfo.imageUrl,
+            follower: memberInfo.follower,
+            following: memberInfo.following,
+            applicants: memberInfo.applicants,
+            boardLikes: memberInfo.boardLikes,
+          };
+          setMemberData(userData);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      fetchUserInfo();
+    }
+  }, [memberId]);
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
+  console.log(memberId, memberData);
   return (
-    <MyPageSection>
-      <Profile user={user} setUser={setUser} />
-      <MyPageTab
-        activetab={activetab}
-        handleTabClick={handleTabClick}
-        user={user}
-      />
-    </MyPageSection>
+    <MemberPageSection>
+      <ContentsContainer>
+        <MemberProfile memberData={memberData} />
+        <MyPageTab
+          activetab={activetab}
+          handleTabClick={handleTabClick}
+          memberData={memberData}
+        />
+      </ContentsContainer>
+    </MemberPageSection>
   );
 };
 export default UserPage;

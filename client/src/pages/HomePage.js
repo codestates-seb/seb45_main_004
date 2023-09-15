@@ -3,280 +3,42 @@ import { FaSearch } from 'react-icons/fa';
 import { FcLike } from 'react-icons/fc';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const HomePage = styled.div`
-  display: flex;
-  justify-content: center;
-
-  .main-container {
-    margin: 0px 320px;
-  }
-
-  .main-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 380px;
-  }
-
-  .main-header h1 {
-    color: #ffffff;
-    font-size: 80px;
-  }
-
-  .text-writing {
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: middle;
-    animation: type 5s steps(13, end) forwards;
-  }
-
-  @keyframes type {
-    0% {
-      width: 0;
-    }
-    100% {
-      width: 100%;
-    }
-  }
-
-  .text-writing:before {
-    content: attr(data-text);
-    display: inline-block;
-    animation: blink 1.5s infinite;
-    height: 130px;
-    border-right: 10px solid;
-  }
-
-  @keyframes blink {
-    0%,
-    100% {
-      border-color: transparent;
-    }
-    50% {
-      border-color: inherit;
-    }
-  }
-
-  .service-introduction {
-    color: white;
-  }
-  .search-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  .search {
-    display: flex;
-    width: 500px;
-    height: 40px;
-    border: solid 1px black;
-    border-radius: 10px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .search-text {
-    background: none;
-    border: none;
-    width: 500px;
-    height: 40px;
-    caret-color: black; // 검색창 cursor 효과
-    padding-left: 20px;
-    outline: none;
-    // 검색시 input ouline 없애주기
-  }
-  .categorys-container {
-    display: flex;
-    flex-direction: row;
-    list-style: none;
-    justify-content: center;
-    padding: 0;
-    margin: 20px 0px;
-    gap: 20px;
-  }
-  .invitation-container {
-    display: grid;
-    flex-direction: row;
-    margin-top: 20px;
-    grid-template-columns: repeat(3, 1fr);
-  }
-  .invitation-item {
-    display: flex;
-    justify-content: center;
-    height: 300px;
-    margin-bottom: 30px;
-    position: relative;
-  }
-  .likes-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 25px;
-  }
-  .likes-sort {
-    display: flex;
-    align-items: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 25px;
-    border: solid 1px #d9d9d9;
-    padding: 3px 5px;
-    border-radius: 20px;
-  }
-  .likes-text {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-    font-weight: 800;
-    margin-left: 5px;
-    cursor: pointer;
-  }
-  /* .invitation-image-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
-  } */
-
-  /* 추가부분 */
-  .invitation-image-container {
-    perspective: 1000px;
-  }
-
-  .card-container {
-    width: 300px;
-    height: 300px;
-    transform-style: preserve-3d;
-    transition: transform 0.6s;
-  }
-
-  .card-container:hover {
-    transform: rotateY(180deg);
-  }
-
-  .card-face {
-    backface-visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-
-  .card-front {
-    transform: rotateY(0deg);
-  }
-
-  .card-back {
-    transform: rotateY(180deg);
-    position: relative;
-  }
-
-  .invitation-image {
-    width: 300px;
-    height: 300px;
-    object-fit: cover;
-  }
-
-  .back-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-  /* 여기까지 추가부분 */
-
-  /* .invitation-info-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 300px;
-    height: 300px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px;
-    text-align: center;
-    gap: 10px;
-    transition:
-      opacity 0.3s,
-      visibility 0.3s;
-    opacity: 0; 
-    visibility: hidden;
-  } */
-
-  /* .invitation-image-container:hover .invitation-info-container {
-    opacity: 1;
-    visibility: visible;
-  } */
-  .likes_icon {
-    margin-right: 5px;
-  }
-  .like-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-`;
-
-const SearchBtn = styled.button`
-  display: flex;
-  align-items: center;
-  padding-right: 10px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 18px;
-`;
-
-const Image = styled.img`
-  width: 300px;
-  height: 300px;
-  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
-
-  &.header-image {
-    border-radius: 20px;
-  }
-`;
-
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
-  // const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장 -> 해당 상태를 currentInvitaions 상태값으로 저장 가능
   const [selectedCategory, setSelectedCategory] = useState('CATEGORY_ALL'); // 선택된 카테고리를 저장
   const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [currentInvitations, setCurrentInvitations] = useState([]);
   const PER_SCROLL = 10;
+  const textRef = useRef(null);
 
   const fetchAllInvitaion = () => {
     axios
       .get('http://3.39.76.109:8080/boards')
       .then((response) => {
         const newData = response.data;
-        const sortedInvitation = newData.sort(
+        const closedInvitations = newData.filter(
+          (item) => item.boardStatus === '모집 마감',
+        );
+        const openInvitations = newData.filter(
+          (item) => item.boardStatus !== '모집 마감',
+        );
+
+        // 그 외 초대장을 정렬
+        const sortedInvitation = openInvitations.sort(
           (a, b) => new Date(b.boardId) - new Date(a.boardId),
         );
-        setInvitation(sortedInvitation);
+
+        // 모집 마감 초대장을 그 뒤에 추가
+        const lastInviation = [...sortedInvitation, ...closedInvitations];
+        setInvitation(lastInviation);
+        console.log(lastInviation);
       })
       .then(() => {
         getInvitations(PER_SCROLL);
@@ -332,8 +94,6 @@ export default function Homepage() {
 
   // 검색 버튼클릭시 호출되는 함수
   const titleSearch = (category) => {
-    // 선택된 카테고리가 있으면
-    // if (selectedCategory) {
     // 전체 검색창에서 검색되는 url과 선택된 카테고리에서만 검색되는 url
     const searchApi =
       category === 'CATEGORY_ALL'
@@ -358,6 +118,10 @@ export default function Homepage() {
     if (e.key === 'Enter') {
       titleSearch(selectedCategory); // 선택된 카테고리에서만 tiltesearch함수가 실행
     }
+  };
+
+  const handleSearchIconClick = () => {
+    titleSearch(selectedCategory);
   };
 
   // 전체 초대글 좋아요 순
@@ -387,6 +151,22 @@ export default function Homepage() {
     likesSort(selectedCategory);
   };
 
+  useEffect(() => {
+    const fullText = 'with Celebee.';
+    let index = 0;
+
+    function typeText() {
+      if (textRef.current && index < fullText.length) {
+        textRef.current.textContent = fullText.substring(0, index + 1);
+        index++;
+
+        setTimeout(typeText, 200);
+      }
+    }
+
+    typeText();
+  }, []);
+
   return (
     <HomePage>
       <div className="main-container">
@@ -395,7 +175,7 @@ export default function Homepage() {
             <h1 className="main-title">
               Let&apos;s Make a New Friend
               <br />
-              <span className="text-writing" data-text="with Celebee."></span>
+              <span className="text-writing" ref={textRef}></span>
             </h1>
           </div>
         </div>
@@ -431,7 +211,7 @@ export default function Homepage() {
               onChange={(e) => setSearch(e.target.value)}
               onKeyPress={handleKeyPress}
             />
-            <SearchBtn className="icon-search" onClick={titleSearch}>
+            <SearchBtn className="icon-search" onClick={handleSearchIconClick}>
               <FaSearch />
             </SearchBtn>
           </div>
@@ -466,7 +246,6 @@ export default function Homepage() {
                       className="invitation-image"
                     />
                   </div>
-
                   {/* 뒷면: 정보와 이미지 */}
                   <div className="card-face card-back">
                     <Image
@@ -494,3 +273,271 @@ export default function Homepage() {
     </HomePage>
   );
 }
+
+const HomePage = styled.div`
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  display: flex;
+  justify-content: center;
+
+  .main-container {
+    margin: 0px 320px;
+  }
+
+  .main-header {
+    display: flex;
+    align-items: center;
+    height: 380px;
+    padding: 0px 50px;
+  }
+
+  .main-header h1 {
+    color: #ffffff;
+    font-size: 92px;
+  }
+
+  .text-writing {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .text-writing:after {
+    content: '|';
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .service-introduction {
+    color: white;
+  }
+  .search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  .search {
+    display: flex;
+    width: 500px;
+    height: 40px;
+    border: solid 1px black;
+    border-radius: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .search-text {
+    background: none;
+    border: none;
+    width: 500px;
+    height: 40px;
+    caret-color: black; // 검색창 cursor 효과
+    padding-left: 20px;
+    outline: none;
+    // 검색시 input ouline 없애주기
+  }
+  .categorys-container {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    justify-content: center;
+    padding: 0;
+    margin: 20px 24px;
+    gap: 20px;
+  }
+  .invitation-container {
+    display: grid;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .invitation-item {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    margin-bottom: 30px;
+    position: relative;
+  }
+  .likes-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-right: 48px;
+  }
+  .likes-sort {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 25px;
+    border: solid 1px #d9d9d9;
+    padding: 3px 5px;
+    border-radius: 20px;
+  }
+  .likes-text {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 800;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+
+  /* 추가부분 */
+  .invitation-image-container {
+    perspective: 1000px;
+  }
+
+  .card-container {
+    width: 300px;
+    height: 300px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+  }
+
+  .card-container:hover {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-front {
+    transform: rotateY(0deg);
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+    position: relative;
+  }
+
+  .invitation-image {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .back-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .likes_icon {
+    margin-right: 5px;
+  }
+  .like-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .main-container {
+      margin: 0px 20px;
+    }
+
+    .main-header {
+      display: flex;
+      justify-content: center;
+    }
+    .main-header h1 {
+      font-size: 5vh;
+    }
+
+    .text-writing:before {
+      height: 50px;
+    }
+
+    .categorys-container {
+      display: grid;
+      padding: 0px 110px;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .invitation-container {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .likes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0px;
+      padding: 0px;
+    }
+  }
+  @media screen and (min-width: 769px) and (max-width: 1100px) {
+    .categorys-container {
+      display: grid;
+      padding: 0px 110px;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .invitation-container {
+      display: grid;
+      flex-direction: row;
+      margin-top: 20px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .likes-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin: 0px;
+      padding: 0px;
+    }
+    .main-header {
+      display: flex;
+      justify-content: center;
+    }
+    .main-header h1 {
+      font-size: 8vh;
+    }
+  }
+`;
+
+const SearchBtn = styled.button`
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+`;
+
+const Image = styled.img`
+  width: 300px;
+  height: 300px;
+  box-shadow: 2px 4px 7px 2px rgb(0, 0, 0, 0.5);
+
+  &.header-image {
+    border-radius: 20px;
+  }
+`;

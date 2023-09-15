@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Button from './Button';
 import LikeIt from './LikeIt';
 import Participations from './Participations';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const MyTabContainer = styled.section`
   display: flex;
@@ -21,7 +23,16 @@ const TabContentContainer = styled.div`
   margin-top: 40px;
   width: 70vw;
 `;
-const MyPageTab = ({ activetab, handleTabClick, user }) => {
+const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
+  const navigate = useNavigate();
+  const [selectedBoardId, setSelectedBoardId] = useState(null);
+
+  const handleMovingBoard = (boardId) => {
+    setSelectedBoardId(boardId);
+    navigate(`/boards/${boardId}`);
+    selectedBoardId;
+  };
+
   return (
     <MyTabContainer>
       <MyTabBtn>
@@ -43,8 +54,20 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
         />
       </MyTabBtn>
       <TabContentContainer>
-        {activetab === 'tab1' && <LikeIt user={user} />}
-        {activetab === 'tab2' && <Participations user={user} />}
+        {activetab === 'tab1' && (
+          <LikeIt
+            myData={myData}
+            memberData={memberData}
+            handleMovingBoard={handleMovingBoard}
+          />
+        )}
+        {activetab === 'tab2' && (
+          <Participations
+            myData={myData}
+            memberData={memberData}
+            handleMovingBoard={handleMovingBoard}
+          />
+        )}
       </TabContentContainer>
     </MyTabContainer>
   );
@@ -53,6 +76,7 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
 MyPageTab.propTypes = {
   activetab: PropTypes.string.isRequired,
   handleTabClick: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  myData: PropTypes.object.isRequired,
+  memberData: PropTypes.object.isRequired,
 };
 export default MyPageTab;
