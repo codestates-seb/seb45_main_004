@@ -55,6 +55,7 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
+  console.log(eventData);
   //마감 날짜 관련
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
@@ -64,14 +65,8 @@ function InvitePage() {
   // 호스트 페이지 이동
   const hostPageClick = () => {
     const hostId = eventData.member.id;
-    localStorage.setItem('memberId', hostId);
-    const userId = localStorage.getItem('memberId');
-
-    if (memberId === userId) {
-      navigate('/members/me');
-    } else {
-      navigate(`/members/${userId}`);
-    }
+    localStorage.setItem('clickedUserId', hostId);
+    navigate(`/members/${hostId}`);
   };
 
   // 참여자 목록을 가져오는 함수
@@ -85,11 +80,10 @@ function InvitePage() {
       console.error('Error fetching participants:', error);
     }
   };
-  // 참여자 이미지 클릭 시 멤버 아이디를 리덕스 스토어에 저장
-  const handleParticipantImageClick = (participantId) => {
-    sessionStorage.setItem('participantId', participantId);
-    const participant = sessionStorage.getItem('participantId');
-    navigate(`/members/${participant}`); // 유저 페이지로 이동
+  // 참여자 이미지 클릭 시 참여자 페이지 이동
+  const handleParticipantImageClick = (memberId) => {
+    localStorage.setItem('clickedUserId', memberId);
+    navigate(`/members/${memberId}`); // 유저 페이지로 이동
   };
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴

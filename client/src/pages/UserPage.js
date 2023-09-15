@@ -33,14 +33,14 @@ const UserPage = () => {
 
   const [activetab, setActiveTab] = useState('tab1');
 
-  const memberId = localStorage.getItem('memberId');
-
+  const userId = localStorage.getItem('clickedUserId');
+  console.log(userId);
   useEffect(() => {
     if (!memberData.id) {
       const fetchUserInfo = async () => {
         try {
           const response = await axios.get(
-            `http://3.39.76.109:8080/members/${memberId}`,
+            `http://3.39.76.109:8080/members/${userId}`,
           );
           const memberInfo = response.data;
           console.log(memberInfo);
@@ -64,13 +64,12 @@ const UserPage = () => {
 
       fetchUserInfo();
     }
-  }, [memberId]);
+  }, [userId]);
 
   const handleTabClick = (tabId) => {
     setActiveTab(tabId);
   };
 
-  console.log(memberId, memberData);
   return (
     <MemberPageSection>
       <ContentsContainer>
