@@ -18,14 +18,14 @@ const HomePage = styled.div`
 
   .main-header {
     display: flex;
-    justify-content: center;
     align-items: center;
     height: 380px;
+    padding: 0px 50px;
   }
 
   .main-header h1 {
     color: #ffffff;
-    font-size: 80px;
+    font-size: 90px;
   }
 
   .text-writing {
@@ -96,7 +96,7 @@ const HomePage = styled.div`
     list-style: none;
     justify-content: center;
     padding: 0;
-    margin: 20px 0px;
+    margin: 20px 24px;
     gap: 20px;
   }
   .invitation-container {
@@ -117,6 +117,7 @@ const HomePage = styled.div`
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 25px;
+    padding-right: 48px;
   }
   .likes-sort {
     display: flex;
