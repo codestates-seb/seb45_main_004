@@ -7,8 +7,6 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { useDispatch } from 'react-redux';
-import { fetchUserData } from '../redux/actions';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -17,7 +15,6 @@ function InvitePage() {
   const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
   const memberId = localStorage.getItem('myId');
-  const dispatch = useDispatch();
   // 카드 조회 요청 데이터 관리
   const [eventData, setEventData] = useState({
     memberId: '',
@@ -50,8 +47,14 @@ function InvitePage() {
   // 호스트 페이지 이동
   const hostPageClick = () => {
     const hostId = eventData.member.id;
-    dispatch(fetchUserData(hostId));
-    navigate(`/members/${eventData.member.id}`);
+    localStorage.setItem('memberId', hostId);
+    const userId = localStorage.getItem('memberId');
+
+    if (memberId === userId) {
+      navigate('/members/me');
+    } else {
+      navigate(`/members/${userId}`);
+    }
   };
 
   // 참여자 목록을 가져오는 함수
