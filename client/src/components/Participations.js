@@ -25,12 +25,15 @@ const ContentItem = styled.li`
   }
 `;
 
-const Participations = ({ user }) => {
+const Participations = ({ user, handleMovingBoard }) => {
   return (
     <ContentList>
-      {user.applicants.map((el, boardId) => {
+      {user.applicants.map((el) => {
         return (
-          <ContentItem key={boardId}>
+          <ContentItem
+            key={el.boardId}
+            onClick={() => handleMovingBoard(el.boardId)}
+          >
             <img src={el.imgUrl} alt="my-party-list" />
           </ContentItem>
         );
@@ -41,6 +44,7 @@ const Participations = ({ user }) => {
 
 Participations.propTypes = {
   user: PropTypes.object.isRequired,
+  handleMovingBoard: PropTypes.func.isRequired,
 };
 
 export default Participations;

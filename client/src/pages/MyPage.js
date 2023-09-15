@@ -62,7 +62,7 @@ const MyPage = () => {
 
   useEffect(() => {
     // user 데이터가 비어있을 때만 API 호출
-    if (!user.id) {
+    if (!user.id && token) {
       fetchMyInfo();
     }
   }, []);

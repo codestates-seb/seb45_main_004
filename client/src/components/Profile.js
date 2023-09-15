@@ -173,18 +173,18 @@ const Profile = ({ user, setUser }) => {
   };
 
   /* 수정할 프로필 이미지 받아오기 */
-  const getProfileImg = async () => {
-    try {
-      const response = await axios.get(
-        'http://3.39.76.109:8080/members/images',
-      );
-      setisImages(response.data);
-    } catch (error) {
-      console.error('실패', error);
-    }
-  };
-
   useEffect(() => {
+    const getProfileImg = async () => {
+      try {
+        const response = await axios.get(
+          'http://3.39.76.109:8080/members/images',
+        );
+        setisImages(response.data);
+      } catch (error) {
+        console.error('실패', error);
+      }
+    };
+
     getProfileImg();
   }, []);
 

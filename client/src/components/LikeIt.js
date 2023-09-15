@@ -25,16 +25,19 @@ const ContentItem = styled.li`
   }
 `;
 
-const LikeIt = ({ user }) => {
+const LikeIt = ({ user, handleMovingBoard }) => {
   if (!user || !user.boardLikes || user.boardLikes.length === 0) {
     return null;
   }
 
   return (
     <ContentList>
-      {user.boardLikes.map((el, boardId) => {
+      {user.boardLikes.map((el) => {
         return (
-          <ContentItem key={boardId}>
+          <ContentItem
+            key={el.boardId}
+            onClick={() => handleMovingBoard(el.boardId)}
+          >
             <img src={el.imgUrl} alt="찜한 목록" />
           </ContentItem>
         );
@@ -45,6 +48,7 @@ const LikeIt = ({ user }) => {
 
 LikeIt.propTypes = {
   user: PropTypes.object.isRequired,
+  handleMovingBoard: PropTypes.func.isRequired,
 };
 
 export default LikeIt;
