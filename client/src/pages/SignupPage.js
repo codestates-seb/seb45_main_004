@@ -33,13 +33,13 @@ const SignupPage = styled.div`
   .signup-form-agree {
     display: flex;
     flex-direction: row;
-    align-items: center;
     margin-bottom: 20px;
   }
   .agree-text {
-    margin-left: 5px;
+    margin-left: 7px;
   }
   .agree-checkbox {
+    margin-top: 5px;
     width: 13px;
     height: 13px;
   }
@@ -225,7 +225,9 @@ export default function Signuppage() {
               className="agree-checkbox"
             />
             <span className="agree-text">
-              Collect and use your personal information.
+              I agree to collect and utilize personal
+              <br />
+              information and receive emails.
             </span>
           </div>
           <div className="signup-form-submit">
