@@ -25,7 +25,7 @@ const HomePage = styled.div`
 
   .main-header h1 {
     color: #ffffff;
-    font-size: 90px;
+    font-size: 92px;
   }
 
   .text-writing {
@@ -138,14 +138,6 @@ const HomePage = styled.div`
     margin-left: 5px;
     cursor: pointer;
   }
-  /* .invitation-image-container {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; // 부모요소에 적용시키고 부모 요소의 범위를 벗어나는 자식 요소의 내용을 감춤
-  } */
 
   /* 추가부분 */
   .invitation-image-container {
@@ -200,34 +192,6 @@ const HomePage = styled.div`
     justify-content: center;
     color: white;
   }
-  /* 여기까지 추가부분 */
-
-  /* .invitation-info-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 300px;
-    height: 300px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px;
-    text-align: center;
-    gap: 10px;
-    transition:
-      opacity 0.3s,
-      visibility 0.3s;
-    opacity: 0; 
-    visibility: hidden;
-  } */
-
-  /* .invitation-image-container:hover .invitation-info-container {
-    opacity: 1;
-    visibility: visible;
-  } */
   .likes_icon {
     margin-right: 5px;
   }
@@ -261,7 +225,6 @@ const Image = styled.img`
 
 export default function Homepage() {
   const [invitation, setInvitation] = useState([]); // 모든 게시물 저장
-  // const [filteredInvitation, setFilteredInvitation] = useState([]); // 필터된 게시물을 저장 -> 해당 상태를 currentInvitaions 상태값으로 저장 가능
   const [selectedCategory, setSelectedCategory] = useState('CATEGORY_ALL'); // 선택된 카테고리를 저장
   const [search, setSearch] = useState(''); // 검색어를 입력하는 상태 추가
   const [currentPage, setCurrentPage] = useState(1);
@@ -345,8 +308,6 @@ export default function Homepage() {
 
   // 검색 버튼클릭시 호출되는 함수
   const titleSearch = (category) => {
-    // 선택된 카테고리가 있으면
-    // if (selectedCategory) {
     // 전체 검색창에서 검색되는 url과 선택된 카테고리에서만 검색되는 url
     const searchApi =
       category === 'CATEGORY_ALL'
@@ -483,7 +444,6 @@ export default function Homepage() {
                       className="invitation-image"
                     />
                   </div>
-
                   {/* 뒷면: 정보와 이미지 */}
                   <div className="card-face card-back">
                     <Image
