@@ -23,7 +23,7 @@ const TabContentContainer = styled.div`
   margin-top: 40px;
   width: 70vw;
 `;
-const MyPageTab = ({ activetab, handleTabClick, user }) => {
+const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
   const navigate = useNavigate();
   const [selectedBoardId, setSelectedBoardId] = useState(null);
 
@@ -55,10 +55,18 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
       </MyTabBtn>
       <TabContentContainer>
         {activetab === 'tab1' && (
-          <LikeIt user={user} handleMovingBoard={handleMovingBoard} />
+          <LikeIt
+            myData={myData}
+            memberData={memberData}
+            handleMovingBoard={handleMovingBoard}
+          />
         )}
         {activetab === 'tab2' && (
-          <Participations user={user} handleMovingBoard={handleMovingBoard} />
+          <Participations
+            myData={myData}
+            memberData={memberData}
+            handleMovingBoard={handleMovingBoard}
+          />
         )}
       </TabContentContainer>
     </MyTabContainer>
@@ -68,6 +76,7 @@ const MyPageTab = ({ activetab, handleTabClick, user }) => {
 MyPageTab.propTypes = {
   activetab: PropTypes.string.isRequired,
   handleTabClick: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  myData: PropTypes.object.isRequired,
+  memberData: PropTypes.object.isRequired,
 };
 export default MyPageTab;

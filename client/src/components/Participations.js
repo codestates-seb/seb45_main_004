@@ -25,25 +25,39 @@ const ContentItem = styled.li`
   }
 `;
 
-const Participations = ({ user, handleMovingBoard }) => {
+const Participations = ({ myData, memberData, handleMovingBoard }) => {
+  console.log(memberData, myData);
+
   return (
     <ContentList>
-      {user.applicants.map((el) => {
-        return (
-          <ContentItem
-            key={el.boardId}
-            onClick={() => handleMovingBoard(el.boardId)}
-          >
-            <img src={el.imgUrl} alt="my-party-list" />
-          </ContentItem>
-        );
-      })}
+      {memberData
+        ? memberData.applicants.map((el) => {
+            return (
+              <ContentItem
+                key={el.boardId}
+                onClick={() => handleMovingBoard(el.boardId)}
+              >
+                <img src={el.imgUrl} alt="찜한 목록" />
+              </ContentItem>
+            );
+          })
+        : myData.applicants.map((el) => {
+            return (
+              <ContentItem
+                key={el.boardId}
+                onClick={() => handleMovingBoard(el.boardId)}
+              >
+                <img src={el.imgUrl} alt="찜한 목록" />
+              </ContentItem>
+            );
+          })}
     </ContentList>
   );
 };
 
 Participations.propTypes = {
-  user: PropTypes.object.isRequired,
+  myData: PropTypes.object.isRequired,
+  memberData: PropTypes.object.isRequired,
   handleMovingBoard: PropTypes.func.isRequired,
 };
 

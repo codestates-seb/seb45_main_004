@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchMyData, login } from '../redux/actions';
 
 const LoginBody = styled.section`
@@ -34,7 +34,6 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLogin = useSelector((state) => state.auth.loginStatus);
   //이메일 형식 검사 규칙 정의
   const isEmailValid = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -89,7 +88,6 @@ const LoginPage = () => {
           const myId = response.headers.memberid;
           localStorage.setItem('jwtToken', token);
           localStorage.setItem('refresh', refresh);
-          localStorage.setItem('isLogin', isLogin);
           localStorage.setItem('myId', myId);
 
           console.log('성공');
@@ -98,9 +96,8 @@ const LoginPage = () => {
           navigate('/');
         }
       } catch (error) {
-        setIsError('아이디와 비밀번호를 확인해주세요.');
+        setIsError(alert('아이디와 비밀번호를 확인해주세요.'));
         console.error('에러발생', error);
-        throw error;
       }
     }
   };

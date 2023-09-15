@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { MdNotificationsActive, MdNotificationsNone } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout, newStatus } from '../redux/actions';
+import { login, logout } from '../redux/actions';
 import Button from './Button';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
@@ -59,15 +59,14 @@ const Header = () => {
   const isLogin = useSelector((state) => state.auth.isLogin);
   const isNew = useSelector((state) => state.new.isNew);
 
-  const handleNewStatus = () => {
+  /*const handleNewStatus = () => {
     dispatch(newStatus(!isNew));
   };
-  console.log(handleNewStatus);
+  console.log(handleNewStatus);*/
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('refresh');
-    localStorage.removeItem('isLogin');
     dispatch(logout());
     navigate('/');
   };
