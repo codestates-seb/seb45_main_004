@@ -1,6 +1,6 @@
 import './App.css';
 
-import { BrowserRouter, Route, Routes } from 'react-router-dom'; // BrowserRouter 등의 라우터 컴포넌트 임포트
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'; // BrowserRouter 등의 라우터 컴포넌트 임포트
 import HomePage from './pages/HomePage';
 import InvitePage from './pages/InvitePage';
 import Header from './components/Header';
@@ -11,10 +11,12 @@ import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import Kakao from './pages/KakaoRedirect';
 import UserPage from './pages/UserPage';
+import { useEffect } from 'react';
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -29,6 +31,17 @@ function App() {
       <Footer />
     </BrowserRouter>
   );
+}
+
+// 새로운 컴포넌트 추가
+function ScrollToTop() {
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
+  return null; // 아무것도 렌더링하지 않음
 }
 
 export default App;

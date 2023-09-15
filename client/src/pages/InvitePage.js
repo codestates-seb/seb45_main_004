@@ -22,7 +22,7 @@ function InvitePage() {
     setShowDropdown(!showDropdown);
   };
   const handleContainerClick = (event) => {
-    if (!event.target.classList.contains('dropdown-toggle')) {
+    if (!event.target.classList.contains('more-box')) {
       setShowDropdown(false);
     }
   };
@@ -246,7 +246,7 @@ function InvitePage() {
               <div className="dropdown-container">
                 {participants.length > 1 && ( // ... 버튼 2명 부터 나오게하기
                   <button className="dropdown-toggle" onClick={toggleDropdown}>
-                    ...
+                    <div className="more-box">...more</div>
                   </button>
                 )}
                 {/* 드롭다운으로 표시되는 참여자 목록 */}
@@ -357,8 +357,9 @@ const EventDetailsContainer = styled.div`
   }
   .data,
   .main-img,
+  .join-btn,
   #map {
-    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .heart-button {
@@ -410,7 +411,7 @@ const EventDetailsContainer = styled.div`
   .user-container {
     display: flex;
     align-items: flex-end;
-    gap: 5px;
+    gap: 8px;
     height: 50px;
   }
 
@@ -424,8 +425,7 @@ const EventDetailsContainer = styled.div`
   }
   .user-btn:active,
   .host-btn:active {
-    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.5);
-    transform: translateY(1px);
+    transform: translateY(2px);
     border-radius: 50px;
   }
 
@@ -434,6 +434,7 @@ const EventDetailsContainer = styled.div`
     border-radius: 50px;
     width: 50px;
     height: 50px;
+    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.2);
   }
 
   .user-img-offset {
@@ -456,33 +457,35 @@ const EventDetailsContainer = styled.div`
   .dropdown-container {
     position: relative;
   }
-  /* 드롭다운 버튼 스타일 */
   .dropdown-toggle {
-    height: 30px;
-    width: 30px;
     border: none;
-    border-radius: 5px;
-    padding: 10px 5px;
     background-color: transparent;
-    color: #fff;
+    border-radius: 5px;
+    color: #333;
     font-size: 20px;
     text-align: start;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
 
   .dropdown-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
   }
   .dropdown-toggle:active {
-    box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.2);
+    transform: scale(0.95);
+  }
+
+  .more-box {
+    font-size: 16px;
+    color: #000;
   }
   /* 드롭다운 목록 스타일 */
   .dropdown {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: -80px;
-    left: 30px;
+    top: -170px;
+    left: 60px;
     width: 200px;
     height: 200px;
     padding: 20px 20px 20px 20px;
