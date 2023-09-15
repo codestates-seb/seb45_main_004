@@ -29,7 +29,7 @@ public interface MemberMapper {
     @Mapping(target = "boardStatus", source = "board.status")
     MemberBoardLikeResponseDto boardLikeToMemberBoardLikeResponseDto(BoardLike boardLike);
 
-    @Mapping(target = "imgUrl", source = "boardImageUrl")
+    @Mapping(target = "imgUrl", source = "board.ImageUrl")
     @Mapping(target = "boardId", source = "board.id")
     @Mapping(target = "boardStatus", source = "board.status")
     MemberApplicantResponseDto applicantToMemberApplicantResponseDto(Applicant applicant);
