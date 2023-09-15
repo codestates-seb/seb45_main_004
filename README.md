@@ -65,10 +65,10 @@
     - <br/>    
     -
   </td>
-  <td align="center">
-    - <br/>
-    - <br/>    
-    -
+  <td align="left">
+    - 메인 페이지<br/>
+    - 회원가입 페이지<br/>    
+    - 카카오 OAuth 
   </td>
   </tr>
   </tbody>
