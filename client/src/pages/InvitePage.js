@@ -7,8 +7,6 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { fetchUserData } from '../redux/actions';
-import { useDispatch } from 'react-redux';
 
 function InvitePage() {
   const token = localStorage.getItem('jwtToken');
@@ -17,7 +15,6 @@ function InvitePage() {
   const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
   const memberId = localStorage.getItem('myId');
-  const dispatch = useDispatch();
 
   const [showDropdown, setShowDropdown] = useState(false);
   // 드롭다운을 토글하는 함수
@@ -89,9 +86,10 @@ function InvitePage() {
     }
   };
   // 참여자 이미지 클릭 시 멤버 아이디를 리덕스 스토어에 저장
-  const handleParticipantImageClick = (memberId) => {
-    dispatch(fetchUserData(memberId)); // 멤버 아이디를 리덕스 스토어에 저장
-    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+  const handleParticipantImageClick = (participantId) => {
+    sessionStorage.setItem('participantId', participantId);
+    const participant = sessionStorage.getItem('participantId');
+    navigate(`/members/${participant}`); // 유저 페이지로 이동
   };
   useEffect(() => {
     fetchParticipants(); // 참여자 목록 가져옴
