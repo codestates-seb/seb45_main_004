@@ -11,9 +11,6 @@ const CatgegoryBtnWrapper = styled.li`
     border-radius: 20px;
     cursor: pointer;
     padding: 0px;
-    // 특정 버튼에만 마진값 안주기
-    /* margin-right: ${(props) => (props.isETC ? '0px' : '20px')}; */
-
     // 버튼 그림자
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
 
@@ -33,7 +30,7 @@ export default function CategoryBtn({ text, color, onClick, isSelected }) {
   return (
     <CatgegoryBtnWrapper
       isSelected={isSelected}
-      isETC={text === 'ETC'}
+      // isETC={text === 'ETC'}
       color={color}
     >
       <button onClick={handleClick}>{text}</button>

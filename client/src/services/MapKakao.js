@@ -93,10 +93,7 @@ function MapKakao({
       }
     };
     if (showMarker && latitude && longitude) {
-      const latlngs = new kakao.maps.LatLng(
-        parseFloat(latitude),
-        parseFloat(longitude),
-      );
+      const latlngs = new kakao.maps.LatLng(latitude, longitude);
 
       // 좌표를 주소로 변환
       geocoder.coord2Address(

@@ -5,7 +5,6 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout } from '../redux/actions';
 import Button from './Button';
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
 const ServieceHeader = styled.header`
@@ -137,11 +136,6 @@ const Header = () => {
       </div>
     </ServieceHeader>
   );
-};
-
-Header.propTypes = {
-  isLogin: PropTypes.bool.isRequired,
-  setIsLogin: PropTypes.func.isRequired,
 };
 
 export default Header;
