@@ -34,16 +34,6 @@ const StyleButton = styled.button`
     background-color: rgba(246, 246, 246, 0);
   }
 
-  /* &.Button-notification {
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
-    font-size: 42px;
-    border: none;
-  } */
-
   &.Button-like {
     width: 180px;
     height: 60px;
@@ -90,7 +80,6 @@ const Button = ({ type, text, onClick }) => {
   const btnType = [
     'based',
     'newCard',
-    // 'notification',
     'like',
     'participations',
     'login',
@@ -112,8 +101,8 @@ Button.defaultProps = {
 
 Button.propTypes = {
   type: PropTypes.string.isRequired,
-  text: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default Button;

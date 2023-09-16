@@ -15,6 +15,7 @@ function InviteWritePage() {
   const [imageFromServer, setImageFromServer] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -28,8 +29,9 @@ function InviteWritePage() {
     address: '',
     imageUrl: selectedImage,
   });
-  console.log(formData);
-  const handleSubmit = (e) => {
+
+  // 모집 글 작성 요청
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const fieldValidations = [
       { field: 'title', error: '제목을 입력해주세요.' },
@@ -52,49 +54,21 @@ function InviteWritePage() {
       return;
     }
 
-    axios
-      .post(`${api}/boards/new-boards`, formData, {
+    try {
+      const response = await axios.post(`${api}/boards/new-boards`, formData, {
         headers: {
           Authorization: token,
         },
-      })
-      .then((response) => {
-        navigate(`/boards/${response.data.boardId}`);
-        console.log('요청됨');
-      })
-      .catch((error) => {
-        console.error('Error creating card:', error);
       });
-  };
 
-  // 카테고리 버튼 클릭 핸들러
-  const handleCategoryButtonClick = async (buttonId) => {
-    setSelectedButton(buttonId);
-    setFormData((prevData) => ({
-      ...prevData,
-      category: buttonId,
-    }));
-
-    try {
-      const response = await axios.get(`${api}/cards/${buttonId}/images`);
-      setImageFromServer(response.data);
+      navigate(`/boards/${response.data.boardId}`);
+      console.log('요청됨');
     } catch (error) {
-      console.error('Error fetching image:', error);
+      console.error('Error creating card:', error);
     }
   };
 
-  const getTwoDaysAfter = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 3);
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
-  };
-
-  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
-  const currentDate = new Date().toISOString().split('T')[0];
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
+  // 입력값 관리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -127,6 +101,35 @@ function InviteWritePage() {
     }
   };
 
+  // 마감 날짜 계산
+  const getTwoDaysAfter = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  };
+
+  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
+  const currentDate = new Date().toISOString().split('T')[0];
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+  // 카테고리 버튼 클릭
+  const handleCategoryButtonClick = async (buttonId) => {
+    setSelectedButton(buttonId);
+    setFormData((prevData) => ({
+      ...prevData,
+      category: buttonId,
+    }));
+
+    try {
+      const response = await axios.get(`${api}/cards/${buttonId}/images`);
+      setImageFromServer(response.data);
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  };
+
+  // 지도 좌표 전달
   const handleLocationSelect = (latitude, longitude, address) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -158,8 +161,6 @@ function InviteWritePage() {
       setIsModalOpen(false);
     }
   };
-
-  const [currentIndex, setCurrentIndex] = useState(1);
 
   const handleNextImage = () => {
     if (currentIndex < imageFromServer.length - 1) {
