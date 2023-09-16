@@ -104,9 +104,7 @@ function InvitePage() {
   const fetchParticipants = async () => {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
-      console.log(response.data);
       setParticipants(response.data);
-      console.log(response);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
