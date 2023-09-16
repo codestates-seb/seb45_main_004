@@ -32,6 +32,10 @@ const OauthLoginButton = () => {
   const handleKakaoBtnClick = () => {
     window.location.assign(
       `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=f7f26eaa2223cfbd3da88212c84375c4&redirect_uri=http://celebee-bucket.s3-website.ap-northeast-2.amazonaws.com/oauth/kakao/login`,
+
+      window.alert(
+        'Kakao 회원가입시 모든 항목에 동의를 해주셔야 회원가입이 가능합니다.',
+      ),
     );
   };
 
