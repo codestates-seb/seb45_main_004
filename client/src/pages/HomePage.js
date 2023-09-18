@@ -89,6 +89,7 @@ export default function Homepage() {
       );
       setCurrentInvitations(filteredData);
       console.log('필터된 데이터', filteredData);
+      setCurrentPage(0);
     }
   };
 
