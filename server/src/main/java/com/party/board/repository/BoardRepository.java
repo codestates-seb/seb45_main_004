@@ -14,7 +14,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     @Query("select board from Board board join fetch board.member where board.id = :boardId")
     Optional<Board> findByIdWithAll(@Param("boardId") Long boardId);
 
-    //모임글 날짜 조회
+    //모임글 날짜 조회(이메일 발송 관련 메서드)
     List<Board> findByDate(LocalDate eventDate);
 
     //카테고리 조회
@@ -30,11 +30,11 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByTitleContaining(String title);
 
     //제목+내용 글 검색(전체글) 대소문자 구분 없이 검색 가능
-    List<Board> findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(String title, String body);
+    List<Board> findByTitleContainingOrBodyContaining(String title, String body);
 
     //제목으로 글 검색(카테고리)
     List<Board> findByCategoryAndTitleContaining(Board.BoardCategory category, String title);
 
     //제목+내용 글 검색(카테고리) 대소문자 구분 없이 검색 가능
-    List<Board> findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(Board.BoardCategory category1, String title, Board.BoardCategory category2,String body);
+    List<Board> findByCategoryAndTitleContainingOrCategoryAndBodyContaining(Board.BoardCategory category1, String title, Board.BoardCategory category2, String body);
 }
