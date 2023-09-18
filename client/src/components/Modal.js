@@ -20,13 +20,26 @@ const ModalContainer = styled.div`
       border: 0;
     }
   }
+
+  .close-btn {
+    font-size: 3rem;
+    display: flex;
+    position: absolute;
+    top: 14px;
+    right: 20px;
+  }
 `;
 
 const Modal = ({ closeModal, children }) => {
   return (
     <ModalContainer onClick={closeModal}>
       <div className="modal-content">
-        <button onClick={(e) => e.stopPropagation()}>{children}</button>
+        <button onClick={(e) => e.stopPropagation()}>
+          <button onClick={closeModal} className="close-btn">
+            &times;
+          </button>
+          <span>{children}</span>
+        </button>
       </div>
     </ModalContainer>
   );
