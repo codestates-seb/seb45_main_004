@@ -30,7 +30,7 @@ spring:
           kakao:
             client-id: ${KAKAO_CLIENT_ID}
             client-secret: ${KAKAO_CLIENT_SECRET}
-            redirect-uri: http://celebee-bucket.s3-website.ap-northeast-2.amazonaws.com/oauth/kakao/login
+            redirect-uri: https://celebee.kro.kr/oauth/kakao/login
             authorization-grant-type: authorization_code
             client-authentication-method: POST
             client-name: Kakao
@@ -44,7 +44,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
   config:
-    domain: http://celebee-bucket.s3-website.ap-northeast-2.amazonaws.com
+    domain: https://celebee.kro.kr
 
 jwt:
   key: ${JWT_SECRET_KEY}
