@@ -5,32 +5,34 @@ import NotLoginAvatar from './NotLoginAvatar';
 
 const MemberProfileContainer = styled.div`
   display: flex;
-  justify-content: space-around;
   height: 100%;
   margin-bottom: 2em;
-  margin-left: 80px;
-  margin-right: 80px;
   position: relative;
+  width: 100%;
 `;
 
 const UserInfoContainer = styled.div`
   margin-top: 20px;
+  margin-right: 10px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   font-size: 1.3rem;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
 
 const InfoBox = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   margin-left: 5px;
   margin-bottom: 15px;
 
   b,
   p {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: auto;
+    padding-left: 12px;
+    padding-right: 12px;
     margin: 0;
   }
 
@@ -41,14 +43,13 @@ const InfoBox = styled.div`
   }
 
   .gender-sign {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 `;
 
 const IntorBox = styled.div`
   border: 1px solid black;
-  width: 50vw;
   height: 4.8em;
   display: flex;
   justify-content: center;

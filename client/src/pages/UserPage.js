@@ -7,14 +7,19 @@ import MyPageTab from '../components/MyPageTab';
 const MemberPageSection = styled.section`
   display: flex;
   justify-content: center;
+  width: 100%;
+  max-width: 1196px;
 `;
 
 const ContentsContainer = styled.div`
   margin-top: 20px;
-  margin-left: 320px;
-  margin-right: 320px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin: 0 20px;
+  }
 `;
 
 const UserPage = () => {

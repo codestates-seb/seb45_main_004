@@ -15,6 +15,8 @@ const AvatarContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 20px;
+  margin-right: 20px;
+  margin-left: 10px;
   position: relative;
 
   .profile-img {
