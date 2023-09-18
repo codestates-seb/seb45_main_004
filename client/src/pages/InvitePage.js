@@ -32,7 +32,6 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   const token = localStorage.getItem('jwtToken');
   const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
@@ -44,6 +43,8 @@ function InvitePage() {
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
+  console.log('Initial memberId:', memberId);
+  console.log('Initial eventData.member.id:', eventData.member.id);
 
   // 카드 조회 요청
   const fetchEventData = async () => {
@@ -197,7 +198,11 @@ function InvitePage() {
               ) : (
                 <VscHeart className="heart-icon" />
               )}
-              <div className="likes-count">
+              <div
+                className={`likes-count ${
+                  isLiked ? 'click-color' : 'unclick-color'
+                }`}
+              >
                 <div>{eventData.boardLikesCount}</div>
               </div>
             </div>
@@ -222,6 +227,11 @@ function InvitePage() {
                   eventData.currentNum === eventData.totalNum ||
                   (daysDifference >= 0 && daysDifference <= 2)
                 }
+                style={{
+                  //호스트는 참여 버튼을 볼 수 없음
+                  display:
+                    memberId === String(eventData.member.id) ? 'none' : 'block',
+                }}
               >
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
@@ -361,7 +371,6 @@ const EventDetailsContainer = styled.div`
   }
   .data,
   .main-img,
-  .join-btn,
   #map {
     box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
@@ -387,10 +396,17 @@ const EventDetailsContainer = styled.div`
   .likes-count {
     text-align: center;
     position: absolute;
-    color: whitesmoke;
     top: 368px;
     left: 370px;
-    color: black;
+  }
+
+  .likes-count.unclick-color {
+    color: #777;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .likes-count.click-color {
+    color: whitesmoke;
   }
 
   .host-container {
