@@ -26,8 +26,6 @@ const ContentItem = styled.li`
 `;
 
 const Participations = ({ myData, memberData, handleMovingBoard }) => {
-  console.log(memberData, myData);
-
   return (
     <ContentList>
       {memberData

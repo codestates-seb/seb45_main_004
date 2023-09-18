@@ -34,7 +34,6 @@ const UserPage = () => {
   const [activetab, setActiveTab] = useState('tab1');
 
   const userId = localStorage.getItem('clickedUserId');
-  console.log(userId);
   useEffect(() => {
     if (!memberData.id) {
       const fetchUserInfo = async () => {
@@ -43,7 +42,6 @@ const UserPage = () => {
             `http://3.39.76.109:8080/members/${userId}`,
           );
           const memberInfo = response.data;
-          console.log(memberInfo);
           const userData = {
             id: memberInfo.id,
             nickname: memberInfo.nickname,

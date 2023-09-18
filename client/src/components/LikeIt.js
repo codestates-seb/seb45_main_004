@@ -26,7 +26,6 @@ const ContentItem = styled.li`
 `;
 
 const LikeIt = ({ myData, memberData, handleMovingBoard }) => {
-  console.log(memberData, myData);
   return (
     <ContentList>
       {memberData
