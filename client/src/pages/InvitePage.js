@@ -32,7 +32,6 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   const token = localStorage.getItem('jwtToken');
   const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
@@ -44,7 +43,7 @@ function InvitePage() {
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
-
+  const [userParticipation, setUserParticipation] = useState(false);
   // 카드 조회 요청
   const fetchEventData = async () => {
     try {
@@ -105,6 +104,12 @@ function InvitePage() {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
       setParticipants(response.data);
+
+      // 참여 여부를 확인하여 상태 업데이트
+      const userParticipation = response.data.some(
+        (participant) => String(participant.memberId) === String(memberId),
+      );
+      setUserParticipation(userParticipation);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
@@ -135,13 +140,24 @@ function InvitePage() {
   const hostPageClick = () => {
     const hostId = eventData.member.id;
     localStorage.setItem('clickedUserId', hostId);
-    navigate(`/members/${hostId}`);
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    if (memberId === clickedUserId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${clickedUserId}`);
+    }
   };
 
   // 참여자 페이지 이동
   const handleParticipantImageClick = (memberId) => {
     localStorage.setItem('clickedUserId', memberId);
-    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    const myId = localStorage.getItem('myId');
+    if (clickedUserId === myId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    }
   };
 
   const numberWithCommas = (x) => {
@@ -188,14 +204,16 @@ function InvitePage() {
                 src={eventData.imageUrl}
                 alt="카드 이미지"
               />
-              <button
-                className="heart-button"
-                onClick={handleLikeClick}
-              ></button>
-              <VscHeartFilled className="heart-icon" />
-              <div className="likes-count">
-                <div>{eventData.boardLikesCount}</div>
-              </div>
+              <button className="heart-button" onClick={handleLikeClick}>
+                {isLiked ? (
+                  <VscHeartFilled className="heart-icon-red" />
+                ) : (
+                  <VscHeartFilled className="heart-icon" />
+                )}
+                <div className="likes-count">
+                  <div>{eventData.boardLikesCount}</div>
+                </div>
+              </button>
             </div>
           </div>
           <div className="user-box">
@@ -218,6 +236,13 @@ function InvitePage() {
                   eventData.currentNum === eventData.totalNum ||
                   (daysDifference >= 0 && daysDifference <= 2)
                 }
+                style={{
+                  display:
+                    memberId === String(eventData.member.id) ||
+                    userParticipation
+                      ? 'none'
+                      : 'block',
+                }}
               >
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
@@ -354,38 +379,41 @@ const EventDetailsContainer = styled.div`
 
   .image-container {
     position: relative;
-  }
-  .data,
-  .main-img,
-  .join-btn,
-  #map {
-    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    height: 400px;
   }
 
   .heart-button {
     position: absolute;
     background-color: transparent;
-    top: 365px;
-    left: 358px;
     width: 31px;
     height: 27px;
     border: none;
     cursor: pointer;
     z-index: 1;
+    right: 10px; /* 원하는 우측 간격으로 조정하세요 */
+    bottom: 10px; /* 원하는 하단 간격으로 조정하세요 */
   }
-  .heart-icon {
-    position: absolute;
-    top: 360px;
-    left: 355px;
+  .heart-icon,
+  .heart-icon-red {
     font-size: 38px;
+  }
+
+  .heart-icon {
+    color: gainsboro;
+  }
+
+  .heart-icon-red {
     color: red;
   }
+
   .likes-count {
-    text-align: center;
     position: absolute;
-    color: whitesmoke;
-    top: 368px;
-    left: 371px;
+    top: 20px;
+    left: 20px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 16px;
   }
 
   .host-container {
@@ -441,6 +469,12 @@ const EventDetailsContainer = styled.div`
     margin-left: -30px;
     width: 50px;
     height: 50px;
+  }
+
+  .data,
+  .main-img,
+  #map {
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .participation-data {
@@ -638,11 +672,6 @@ const EventDetailsContainer = styled.div`
     .heart-icon {
       top: 390px;
       left: 390px;
-    }
-
-    .likes-count {
-      top: 397px;
-      left: 406px;
     }
   }
 `;

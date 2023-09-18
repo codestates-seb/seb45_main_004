@@ -8,18 +8,18 @@ import IsLoginAvatar from './IsLoginAvatar';
 
 const ProfileContainer = styled.div`
   display: flex;
-  justify-content: space-around;
   height: 100%;
   margin-bottom: 2em;
-  margin-left: 80px;
-  margin-right: 80px;
   position: relative;
+  width: 100%;
 `;
 
 const UserInfoContainer = styled.div`
   margin-top: 20px;
+  margin-right: 10px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   font-size: 1.3rem;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `;
@@ -32,8 +32,9 @@ const InfoBox = styled.div`
 
   b,
   p {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: auto;
+    padding-left: 12px;
+    padding-right: 12px;
     margin: 0;
   }
 
@@ -44,14 +45,13 @@ const InfoBox = styled.div`
   }
 
   .gender-sign {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 `;
 
 const IntorBox = styled.div`
   border: 1px solid black;
-  width: 50vw;
   height: 4.8em;
   display: flex;
   justify-content: center;
@@ -105,17 +105,21 @@ const MyProfile = ({ myData, setMyData }) => {
   const handleIntroChange = async () => {
     if (token) {
       try {
-        const response = await axios.patch(
-          `http://3.39.76.109:8080/members/${myId}`,
-          patchData,
-          {
-            headers: {
-              Authorization: token,
+        if (patchData.introduce.length < 1 || patchData.introduce.length > 20) {
+          alert('소개글은 1자 이상 20자 이하로 작성해 주세요.');
+        } else {
+          const response = await axios.patch(
+            `http://3.39.76.109:8080/members/${myId}`,
+            patchData,
+            {
+              headers: {
+                Authorization: token,
+              },
             },
-          },
-        );
-        setIsIntroEditing(false);
-        console.log('PATCH 요청 성공!', response.data);
+          );
+          setIsIntroEditing(false);
+          console.log('PATCH 요청 성공!', response.data);
+        }
       } catch (error) {
         console.log('PATCH 요청 실패!', error);
       }

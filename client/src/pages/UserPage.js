@@ -7,14 +7,19 @@ import MyPageTab from '../components/MyPageTab';
 const MemberPageSection = styled.section`
   display: flex;
   justify-content: center;
+  width: 100%;
+  max-width: 1196px;
 `;
 
 const ContentsContainer = styled.div`
   margin-top: 20px;
-  margin-left: 320px;
-  margin-right: 320px;
   display: flex;
   flex-direction: column;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin: 0 20px;
+  }
 `;
 
 const UserPage = () => {
@@ -34,7 +39,6 @@ const UserPage = () => {
   const [activetab, setActiveTab] = useState('tab1');
 
   const userId = localStorage.getItem('clickedUserId');
-  console.log(userId);
   useEffect(() => {
     if (!memberData.id) {
       const fetchUserInfo = async () => {
@@ -43,7 +47,6 @@ const UserPage = () => {
             `http://3.39.76.109:8080/members/${userId}`,
           );
           const memberInfo = response.data;
-          console.log(memberInfo);
           const userData = {
             id: memberInfo.id,
             nickname: memberInfo.nickname,
