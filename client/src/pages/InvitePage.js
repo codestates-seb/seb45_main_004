@@ -135,13 +135,22 @@ function InvitePage() {
   const hostPageClick = () => {
     const hostId = eventData.member.id;
     localStorage.setItem('clickedUserId', hostId);
-    navigate(`/members/${hostId}`);
+    if (hostId && memberId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${hostId}`);
+    }
   };
 
   // 참여자 페이지 이동
   const handleParticipantImageClick = (memberId) => {
     localStorage.setItem('clickedUserId', memberId);
-    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    if (clickedUserId && memberId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    }
   };
 
   const numberWithCommas = (x) => {
