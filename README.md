@@ -59,9 +59,9 @@
   </tr>
   <tr>
   <td align="center">
-    - <br/>    
-    - <br/>
-    -
+    - 마이(유저)페이지<br/>    
+    - 로그인 페이지<br/>
+    - 이메일 로그인<br/>
   </td>
   <td align="center">
     - <br/>    
