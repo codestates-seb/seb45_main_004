@@ -19,18 +19,18 @@ const ServieceHeader = styled.header`
     justify-content: space-between;
     height: 100%;
     margin: 0 auto;
-    max-width: 1260px; // 원하는 너비로 조절 가능
+    max-width: 1105px; // 원하는 너비로 조절 가능
   }
   @media (max-width: 968px) {
     .header-container {
-      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
+      padding: 0 30px; // 원하는 패딩 값을 조절할 수 있습니다.
     }
   }
 
   /* 브레이크 포인트: 768px */
   @media (max-width: 768px) {
     .header-container {
-      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
+      padding: 0 70px; // 원하는 패딩 값을 조절할 수 있습니다.
     }
   }
   .button-box {

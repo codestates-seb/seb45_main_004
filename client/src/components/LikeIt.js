@@ -2,16 +2,17 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const ContentList = styled.ul`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
   list-style-type: none;
-  width: 70vw;
   flex-wrap: wrap;
   margin-top: 20px;
 `;
 
 const ContentItem = styled.li`
-  width: 16em;
-  height: 16em;
+  width: 18.7em;
+  height: 18.7em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,8 +21,9 @@ const ContentItem = styled.li`
   margin-bottom: 20px;
 
   img {
-    width: 16em;
-    height: 16em;
+    width: 18.7em;
+    height: 18.7em;
+    cursor: pointer;
   }
 `;
 

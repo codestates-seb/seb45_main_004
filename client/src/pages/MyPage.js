@@ -8,14 +8,14 @@ import MyProfile from '../components/MyProfile';
 const MyPageSection = styled.section`
   display: flex;
   justify-content: center;
+  max-width: 1196px;
 `;
 
 const ContentsContainer = styled.div`
   margin-top: 20px;
-  margin-left: 320px;
-  margin-right: 320px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 //레이아웃 부터 잡기!

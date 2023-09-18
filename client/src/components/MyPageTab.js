@@ -10,7 +10,6 @@ const MyTabContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75vw;
   margin-top: 50px;
 `;
 
@@ -20,8 +19,10 @@ const MyTabBtn = styled.div`
 `;
 
 const TabContentContainer = styled.div`
+  display: flex;
+  justify-content: center;
   margin-top: 40px;
-  width: 70vw;
+  width: 100%;
 `;
 const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
   const navigate = useNavigate();
