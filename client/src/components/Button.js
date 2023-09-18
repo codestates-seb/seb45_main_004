@@ -46,7 +46,13 @@ const StyleButton = styled.button`
     margin-right: 30px;
     color: white;
     font-size: 1.2rem;
+    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
+
+  &.Button-like:focus {
+    box-shadow: inset 1px 1px 4px 1px rgb(0, 0, 0, 0.5);
+  }
+
   &.Button-participations {
     width: 180px;
     height: 60px;
@@ -59,6 +65,10 @@ const StyleButton = styled.button`
     margin-right: 30px;
     color: white;
     font-size: 1.2rem;
+    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
+  }
+  &.Button-participations:focus {
+    box-shadow: inset 1px 1px 4px 1px rgb(0, 0, 0, 0.5);
   }
 
   &.Button-text {
