@@ -6,7 +6,7 @@ const ContentList = styled.ul`
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   list-style-type: none;
-  flex-wrap: wrap;
+  place-items: center;
   margin-top: 20px;
 
   @media screen and (max-width: 768px) {

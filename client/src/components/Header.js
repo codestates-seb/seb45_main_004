@@ -19,7 +19,7 @@ const ServieceHeader = styled.header`
     justify-content: space-between;
     height: 100%;
     margin: 0 auto;
-    max-width: 1105px; // 원하는 너비로 조절 가능
+    max-width: 1196px; // 원하는 너비로 조절 가능
   }
   @media (max-width: 968px) {
     .header-container {
