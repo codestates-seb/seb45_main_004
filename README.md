@@ -1,4 +1,4 @@
-# seb45_main_004
+# seb45_main_004(같이의가치)
 <div align=center>
 <img src="https://github.com/codestates-seb/seb45_main_004/assets/130025554/078d0451-289b-447d-a693-eeb6e1cab114" width="700" height="300"/>
 </div>
