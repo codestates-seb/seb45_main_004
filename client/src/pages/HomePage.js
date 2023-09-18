@@ -135,12 +135,18 @@ export default function Homepage() {
       .get(apiUrl)
       .then((response) => {
         const likeData = response.data;
+        const closedInvitations = likeData.filter(
+          (item) => item.boardStatus === '모집 마감',
+        );
+        const openInvitations = likeData.filter(
+          (item) => item.boardStatus !== '모집 마감',
+        );
         // 좋아요 순서대로 보여주기 위한 구현
-        const sortedData = likeData.sort(
+        const sortedData = openInvitations.sort(
           (a, b) => b.boardLikesCount - a.boardLikesCount,
         );
-        setCurrentInvitations(sortedData);
-        console.log(sortedData);
+        setCurrentInvitations([...sortedData, ...closedInvitations]);
+        setCurrentPage(0);
       })
       .catch((error) => {
         console.log('Error', error);
