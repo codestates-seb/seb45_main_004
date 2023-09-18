@@ -44,13 +44,13 @@ public class Board {
     @Min(value = 0)
     private int money;
 
-    @Column
+    @Column(nullable = false)
     private String longitude; //경도
 
-    @Column
+    @Column(nullable = false)
     private String latitude; //위도
 
-    @Column
+    @Column(nullable = false)
     private String address;
 
     @Column(nullable = false)
@@ -63,6 +63,7 @@ public class Board {
 
     private long boardLikesCount;
 
+    @Column(nullable = false)
     private String imageUrl;
 
     @ManyToOne
@@ -107,11 +108,12 @@ public class Board {
 
         @Getter
         private String status;
-
         BoardStatus(String status) {
             this.status = status;
         }
     }
+
+    //오늘로 3일 뒤 부터 모임 글 작성 가능
     @PrePersist
     public void validateDate() {
         LocalDate today = LocalDate.now();

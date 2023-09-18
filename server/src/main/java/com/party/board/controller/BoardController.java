@@ -1,6 +1,5 @@
 package com.party.board.controller;
 
-import com.party.alram.entity.Alarm;
 import com.party.board.dto.BoardDto;
 import com.party.board.entity.Board;
 import com.party.board.mapper.BoardMapper;

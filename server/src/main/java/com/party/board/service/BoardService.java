@@ -1,7 +1,6 @@
 package com.party.board.service;
 
 import com.party.alram.entity.Alarm;
-import com.party.alram.repository.AlarmRepository;
 import com.party.alram.service.AlarmService;
 import com.party.board.dto.BoardDto;
 import com.party.board.entity.Applicant;
@@ -16,12 +15,9 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.joda.time.Days;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 
 import java.time.LocalDate;
@@ -40,9 +36,8 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final ApplicantRepository applicantRepository;
     private final AlarmService alarmService;
-    private final AwsService awsService;
 
-    // 모임글 등록
+    //모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
 
         Member member = findMember(extractMemberId());
@@ -53,8 +48,6 @@ public class BoardService {
 
         return boardRepository.save(board);
     }
-
-
 
     //모임글 상세 조회
     public Board findBoard(long boardId) {
@@ -89,7 +82,7 @@ public class BoardService {
 
     //제목+내용으로 모임글 검색(전체글)
     public List<Board> searchBoardsByTitleAndBody(String title,String body) {
-        return boardRepository.findByTitleContainingIgnoreCaseOrBodyContainingIgnoreCase(title, body);
+        return boardRepository.findByTitleContainingOrBodyContaining(title, body);
     }
 
     //제목으로 모임글 검색(카테고리별)
@@ -102,7 +95,7 @@ public class BoardService {
                                                              String title,
                                                              Board.BoardCategory category2,
                                                              String body) {
-        return boardRepository.findByCategoryAndTitleContainingIgnoreCaseOrCategoryAndBodyContainingIgnoreCase(category1, title,category2, body);
+        return boardRepository.findByCategoryAndTitleContainingOrCategoryAndBodyContaining(category1, title,category2, body);
     }
 
 
@@ -167,7 +160,7 @@ public class BoardService {
         }
     }
 
-    // member 조회
+    //member 조회
     private Member findMember(Long memberId) {
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         if (!memberOptional.isPresent()) {
@@ -176,9 +169,8 @@ public class BoardService {
         return memberOptional.get();
     }
 
-
+    //해당 날짜에 예정된 모임 검색(이메일 발송 관련 메서드)
     public List<Board> findEventsScheduledForDate(LocalDate eventDate) {
         return boardRepository.findByDate(eventDate);
     }
-
 }
