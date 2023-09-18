@@ -91,7 +91,7 @@ const IsLoginAvatar = ({ myData, setMyData }) => {
 
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
-  const myId = useSelector((state) => state.user.myId);
+  const myId = localStorage.getItem('myId');
   const isLogin = useSelector((state) => state.auth.isLogin);
   const toMemberId = useSelector((state) => state.user.memberId);
 
