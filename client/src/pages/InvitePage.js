@@ -135,10 +135,11 @@ function InvitePage() {
   const hostPageClick = () => {
     const hostId = eventData.member.id;
     localStorage.setItem('clickedUserId', hostId);
-    if (hostId && memberId) {
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    if (memberId === clickedUserId) {
       navigate(`/members/me`);
     } else {
-      navigate(`/members/${hostId}`);
+      navigate(`/members/${clickedUserId}`);
     }
   };
 
@@ -146,7 +147,8 @@ function InvitePage() {
   const handleParticipantImageClick = (memberId) => {
     localStorage.setItem('clickedUserId', memberId);
     const clickedUserId = localStorage.getItem('clickedUserId');
-    if (clickedUserId && memberId) {
+    const myId = localStorage.getItem('myId');
+    if (clickedUserId === myId) {
       navigate(`/members/me`);
     } else {
       navigate(`/members/${memberId}`); // 유저 페이지로 이동
