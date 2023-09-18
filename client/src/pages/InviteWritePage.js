@@ -116,9 +116,13 @@ function InviteWritePage() {
   // 카테고리 버튼 클릭
   const handleCategoryButtonClick = async (buttonId) => {
     setSelectedButton(buttonId);
+
+    setSelectedImage(null);
+
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
+      imageUrl: null,
     }));
 
     try {

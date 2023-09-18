@@ -44,7 +44,7 @@ function InvitePage() {
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
   const [userParticipation, setUserParticipation] = useState(false);
-
+  console.log(eventData);
   // 카드 조회 요청
   const fetchEventData = async () => {
     try {
