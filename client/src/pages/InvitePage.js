@@ -43,8 +43,7 @@ function InvitePage() {
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
-  console.log('Initial memberId:', memberId);
-  console.log('Initial eventData.member.id:', eventData.member.id);
+  const [userParticipation, setUserParticipation] = useState(false);
 
   // 카드 조회 요청
   const fetchEventData = async () => {
@@ -106,6 +105,12 @@ function InvitePage() {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
       setParticipants(response.data);
+
+      // 참여 여부를 확인하여 상태 업데이트
+      const userParticipation = response.data.some(
+        (participant) => String(participant.memberId) === String(memberId),
+      );
+      setUserParticipation(userParticipation);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
@@ -237,9 +242,11 @@ function InvitePage() {
                   (daysDifference >= 0 && daysDifference <= 2)
                 }
                 style={{
-                  //호스트는 참여 버튼을 볼 수 없음
                   display:
-                    memberId === String(eventData.member.id) ? 'none' : 'block',
+                    memberId === String(eventData.member.id) ||
+                    userParticipation
+                      ? 'none'
+                      : 'block',
                 }}
               >
                 {eventData.currentNum === eventData.totalNum ||
