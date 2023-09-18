@@ -63,14 +63,14 @@ public class MemberController {
         if (responseDto.getBoardLikes() != null) {
             responseDto.getBoardLikes().sort(Comparator
                     .comparing(MemberBoardLikeResponseDto::getBoardStatus,
-                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 1 : 0))
                     .thenComparing(MemberBoardLikeResponseDto::getBoardId).reversed());
         }
 
         if (responseDto.getApplicants() != null) {
             responseDto.getApplicants().sort(Comparator
                     .comparing(MemberApplicantResponseDto::getBoardStatus,
-                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 1 : 0))
                     .thenComparing(MemberApplicantResponseDto::getBoardId).reversed());
         }
 
@@ -97,14 +97,14 @@ public class MemberController {
         if (responseDto.getBoardLikes() != null) {
             responseDto.getBoardLikes().sort(Comparator
                     .comparing(MemberBoardLikeResponseDto::getBoardStatus,
-                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 1 : 0))
                     .thenComparing(MemberBoardLikeResponseDto::getBoardId).reversed());
         }
 
         if (responseDto.getApplicants() != null) {
             responseDto.getApplicants().sort(Comparator
                     .comparing(MemberApplicantResponseDto::getBoardStatus,
-                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 0 : 1))
+                            Comparator.comparing(status -> status == Board.BoardStatus.BOARD_RECRUITING ? 1 : 0))
                     .thenComparing(MemberApplicantResponseDto::getBoardId).reversed());
         }
 
