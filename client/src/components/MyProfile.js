@@ -174,15 +174,9 @@ const MyProfile = ({ myData, setMyData }) => {
             <IntorBox className="introduction-box">
               <p>{introduce}</p>
             </IntorBox>
-            {myData.id === myId ? (
-              <BtnBox>
-                <Button
-                  type="text"
-                  text="Edit"
-                  onClick={handleIntroEditClick}
-                />
-              </BtnBox>
-            ) : null}
+            <BtnBox>
+              <Button type="text" text="Edit" onClick={handleIntroEditClick} />
+            </BtnBox>
           </div>
         )}
       </UserInfoContainer>
