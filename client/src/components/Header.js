@@ -72,6 +72,8 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('refresh');
+    localStorage.removeItem('clickedUserId');
+    localStorage.removeItem('myId');
     dispatch(logout());
     navigate('/');
   };
