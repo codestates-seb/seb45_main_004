@@ -105,17 +105,21 @@ const MyProfile = ({ myData, setMyData }) => {
   const handleIntroChange = async () => {
     if (token) {
       try {
-        const response = await axios.patch(
-          `http://3.39.76.109:8080/members/${myId}`,
-          patchData,
-          {
-            headers: {
-              Authorization: token,
+        if (patchData.introduce.length < 1 || patchData.introduce.length > 20) {
+          alert('소개글은 1자 이상 20자 이하로 작성해 주세요.');
+        } else {
+          const response = await axios.patch(
+            `http://3.39.76.109:8080/members/${myId}`,
+            patchData,
+            {
+              headers: {
+                Authorization: token,
+              },
             },
-          },
-        );
-        setIsIntroEditing(false);
-        console.log('PATCH 요청 성공!', response.data);
+          );
+          setIsIntroEditing(false);
+          console.log('PATCH 요청 성공!', response.data);
+        }
       } catch (error) {
         console.log('PATCH 요청 실패!', error);
       }
