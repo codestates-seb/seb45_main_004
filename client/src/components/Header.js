@@ -30,7 +30,7 @@ const ServieceHeader = styled.header`
   /* 브레이크 포인트: 768px */
   @media (max-width: 768px) {
     .header-container {
-      padding: 0 70px; // 원하는 패딩 값을 조절할 수 있습니다.
+      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
     }
   }
   .button-box {

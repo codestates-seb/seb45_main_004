@@ -8,6 +8,17 @@ const ContentList = styled.ul`
   list-style-type: none;
   flex-wrap: wrap;
   margin-top: 20px;
+
+  @media screen and (max-width: 768px) {
+    margin: 20px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+  }
 `;
 
 const ContentItem = styled.li`

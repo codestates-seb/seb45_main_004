@@ -10,6 +10,7 @@ const MyTabContainer = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   margin-top: 50px;
 `;
 
@@ -23,7 +24,12 @@ const TabContentContainer = styled.div`
   justify-content: center;
   margin-top: 40px;
   width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin: 50px 20px;
+  }
 `;
+
 const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
   const navigate = useNavigate();
   const [selectedBoardId, setSelectedBoardId] = useState(null);

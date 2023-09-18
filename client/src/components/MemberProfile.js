@@ -23,14 +23,16 @@ const UserInfoContainer = styled.div`
 
 const InfoBox = styled.div`
   display: flex;
+  flex-grow: 1;
   align-items: center;
   margin-left: 5px;
   margin-bottom: 15px;
 
   b,
   p {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: auto;
+    padding-left: 12px;
+    padding-right: 12px;
     margin: 0;
   }
 
@@ -41,8 +43,8 @@ const InfoBox = styled.div`
   }
 
   .gender-sign {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
   }
 `;
 
