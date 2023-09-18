@@ -3,7 +3,7 @@ import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { VscHeartFilled, VscHeart } from 'react-icons/vsc';
+import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
@@ -44,7 +44,6 @@ function InvitePage() {
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
   const [userParticipation, setUserParticipation] = useState(false);
-  console.log(eventData);
   // 카드 조회 요청
   const fetchEventData = async () => {
     try {
@@ -205,22 +204,16 @@ function InvitePage() {
                 src={eventData.imageUrl}
                 alt="카드 이미지"
               />
-              <button
-                className="heart-button"
-                onClick={handleLikeClick}
-              ></button>
-              {isLiked ? (
-                <VscHeartFilled className="heart-icon" />
-              ) : (
-                <VscHeart className="heart-icon" />
-              )}
-              <div
-                className={`likes-count ${
-                  isLiked ? 'click-color' : 'unclick-color'
-                }`}
-              >
-                <div>{eventData.boardLikesCount}</div>
-              </div>
+              <button className="heart-button" onClick={handleLikeClick}>
+                {isLiked ? (
+                  <VscHeartFilled className="heart-icon-red" />
+                ) : (
+                  <VscHeartFilled className="heart-icon" />
+                )}
+                <div className="likes-count">
+                  <div>{eventData.boardLikesCount}</div>
+                </div>
+              </button>
             </div>
           </div>
           <div className="user-box">
@@ -386,45 +379,41 @@ const EventDetailsContainer = styled.div`
 
   .image-container {
     position: relative;
-  }
-  .data,
-  .main-img,
-  #map {
-    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    height: 400px;
   }
 
   .heart-button {
     position: absolute;
     background-color: transparent;
-    top: 365px;
-    left: 358px;
     width: 31px;
     height: 27px;
     border: none;
     cursor: pointer;
     z-index: 1;
+    right: 10px; /* 원하는 우측 간격으로 조정하세요 */
+    bottom: 10px; /* 원하는 하단 간격으로 조정하세요 */
   }
-  .heart-icon {
-    position: absolute;
-    top: 360px;
-    left: 355px;
+  .heart-icon,
+  .heart-icon-red {
     font-size: 38px;
+  }
+
+  .heart-icon {
+    color: whitesmoke;
+  }
+
+  .heart-icon-red {
     color: red;
   }
+
   .likes-count {
-    text-align: center;
     position: absolute;
-    top: 368px;
-    left: 370px;
-  }
-
-  .likes-count.unclick-color {
-    color: #777;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-  }
-
-  .likes-count.click-color {
-    color: whitesmoke;
+    top: 20px;
+    left: 20px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 16px;
   }
 
   .host-container {
@@ -480,6 +469,12 @@ const EventDetailsContainer = styled.div`
     margin-left: -30px;
     width: 50px;
     height: 50px;
+  }
+
+  .data,
+  .main-img,
+  #map {
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .participation-data {
