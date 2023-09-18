@@ -5,7 +5,6 @@ import { FaRegUserCircle } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, logout } from '../redux/actions';
 import Button from './Button';
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 
 const ServieceHeader = styled.header`
@@ -47,7 +46,6 @@ const ServieceHeader = styled.header`
   }
   /* a태그 타이포그래피 스타일 삭제 */
   .title-box {
-    width: 100px;
     h1 {
       margin: 0;
       font-size: 2.5rem;
@@ -138,11 +136,6 @@ const Header = () => {
       </div>
     </ServieceHeader>
   );
-};
-
-Header.propTypes = {
-  isLogin: PropTypes.bool.isRequired,
-  setIsLogin: PropTypes.func.isRequired,
 };
 
 export default Header;

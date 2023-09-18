@@ -7,25 +7,154 @@ import { VscHeartFilled } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
-import { fetchUserData } from '../redux/actions';
-import { useDispatch } from 'react-redux';
 
 function InvitePage() {
+  // 카드 조회 요청 데이터 관리
+  const [eventData, setEventData] = useState({
+    memberId: '',
+    title: '',
+    date: '',
+    body: '',
+    category: '',
+    currentNum: 0,
+    totalNum: 0,
+    money: 0,
+    boardLikesCount: 0,
+    boardStatus: '',
+    imageUrl: '',
+    member: {
+      id: 0, // 호스트 아이디
+      memberNickname: '', // 호스트 닉네임
+      imageUrl: '', // 호스트의 이미지
+    },
+    address: '',
+    longitude: '',
+    latitude: '',
+    isLiked: '',
+  });
+
   const token = localStorage.getItem('jwtToken');
+  const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
   const navigate = useNavigate();
   const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
-  const memberId = localStorage.getItem('myId');
-  const dispatch = useDispatch();
-
   const [showDropdown, setShowDropdown] = useState(false);
+  const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
+  const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
+  const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
+  const [isLiked, setIsLiked] = useState();
+
+  // 카드 조회 요청
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`${api}/boards/${boardId}`);
+      const eventData = response.data;
+      setEventData(eventData);
+    } catch (error) {
+      console.error('Error fetching event data:', error);
+    }
+  };
+
+  //참여 요청
+  const sendJoinStatus = async () => {
+    try {
+      await axios.request({
+        method: 'post',
+        url: `${api}/boards/${boardId}/join`,
+        data: { isJoin: true },
+        headers: {
+          Authorization: token,
+        },
+      });
+      setEventData((prevData) => ({
+        ...prevData,
+        currentNum: prevData.currentNum + 1,
+      }));
+      fetchParticipants(); // 참여자 목록을 다시 불러옴
+    } catch (error) {
+      console.error('Error sending join status:', error);
+    }
+  };
+
+  // 좋아요 요청
+  const sendLikeStatus = async (isLiked) => {
+    try {
+      await axios.request({
+        method: isLiked ? 'post' : 'delete',
+        url: `${api}/likes/${boardId}`,
+        data: { isLiked },
+        headers: {
+          Authorization: token,
+        },
+      });
+      // 응답 받은 상태 업데이트
+      setEventData((prevData) => ({
+        ...prevData,
+        boardLikesCount: isLiked
+          ? prevData.boardLikesCount + 1
+          : prevData.boardLikesCount - 1,
+      }));
+    } catch (error) {
+      console.error('Error sending like status:', error);
+    }
+  };
+
+  // 참여자 목록
+  const fetchParticipants = async () => {
+    try {
+      const response = await axios.get(`${api}/boards/${boardId}/join`);
+      setParticipants(response.data);
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+    }
+  };
+
+  // 좋아요 목록
+  const fetchIsLikedStatus = async () => {
+    try {
+      const response = await axios.get(`${api}/members/${memberId}`);
+      const userLikedBoards = response.data.boardLikes;
+      const liked = userLikedBoards.some(
+        (board) => board.boardId === Number(boardId),
+      );
+      setIsLiked(liked);
+    } catch (error) {
+      console.error('Error fetching member like status:', error);
+    }
+  };
+
+  // 좋아요 상태
+  const handleLikeClick = () => {
+    const newLikeStatus = !isLiked;
+    setIsLiked(newLikeStatus);
+    sendLikeStatus(newLikeStatus);
+  };
+
+  // 호스트 페이지 이동
+  const hostPageClick = () => {
+    const hostId = eventData.member.id;
+    localStorage.setItem('clickedUserId', hostId);
+    navigate(`/members/${hostId}`);
+  };
+
+  // 참여자 페이지 이동
+  const handleParticipantImageClick = (memberId) => {
+    localStorage.setItem('clickedUserId', memberId);
+    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+  };
+
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+
   // 드롭다운을 토글하는 함수
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
+
   const handleContainerClick = (event) => {
-    if (!event.target.classList.contains('dropdown-toggle')) {
+    if (!event.target.classList.contains('more-box')) {
       setShowDropdown(false);
     }
   };
@@ -35,155 +164,18 @@ function InvitePage() {
     event.stopPropagation();
   };
 
-  // 카드 조회 요청 데이터 관리
-  const [eventData, setEventData] = useState({
-    memberId: '',
-    title: '', // 카드의 제목
-    date: '', // 카드의 날짜
-    body: '', // 카드의 본문 내용
-    category: '', // 카드의 카테고리
-    currentNum: 0, // 현재 참여한 인원 수
-    totalNum: 0, // 전체 참여 가능한 인원 수 //
-    money: 0, // 카드의 금액 정보
-    boardLikesCount: 0, // 카드에 대한 좋아요 수
-    boardStatus: '', // 카드의 상태 (활성화, 비활성화 등)
-    imageUrl: '', // 카드의 이미지
-    member: {
-      id: 0, // 멤버의 아이디
-      memberNickname: '', // 멤버의 닉네임
-      imageUrl: '', // 호스트의 이미지
-    },
-    address: '',
-    longitude: '',
-    latitude: '',
-    isLiked: '',
-  });
-  //마감 날짜 관련
-  const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
-  const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
-  // 두 날짜 간의 일수 차이 계산
-  const daysDifference = differenceInDays(cardDate, currentDate);
-
-  // 호스트 페이지 이동
-  const hostPageClick = () => {
-    const hostId = eventData.member.id;
-    localStorage.setItem('memberId', hostId);
-    const userId = localStorage.getItem('memberId');
-
-    if (memberId === userId) {
-      navigate('/members/me');
-    } else {
-      navigate(`/members/${userId}`);
-    }
-  };
-
-  // 참여자 목록을 가져오는 함수
-  const fetchParticipants = async () => {
-    try {
-      const response = await axios.get(`${api}/boards/${boardId}/join`);
-      console.log(response.data);
-      setParticipants(response.data); // 참여자 목록을 상태에 저장
-      console.log(response);
-    } catch (error) {
-      console.error('Error fetching participants:', error);
-    }
-  };
-  // 참여자 이미지 클릭 시 멤버 아이디를 리덕스 스토어에 저장
-  const handleParticipantImageClick = (memberId) => {
-    dispatch(fetchUserData(memberId)); // 멤버 아이디를 리덕스 스토어에 저장
-    navigate(`/members/${memberId}`); // 유저 페이지로 이동
-  };
+  // 참여자 목록
   useEffect(() => {
-    fetchParticipants(); // 참여자 목록 가져옴
+    fetchParticipants();
   }, []);
-
-  // 카드 조회 요청
+  // 카드 조회
   useEffect(() => {
-    axios
-      .get(`${api}/boards/${boardId}`)
-      .then((response) => {
-        const eventData = response.data;
-        setEventData(eventData);
-      })
-      .catch((error) => {
-        console.error('Error fetching event data:', error);
-      });
+    fetchEventData();
   }, []);
-
-  //참여요청
-  const sendJoinStatus = () => {
-    axios
-      .request({
-        method: 'post',
-        url: `${api}/boards/${boardId}/join`,
-        data: { isJoin: true },
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then(() => {
-        // currentNum 값을 1 증가시킴
-        setEventData((prevData) => ({
-          ...prevData,
-          currentNum: prevData.currentNum + 1,
-        }));
-        fetchParticipants(); // 참여자 목록을 다시 불러옴
-      })
-      .catch((error) => {
-        console.error('Error sending join status:', error);
-      });
-  };
-
-  const [isLiked, setIsLiked] = useState();
-
+  // 좋아요 목록
   useEffect(() => {
-    axios
-      .get(`${api}/members/${memberId}`)
-      .then((response) => {
-        const userLikedBoards = response.data.boardLikes;
-        const liked = userLikedBoards.some(
-          (board) => board.boardId === Number(boardId),
-        );
-        setIsLiked(liked);
-      })
-      .catch((error) => {
-        console.error('에러 Error fetching member like status:', error);
-      });
+    fetchIsLikedStatus();
   }, []);
-
-  const handleLikeClick = () => {
-    const newLikeStatus = !isLiked;
-    setIsLiked(newLikeStatus);
-    sendLikeStatus(newLikeStatus);
-  };
-
-  const sendLikeStatus = (isLiked) => {
-    axios
-      .request({
-        method: isLiked ? 'post' : 'delete', // isLiked 값에 따라 POST 또는 DELETE 요청을 함(true면 post(좋아요추가) false면 delete(좋아요취소))
-        url: `${api}/likes/${boardId}`,
-        data: { isLiked },
-        headers: {
-          Authorization: token,
-        },
-      })
-      .then(() => {
-        // 응답 받은 상태 업데이트
-        setEventData((prevData) => ({
-          ...prevData, // 기존의 eventData를 복사하여 새로운 객체를 생성
-          boardLikesCount: isLiked
-            ? prevData.boardLikesCount + 1
-            : prevData.boardLikesCount - 1,
-        }));
-      })
-      .catch((error) => {
-        console.error('Error sending like status:', error);
-      });
-  };
-
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
 
   return (
     <EventDetailsContainer onClick={handleContainerClick}>
@@ -254,7 +246,7 @@ function InvitePage() {
               <div className="dropdown-container">
                 {participants.length > 1 && ( // ... 버튼 2명 부터 나오게하기
                   <button className="dropdown-toggle" onClick={toggleDropdown}>
-                    ...
+                    <div className="more-box">...more</div>
                   </button>
                 )}
                 {/* 드롭다운으로 표시되는 참여자 목록 */}
@@ -322,8 +314,8 @@ function InvitePage() {
             })}
           </div>
           <MapKakao
-            latitude={eventData.latitude}
-            longitude={eventData.longitude}
+            latitude={parseFloat(eventData.latitude)}
+            longitude={parseFloat(eventData.longitude)}
             showSearch={false}
             showMarker={true}
           />
@@ -365,8 +357,9 @@ const EventDetailsContainer = styled.div`
   }
   .data,
   .main-img,
+  .join-btn,
   #map {
-    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .heart-button {
@@ -418,7 +411,7 @@ const EventDetailsContainer = styled.div`
   .user-container {
     display: flex;
     align-items: flex-end;
-    gap: 5px;
+    gap: 8px;
     height: 50px;
   }
 
@@ -432,8 +425,7 @@ const EventDetailsContainer = styled.div`
   }
   .user-btn:active,
   .host-btn:active {
-    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.5);
-    transform: translateY(1px);
+    transform: translateY(2px);
     border-radius: 50px;
   }
 
@@ -442,6 +434,7 @@ const EventDetailsContainer = styled.div`
     border-radius: 50px;
     width: 50px;
     height: 50px;
+    box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, 0.2);
   }
 
   .user-img-offset {
@@ -464,33 +457,35 @@ const EventDetailsContainer = styled.div`
   .dropdown-container {
     position: relative;
   }
-  /* 드롭다운 버튼 스타일 */
   .dropdown-toggle {
-    height: 30px;
-    width: 30px;
     border: none;
-    border-radius: 5px;
-    padding: 10px 5px;
     background-color: transparent;
-    color: #fff;
+    border-radius: 5px;
+    color: #333;
     font-size: 20px;
     text-align: start;
     cursor: pointer;
+    transition: background-color 0.3s;
   }
 
   .dropdown-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.2);
   }
   .dropdown-toggle:active {
-    box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.2);
+    transform: scale(0.95);
+  }
+
+  .more-box {
+    font-size: 16px;
+    color: #000;
   }
   /* 드롭다운 목록 스타일 */
   .dropdown {
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: -80px;
-    left: 30px;
+    top: -170px;
+    left: 60px;
     width: 200px;
     height: 200px;
     padding: 20px 20px 20px 20px;

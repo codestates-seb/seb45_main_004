@@ -15,6 +15,7 @@ function InviteWritePage() {
   const [imageFromServer, setImageFromServer] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(1);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -28,8 +29,9 @@ function InviteWritePage() {
     address: '',
     imageUrl: selectedImage,
   });
-  console.log(formData);
-  const handleSubmit = (e) => {
+
+  // 모집 글 작성 요청
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const fieldValidations = [
       { field: 'title', error: '제목을 입력해주세요.' },
@@ -52,49 +54,21 @@ function InviteWritePage() {
       return;
     }
 
-    axios
-      .post(`${api}/boards/new-boards`, formData, {
+    try {
+      const response = await axios.post(`${api}/boards/new-boards`, formData, {
         headers: {
           Authorization: token,
         },
-      })
-      .then((response) => {
-        navigate(`/boards/${response.data.boardId}`);
-        console.log('요청됨');
-      })
-      .catch((error) => {
-        console.error('Error creating card:', error);
       });
-  };
 
-  // 카테고리 버튼 클릭 핸들러
-  const handleCategoryButtonClick = async (buttonId) => {
-    setSelectedButton(buttonId);
-    setFormData((prevData) => ({
-      ...prevData,
-      category: buttonId,
-    }));
-
-    try {
-      const response = await axios.get(`${api}/cards/${buttonId}/images`);
-      setImageFromServer(response.data);
+      navigate(`/boards/${response.data.boardId}`);
+      console.log('요청됨');
     } catch (error) {
-      console.error('Error fetching image:', error);
+      console.error('Error creating card:', error);
     }
   };
 
-  const getTwoDaysAfter = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 3);
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
-  };
-
-  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
-  const currentDate = new Date().toISOString().split('T')[0];
-  const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  };
-
+  // 입력값 관리
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -127,6 +101,35 @@ function InviteWritePage() {
     }
   };
 
+  // 마감 날짜 계산
+  const getTwoDaysAfter = () => {
+    const date = new Date();
+    date.setDate(date.getDate() + 3);
+    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  };
+
+  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
+  const currentDate = new Date().toISOString().split('T')[0];
+  const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
+  // 카테고리 버튼 클릭
+  const handleCategoryButtonClick = async (buttonId) => {
+    setSelectedButton(buttonId);
+    setFormData((prevData) => ({
+      ...prevData,
+      category: buttonId,
+    }));
+
+    try {
+      const response = await axios.get(`${api}/cards/${buttonId}/images`);
+      setImageFromServer(response.data);
+    } catch (error) {
+      console.error('Error fetching image:', error);
+    }
+  };
+
+  // 지도 좌표 전달
   const handleLocationSelect = (latitude, longitude, address) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -156,6 +159,20 @@ function InviteWritePage() {
     // 클릭된 요소가 모달 배경인지 확인
     if (event.target === event.currentTarget) {
       setIsModalOpen(false);
+    }
+  };
+
+  const handleNextImage = () => {
+    if (currentIndex < imageFromServer.length - 1) {
+      // 마지막 이미지가 아니라면
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (currentIndex > 0) {
+      // 첫 번째 이미지가 아니라면
+      setCurrentIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -259,16 +276,27 @@ function InviteWritePage() {
               tabIndex="0"
             >
               <div className="modal">
-                {imageFromServer.map((imageUrl, index) => (
-                  <button
-                    className="card-img"
-                    key={index}
-                    onClick={() => handleImageClick(imageUrl)}
-                  >
-                    <img className="card-img" src={imageUrl} alt="카드이미지" />
-                  </button>
-                ))}
-              </div>
+                <button onClick={handlePrevImage}>이전</button>
+                <button onClick={handleNextImage}>다음</button>
+                <div
+                  className="slider-container"
+                  style={{ transform: `translateX(-${currentIndex * 220}px)` }}
+                >
+                  {imageFromServer.map((imageUrl, index) => (
+                    <button
+                      className="card-img-container" // 변경된 부분
+                      key={index}
+                      onClick={() => handleImageClick(imageUrl)}
+                    >
+                      <img
+                        className="card-img"
+                        src={imageUrl}
+                        alt="카드이미지"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>{' '}
             </div>
           )}
 
@@ -383,6 +411,60 @@ const StyledWritePage = styled.div`
     grid-gap: 14px;
   }
 
+  .edit-btn {
+    width: 28px;
+    height: 28px;
+    color: whitesmoke;
+    margin-top: 1px;
+    cursor: pointer;
+  }
+
+  .submit-btn {
+    position: relative;
+    width: 100px;
+    height: 38px;
+    border: none;
+    background-color: rgba(244, 227, 233, 0.4);
+    left: 300px;
+    margin-top: 10px;
+  }
+
+  .modal {
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    width: 600px;
+    height: 430px;
+    flex-wrap: wrap;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    box-shadow: 1px 1px 7px 5px rgb(0, 0, 0, 0.3);
+  }
+
+  .modal button {
+    background-color: #fff;
+    padding: 5px 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .modal button:hover {
+    background-color: #ddd;
+  }
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.3s;
+    width: 100%;
+  }
+
   .modal-btn {
     position: absolute;
     width: 38px;
@@ -401,37 +483,23 @@ const StyledWritePage = styled.div`
     box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
   }
 
-  .edit-btn {
-    width: 28px;
-    height: 28px;
-    color: whitesmoke;
-    margin-top: 1px;
-    cursor: pointer;
-  }
-  .submit-btn {
-    position: relative;
-    width: 100px;
-    height: 38px;
+  .card-img-container {
+    width: 320px;
+    height: 320px;
     border: none;
-    background-color: rgba(244, 227, 233, 0.4);
-    left: 300px;
-    margin-top: 10px;
-  }
-  .modal {
-    position: absolute;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-    padding: 20px 20px;
-    width: 450px;
-    height: 550px;
-    flex-wrap: wrap;
-    background-color: rgb(218, 170, 245, 0.26);
+    box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
+    margin: 0 10px;
   }
 
-  /* 모달의 배경 */
+  .card-img {
+    width: 300px;
+    height: 300px;
+  }
+
+  .card-img:active {
+    transform: translateY(1px);
+  }
+
   .modal-background {
     position: fixed;
     top: 0;
@@ -440,14 +508,9 @@ const StyledWritePage = styled.div`
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
     display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    z-index: 1000; /* 다른 요소 위에 표시 */
-  }
-
-  .card-img {
-    width: 200px;
-    height: 200px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
   }
 
   @media (max-width: 768px) {
