@@ -25,6 +25,7 @@ export default function Kakao() {
             const token = response.headers.authorization;
             const myId = response.headers.memberid;
             localStorage.setItem('jwtToken', token);
+            localStorage.setItem('myId', myId);
             console.log('성공했니');
             dispatch(login(token));
             dispatch(fetchMyData(myId));
