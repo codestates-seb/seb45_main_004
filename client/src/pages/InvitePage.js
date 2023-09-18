@@ -400,7 +400,7 @@ const EventDetailsContainer = styled.div`
   }
 
   .heart-icon {
-    color: whitesmoke;
+    color: gainsboro;
   }
 
   .heart-icon-red {
@@ -672,11 +672,6 @@ const EventDetailsContainer = styled.div`
     .heart-icon {
       top: 390px;
       left: 390px;
-    }
-
-    .likes-count {
-      top: 397px;
-      left: 406px;
     }
   }
 `;
