@@ -13,20 +13,8 @@ public class ApplicantResponseDto {
     private Long id;
     private String memberImageUrl;
     private Long memberId;
+    private String memberNickname;
     private Long boardId;
     private String boardImageUrl;
 
-    public Member getMember(){
-        Member member = new Member();
-        member.setId(memberId);
-        member.setImageUrl(memberImageUrl);
-        return member;
-    }
-
-    public Board getBoard(){
-        Board board = new Board();
-        board.setId(boardId);
-        board.setImageUrl(boardImageUrl);
-        return board;
-    }
 }

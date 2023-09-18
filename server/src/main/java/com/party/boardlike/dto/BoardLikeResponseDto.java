@@ -8,8 +8,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class BoardLikeResponseDto {
     private long likeCount;
+    private boolean isLiked;
 
-    public BoardLikeResponseDto(long likeCount) {
+    public BoardLikeResponseDto(long likeCount, boolean isLiked) {
         this.likeCount = likeCount;
+        this.isLiked = isLiked;
     }
 }

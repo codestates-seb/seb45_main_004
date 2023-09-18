@@ -15,9 +15,10 @@ import javax.persistence.*;
 public class Applicant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private String memberImageUrl;
+    private String memberNickname;
 
     private String boardImageUrl;
 

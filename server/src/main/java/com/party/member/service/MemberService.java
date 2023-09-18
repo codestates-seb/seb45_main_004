@@ -7,7 +7,9 @@ import com.party.image.config.AwsS3Config;
 import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import com.party.util.UpdateUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,14 +23,19 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
     private final AwsService awsService;
+    private final UpdateUtils<Member> updateUtils;
 
     public Member createMember(Member member) {
         verifyExistsEmail(member.getEmail());
+        if(memberRepository.findByNickname(member.getNickname()).isPresent()) {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
+        }
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         member.setPassword(encryptedPassword);
 
@@ -42,14 +49,26 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-//    public Member updateMember(Member member) {
-//        findVerifiedMember(member.getId());
-//
-//    }
+    public Member updateMember(Member member) {
+        Member findMember = findVerifiedMember(member.getId());
+
+        Member updateMember = updateUtils.copyNonNullProperties(member, findMember);
+
+        return memberRepository.save(updateMember);
+    }
 
     public Member findMember(long memberId) {
-        findVerifiedMember(memberId);
         return findVerifiedMember(memberId);
+    }
+
+    public List<Member> findMembers() {
+        List<Member> members = memberRepository.findAll();
+        System.out.println(members);
+        return members;
+    }
+
+    public void deleteMember(long memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     private Member findVerifiedMember(long memberId) {
@@ -65,7 +84,7 @@ public class MemberService {
 
     // SpringSecurityContextHolder에 저장된 Authentication에서 사용자 정보를 빼옵니다
     // memberId, memberEmail, memberNickname 키에 해당 유저의 정보가 할당 되어있습니다
-    // Object memberId = memberService.extractMemberInfo().get("memberId");
+    // Object memberId = memberService.extractMemberInfo().get("Id");
     // 위와 같이 사용하면 memberId가 반환됨!
     // 사용조건은 Access 토큰이 헤더에 포함되어 있어야함 그렇지 않으면 오류발생
     public Map<String, Object> extractMemberInfo() {
@@ -76,22 +95,4 @@ public class MemberService {
         Map<String, Object> principal = (Map<String, Object>) authentication.getPrincipal();
         return principal;
     }
-
-    /*
-    public void verifyMemberOwnership(String nickname) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-        }
-        Object principal = authentication.getPrincipal();
-
-        System.out.println(nickname);
-        System.out.println(principal);
-
-        if (!nickname.equals(principal.toString())) {
-            throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
-        }
-    }
-    수정필요
-     */
 }

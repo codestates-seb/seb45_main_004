@@ -1,6 +1,7 @@
 package com.party.follow.entity;
 
-import com.party.follow.id.FollowId;
+import com.party.member.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,15 +9,22 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 public class Follow {
 
-    @EmbeddedId
-    private FollowId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Follow(Long toMember,Long fromMember ) {
-        this.id = new FollowId(toMember, fromMember);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "from_member")
+    private Member fromMember;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "to_member")
+    private Member toMember;
+
 }

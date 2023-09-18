@@ -2,6 +2,7 @@ package com.party.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.party.alram.entity.Alarm;
 import com.party.boardlike.entity.BoardLike;
 import com.party.chatting.entity.Chatting;
 import com.party.member.entity.Member;
@@ -9,8 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class Board {
     private String body;
 
     @Column(nullable = false)
+    @Min(value = 1)
     private int totalNum; //총 인원수 (작성자가 설정)
 
     @Column(nullable = false)
@@ -39,15 +41,16 @@ public class Board {
     private LocalDate date;
 
     @Column(nullable = false)
+    @Min(value = 0)
     private int money;
 
-    @Column
+    @Column(nullable = false)
     private String longitude; //경도
 
-    @Column
+    @Column(nullable = false)
     private String latitude; //위도
 
-    @Column
+    @Column(nullable = false)
     private String address;
 
     @Column(nullable = false)
@@ -58,10 +61,9 @@ public class Board {
     @Enumerated(value = EnumType.STRING)
     private BoardStatus status = BoardStatus.BOARD_RECRUITING;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
-
     private long boardLikesCount;
 
+    @Column(nullable = false)
     private String imageUrl;
 
     @ManyToOne
@@ -79,6 +81,10 @@ public class Board {
     @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Applicant> applicants = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
+    @JsonManagedReference
+    private List<Alarm> alarms = new ArrayList<>();
 
     public enum BoardCategory {
         CATEGORY_LEISURE("CATEGORY_LEISURE"),
@@ -102,9 +108,18 @@ public class Board {
 
         @Getter
         private String status;
-
         BoardStatus(String status) {
             this.status = status;
+        }
+    }
+
+    //오늘로 3일 뒤 부터 모임 글 작성 가능
+    @PrePersist
+    public void validateDate() {
+        LocalDate today = LocalDate.now();
+        LocalDate allowedStartDate = today.plusDays(3);
+        if (date.isBefore(allowedStartDate)) {
+            throw new IllegalArgumentException("You can only select a date starting from " + allowedStartDate);
         }
     }
 }

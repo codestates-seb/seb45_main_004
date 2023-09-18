@@ -1,10 +1,11 @@
 package com.party.follow.service;
 
-
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.follow.dto.FollowDto;
 import com.party.follow.entity.Follow;
 import com.party.follow.repository.FollowRepository;
+import com.party.mail.service.MailService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
@@ -13,8 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,82 +27,126 @@ import java.util.Optional;
 public class FollowService {
 
     private final FollowRepository followRepository;
-    private final MemberRepository memberRepository;
     private final MemberService memberService;
+    private final MemberRepository memberRepository;
+    private final MailService mailService;
 
     //팔로우 추가
-    public void followMember(Long fromMemberId,Long toMemberId) {
-        //현재 로그인한 사용자 ID 가져오기
-        Long loggedInMemberId = extractMemberId();
+    public Follow followMember(Long toMemberId) throws MessagingException, IOException {
 
-        //멤버 유효성 검사 및 존재 여부 확인
-        validateMemberIds(fromMemberId, toMemberId, loggedInMemberId);
+        //현재 로그인한 사용자의 ID를 추출
+        Long fromMemberId = extractMemberId();
 
-        //자기 자신을 팔로우 하지 못함
-        if (fromMemberId.equals(toMemberId)) {
-            throw new BusinessLogicException(ExceptionCode.OWN_MEMBER);
-        }
+        //사용자 존재 여부, 팔로우 가능 여부 검증
+        validateMembersExist(fromMemberId, toMemberId);
+        validateFollow(fromMemberId, toMemberId);
 
-        //이미 팔로우 관계가 있는지 확인
-        if (followExists(fromMemberId, toMemberId)) {
-            throw new BusinessLogicException(ExceptionCode.ALREADY_FOLLOWING);
-        }
+        Follow follow = processCreateFollow(fromMemberId, toMemberId);
+        follow = followRepository.save(follow);
+        sendMail(toMemberId, fromMemberId);
 
-        //팔로우 관계 생성
-        Follow follow = new Follow(fromMemberId, toMemberId);
-        followRepository.save(follow);
+        return follow;
+    }
+
+    //팔로워수 조회
+    public Long countFollowers(Long memberId) {
+        return followRepository.countByToMember_Id(memberId);
+    }
+
+    //팔로워 계정 목록 조회
+    public List<FollowDto.Member> getFollowers(Long memberId) {
+        List<Follow> followerList = followRepository.findToMember_IdsByFromMember_Id(memberId);
+
+        List<FollowDto.Member> followers = followerList.stream()
+                .map(follow -> {
+                    Member member = follow.getToMember();
+                    FollowDto.Member dtoMember = new FollowDto.Member();
+                    dtoMember.setMemberId(member.getId());
+                    dtoMember.setNickname(member.getNickname());
+                    dtoMember.setIntroduce(member.getIntroduce());
+                    dtoMember.setImageUrl(member.getImageUrl());
+                    return dtoMember;
+                })
+                .collect(Collectors.toList());
+
+        return followers;
+    }
+
+    //팔로잉수 조회
+    public Long countFollowings(Long memberId) {
+        return followRepository.countByFromMember_Id(memberId);
+    }
+
+    //팔로잉 계정 목록 조회
+    public List<FollowDto.Member> getFollowings(Long memberId) {
+
+        List<Follow> followingList = followRepository.findFromMember_IdsByToMember_Id(memberId);
+
+        List<FollowDto.Member> followings = followingList.stream()
+                .map(follow -> {
+                    Member member = follow.getFromMember();
+                    FollowDto.Member dtoMember = new FollowDto.Member();
+                    dtoMember.setMemberId(member.getId());
+                    dtoMember.setNickname(member.getNickname());
+                    dtoMember.setIntroduce(member.getIntroduce());
+                    dtoMember.setImageUrl(member.getImageUrl());
+                    return dtoMember;
+                })
+                .collect(Collectors.toList());
+
+        return followings;
     }
 
     //팔로우 취소
-    public void unfollowMember(Long fromMemberId, Long toMemberId) {
-        //현재 로그인한 사용자 ID 가져오기
-        Long loggedInMemberId = extractMemberId();
+    public void unFollowMember(Long toMemberId) {
+        Long fromMemberId = extractMemberId();
 
-        //멤버 유효성 검사 및 존재 여부 확인
-        validateMemberIds(fromMemberId, toMemberId, loggedInMemberId);
+        //사용자 존재 여부 검증
+        validateMembersExist(fromMemberId, toMemberId);
 
-        //팔로우 관계가 있는지 확인 후 삭제
-        if (followExists(fromMemberId, toMemberId)) {
-            removeFollow(fromMemberId, toMemberId);
+        Follow follow = followRepository.findByToMember_IdAndFromMember_Id(toMemberId, fromMemberId);
+        if (follow != null) {
+            followRepository.delete(follow);
         } else {
             throw new BusinessLogicException(ExceptionCode.FOLLOW_NOT_FOUND);
         }
     }
 
-    //멤버 ID 유효성 검사 및 존재 여부 확인
-    private void validateMemberIds(Long fromMemberId, Long toMemberId, Long loggedInMemberId) {
-        if (!fromMemberId.equals(loggedInMemberId)) {
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED_FOLLOW);
-        }
-        Optional<Member> fromMemberOptional = memberRepository.findById(fromMemberId);
+    //사용자 검증
+    private void validateMembersExist(Long fromMemberId, Long toMemberId) {
         Optional<Member> toMemberOptional = memberRepository.findById(toMemberId);
+        if (toMemberOptional.isEmpty()) {
+            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+        }
 
-        fromMemberOptional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        toMemberOptional.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        if (fromMemberId.equals(toMemberId)) {
+            throw new BusinessLogicException(ExceptionCode.OWN_MEMBER);
+        }
     }
 
-    //팔로우 관계 여부 확인
-    private boolean followExists(Long fromMemberId, Long toMemberId) {
-        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, fromMemberId);
-        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(fromMemberId, toMemberId);
-        return existingFollow1 != null || existingFollow2 != null;
+    //팔로우 관계 검증
+    private void validateFollow(Long fromMemberId, Long toMemberId) {
+        Follow follow = followRepository.findByToMember_IdAndFromMember_Id(toMemberId, fromMemberId);
+        if (follow != null) {
+            throw new BusinessLogicException(ExceptionCode.ALREADY_FOLLOWING);
+        }
     }
 
-    //팔로우 관계 삭제
-    private void removeFollow(Long fromMemberId, Long toMemberId) {
-        Follow existingFollow1 = followRepository.findById_ToMemberAndId_FromMember(toMemberId, fromMemberId);
-        Follow existingFollow2 = followRepository.findById_FromMemberAndId_ToMember(fromMemberId, toMemberId);
+    //팔로우 추가 로직
+    private Follow processCreateFollow(Long fromMemberId, Long toMemberId) {
+        Follow follow = new Follow();
+        Member fromMember = new Member();
+        fromMember.setId(fromMemberId);
+        follow.setFromMember(fromMember);
 
-        if (existingFollow1 != null) {
-            followRepository.delete(existingFollow1);
-        }
-        if (existingFollow2 != null) {
-            followRepository.delete(existingFollow2);
-        }
+        Member toMember = memberRepository.getById(toMemberId);
+        follow.setToMember(toMember);
+
+        return follow;
     }
 
     //현재 로그인한 사용자의 ID를 추출하는 메서드
-    private Long extractMemberId() {
+    private Long extractMemberId () {
         Object memberIdObject = memberService.extractMemberInfo().get("id");
         if (memberIdObject instanceof Long) {
             return (Long) memberIdObject;
@@ -108,4 +156,16 @@ public class FollowService {
             throw new BusinessLogicException(ExceptionCode.INVALID_MEMBER_ID);
         }
     }
+
+    //이메일 전송
+    private void sendMail(Long toMemberId, Long fromMemberId) throws MessagingException, IOException {
+        Member fromMember = memberRepository.getById(fromMemberId);
+        String followerNickname = fromMember.getNickname();
+        String imageUrl = fromMember.getImageUrl();
+        Member toMember = memberRepository.getById(toMemberId);
+        String title = "CELEBEE의 새로운 팔로워 알림🐝";
+        String message = followerNickname + "님이 당신을 팔로우했습니다💘";
+        mailService.sendFollowMail(toMember.getEmail(), title, message,imageUrl);
+    }
 }
+

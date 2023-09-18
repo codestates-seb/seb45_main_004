@@ -27,6 +27,7 @@ public class BoardController {
     private final BoardMapper mapper;
 
 
+
     //모임글 등록
     @PostMapping("/new-boards")
     public ResponseEntity postBoard(@Valid @RequestBody BoardDto.Post postDto) {

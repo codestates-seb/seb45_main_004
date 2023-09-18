@@ -1,14 +1,23 @@
 package com.party.auth.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.party.auth.dto.MemberProfile;
 import com.party.auth.dto.Token;
+import com.party.auth.event.RefreshSaveEvent;
 import com.party.auth.fliter.JwtAuthenticationFilter;
 import com.party.auth.provider.OAuthProvider;
 import com.party.auth.token.JwtTokenizer;
 import com.party.exception.BusinessLogicException;
 import com.party.exception.ExceptionCode;
+import com.party.image.service.AwsService;
 import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,31 +37,25 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Service
 @Transactional
+@Slf4j
+@RequiredArgsConstructor
 public class OAuthService {
     private final InMemoryClientRegistrationRepository inMemoryRepository;
     private final MemberRepository memberRepository;
     private final JwtTokenizer jwtTokenizer;
     private final DefaultOAuth2UserService defaultOAuth2UserService;
     private final RestTemplate restTemplate;
-
-    public OAuthService(InMemoryClientRegistrationRepository inMemoryRepository, MemberRepository memberRepository,
-                        JwtTokenizer jwtTokenizer, DefaultOAuth2UserService defaultOAuth2UserService, RestTemplate restTemplate) {
-        this.inMemoryRepository = inMemoryRepository;
-        this.memberRepository = memberRepository;
-        this.jwtTokenizer = jwtTokenizer;
-        this.defaultOAuth2UserService = defaultOAuth2UserService;
-        this.restTemplate = restTemplate;
-    }
+    private final AwsService awsService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public Token login(OAuthProvider provider, String code) {
@@ -74,8 +77,13 @@ public class OAuthService {
 
         Member member = getOrSaveMember(memberProfile);
 
-        return createToken(member);
+        Token jwtToken = createToken(member);
 
+//        // jwt토큰의 refreshToken을 Member의 refresh 칼럼에 저장
+//        memberRepository.updateRefreshToken(member.getId(), jwtToken.getRefreshToken());
+        applicationEventPublisher.publishEvent(new RefreshSaveEvent(member, jwtToken.getRefreshToken()));
+
+        return jwtToken;
     }
 
     public String getToken(String code, ClientRegistration clientRegistration) {
@@ -154,8 +162,11 @@ public class OAuthService {
         Member member = Member.createMember(
                 memberProfile.getEmail(),
                 "oauthUser",
-                memberProfile.getEmail().split("@")[0]
+                memberProfile.getEmail().split("@")[0],
+                memberProfile.getGender()
         );
+        String imagePath = awsService.getThumbnailPath("profile/1.png");
+        member.setImageUrl(imagePath);
         Member signMember = memberRepository.save(member);
         return signMember;
     }
@@ -180,20 +191,79 @@ public class OAuthService {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", userDetails.getId());
         claims.put("authorities", authentication.getAuthorities());
+        claims.put("roles", member.getRoles());
 
         // Access Token 생성
         String accessToken = jwtTokenizer.generateAccessToken(
                 claims,
                 userDetails.getUsername(),
                 jwtTokenizer.getTokenExpiration(jwtTokenizer.getAccessTokenExpirationMinutes()),
-                jwtTokenizer.getSecretKey() // 기본 키 사용
+                jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey()) // 기본 키 사용
         );
         String refreshToken = jwtTokenizer.generateRefreshToken(
                 userDetails.getUsername(),
                 jwtTokenizer.getTokenExpiration(jwtTokenizer.getRefreshTokenExpirationMinutes()),
-                jwtTokenizer.getSecretKey()
+                jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())
         );
 
         return new Token(accessToken, refreshToken, member.getId());
     }
+
+    // 여기부터는 카카오 로그인이랑 상관없음
+    /*
+    public void verifyRefreshToken(String refreshToken, HttpServletResponse response) throws IOException {
+        // 만료기한과 유효한 리프레쉬 토큰인지 검증과정을 거침
+        try {
+        겹침 ->     jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey()));
+        }catch (ExpiredJwtException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "다시 로그인 필요");
+            String json = mapper.writeValueAsString(responseBody);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(json);
+        }
+        // 토큰에 포함된 Username(email)을 통해 Member를 찾고
+        // 해당 Member의 refresh와 비교
+        겹침 -> Claims claims = jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())).getBody();
+    }
+    작성하다가 겹치는 코드가 있어서 리팩터링
+    */
+    public Token verifyRefreshToken(String refreshToken, HttpServletResponse response) throws IOException {
+        Claims claims = null;
+
+        // 만료기한과 유효한 리프레쉬 토큰인지 검증과정을 거침
+        try {
+            claims = jwtTokenizer.getClaims(refreshToken, jwtTokenizer.encodedBase64SecretKey(jwtTokenizer.getSecretKey())).getBody();
+        } catch (ExpiredJwtException e) {
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", "다시 로그인 필요");
+            String json = mapper.writeValueAsString(responseBody);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write(json);
+            throw new BusinessLogicException(ExceptionCode.PERMISSION_NOT_EXIST);
+        }
+        System.out.println("서비스 계층에서 보낸 로그입니다" + claims.toString());
+        // 유효한 토큰이면 멤버꺼내와서 DB의 토큰과 비교후 맞으면 재생성
+        if (claims != null) { // 여기서 claims가 null이 나오는거 같음
+            Optional<Member> findmember = memberRepository.findByEmail(claims.getSubject());
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()));
+            System.out.println(refreshToken);
+            System.out.println(memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken));
+            if (findmember.isPresent() & memberRepository.findRefreshTokenById(findmember.get().getId()).get().equals(refreshToken)) {
+                System.out.println("DB의 리프레쉬 토큰과는 인증이 성공");
+                Token token = createToken(findmember.get());
+                applicationEventPublisher.publishEvent(new RefreshSaveEvent(findmember.get(), token.getRefreshToken()));
+                return token;
+            }
+        }
+        throw new BusinessLogicException(ExceptionCode.REFRESHTOKEN_IS_NOT_VERIFIED);
+    }
+
+
 }
