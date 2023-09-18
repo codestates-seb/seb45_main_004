@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import axios from 'axios';
 import Button from './Button';
@@ -84,7 +83,7 @@ const MyProfile = ({ myData, setMyData }) => {
 
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
-  const myId = useSelector((state) => state.user.myId);
+  const myId = localStorage.getItem('myId');
 
   const patchData = {
     introduce,
