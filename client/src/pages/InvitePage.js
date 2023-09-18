@@ -3,7 +3,7 @@ import axios from 'axios';
 import { styled } from 'styled-components';
 import CategoryBtn from '../components/CategoryBtn';
 import CategoryMappings from '../components/CategoryMappings';
-import { VscHeartFilled } from 'react-icons/vsc';
+import { VscHeartFilled, VscHeart } from 'react-icons/vsc';
 import { useParams, useNavigate } from 'react-router-dom';
 import MapKakao from '../services/MapKakao';
 import { differenceInDays, startOfDay } from 'date-fns';
@@ -192,7 +192,11 @@ function InvitePage() {
                 className="heart-button"
                 onClick={handleLikeClick}
               ></button>
-              <VscHeartFilled className="heart-icon" />
+              {isLiked ? (
+                <VscHeartFilled className="heart-icon" />
+              ) : (
+                <VscHeart className="heart-icon" />
+              )}
               <div className="likes-count">
                 <div>{eventData.boardLikesCount}</div>
               </div>
@@ -385,7 +389,8 @@ const EventDetailsContainer = styled.div`
     position: absolute;
     color: whitesmoke;
     top: 368px;
-    left: 371px;
+    left: 370px;
+    color: black;
   }
 
   .host-container {
