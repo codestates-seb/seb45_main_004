@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'http://3.39.76.109:8080';
+  const api = 'https://api.celebee.kro.kr';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -74,7 +74,7 @@ function InviteWritePage() {
 
     if (
       name === 'date' &&
-      new Date(value) < new Date(TwoDaysAfterCurrentDate)
+      new Date(value) < new Date(ThreeDaysAfterCurrentDate)
     ) {
       alert(
         '작성하시려는 모임의 마감일은 오늘입니다. 모집일은 오늘로부터 3일 후부터 가능합니다. ',
@@ -88,10 +88,22 @@ function InviteWritePage() {
         ? 0
         : parseInt(pureNumber, 10);
 
+      // 백만원 초과 검증
+      if (numericValue > 1000000) {
+        alert('백만원을 초과할 수 없습니다.');
+        return;
+      }
+
       setFormData((prevData) => ({
         ...prevData,
         [name]: numericValue,
       }));
+    }
+
+    // 바디의 글자 수 검증 로직
+    else if (name === 'body' && value.length > 255) {
+      alert('본문의 글자 수는 255글자를 넘을 수 없습니다.');
+      return;
     } else {
       // 다른 필드들의 처리 로직
       setFormData((prevData) => ({
@@ -101,24 +113,51 @@ function InviteWritePage() {
     }
   };
 
-  // 마감 날짜 계산
-  const getTwoDaysAfter = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 3);
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  const getCurrentDateInKST = () => {
+    return new Date()
+      .toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'Asia/Seoul',
+      })
+      .replace(/\./g, '-')
+      .replace(/\s/g, '') // 공백 제거
+      .slice(0, -1);
   };
 
-  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
-  const currentDate = new Date().toISOString().split('T')[0];
+  const getDaysAfterInKST = (days) => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date
+      .toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'Asia/Seoul',
+      })
+      .replace(/\./g, '-')
+      .replace(/\s/g, '') // 공백 제거
+      .slice(0, -1);
+  };
+
+  const ThreeDaysAfterCurrentDate = getDaysAfterInKST(3);
+  const currentDate = getCurrentDateInKST();
+
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+
   // 카테고리 버튼 클릭
   const handleCategoryButtonClick = async (buttonId) => {
     setSelectedButton(buttonId);
+
+    setSelectedImage(null);
+
     setFormData((prevData) => ({
       ...prevData,
       category: buttonId,
+      imageUrl: null,
     }));
 
     try {
@@ -296,7 +335,7 @@ function InviteWritePage() {
                     </button>
                   ))}
                 </div>
-              </div>{' '}
+              </div>
             </div>
           )}
 

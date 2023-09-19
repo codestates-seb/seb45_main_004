@@ -32,19 +32,18 @@ function InvitePage() {
     latitude: '',
     isLiked: '',
   });
-
   const token = localStorage.getItem('jwtToken');
   const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const api = 'http://3.39.76.109:8080';
+  const api = 'https://api.celebee.kro.kr';
   const [participants, setParticipants] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
   const currentDate = startOfDay(new Date()); // 현재 날짜의 시작 시간
   const daysDifference = differenceInDays(cardDate, currentDate); // 두 날짜 간의 일수 차이 계산
   const [isLiked, setIsLiked] = useState();
-
+  const [userParticipation, setUserParticipation] = useState(false);
   // 카드 조회 요청
   const fetchEventData = async () => {
     try {
@@ -73,6 +72,7 @@ function InvitePage() {
       }));
       fetchParticipants(); // 참여자 목록을 다시 불러옴
     } catch (error) {
+      alert('로그인 후 이용해주세요.');
       console.error('Error sending join status:', error);
     }
   };
@@ -105,6 +105,12 @@ function InvitePage() {
     try {
       const response = await axios.get(`${api}/boards/${boardId}/join`);
       setParticipants(response.data);
+
+      // 참여 여부를 확인하여 상태 업데이트
+      const userParticipation = response.data.some(
+        (participant) => String(participant.memberId) === String(memberId),
+      );
+      setUserParticipation(userParticipation);
     } catch (error) {
       console.error('Error fetching participants:', error);
     }
@@ -126,6 +132,12 @@ function InvitePage() {
 
   // 좋아요 상태
   const handleLikeClick = () => {
+    if (!token) {
+      // 토큰이 없다면 로그인되어 있지 않다는 메시지를 표시
+      alert('로그인 후 찜 기능을 사용할 수 있습니다.');
+      return;
+    }
+
     const newLikeStatus = !isLiked;
     setIsLiked(newLikeStatus);
     sendLikeStatus(newLikeStatus);
@@ -135,13 +147,24 @@ function InvitePage() {
   const hostPageClick = () => {
     const hostId = eventData.member.id;
     localStorage.setItem('clickedUserId', hostId);
-    navigate(`/members/${hostId}`);
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    if (memberId === clickedUserId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${clickedUserId}`);
+    }
   };
 
   // 참여자 페이지 이동
   const handleParticipantImageClick = (memberId) => {
     localStorage.setItem('clickedUserId', memberId);
-    navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    const clickedUserId = localStorage.getItem('clickedUserId');
+    const myId = localStorage.getItem('myId');
+    if (clickedUserId === myId) {
+      navigate(`/members/me`);
+    } else {
+      navigate(`/members/${memberId}`); // 유저 페이지로 이동
+    }
   };
 
   const numberWithCommas = (x) => {
@@ -188,14 +211,16 @@ function InvitePage() {
                 src={eventData.imageUrl}
                 alt="카드 이미지"
               />
-              <button
-                className="heart-button"
-                onClick={handleLikeClick}
-              ></button>
-              <VscHeartFilled className="heart-icon" />
-              <div className="likes-count">
-                <div>{eventData.boardLikesCount}</div>
-              </div>
+              <button className="heart-button" onClick={handleLikeClick}>
+                {isLiked ? (
+                  <VscHeartFilled className="heart-icon-red" />
+                ) : (
+                  <VscHeartFilled className="heart-icon" />
+                )}
+                <div className="likes-count">
+                  <div>{eventData.boardLikesCount}</div>
+                </div>
+              </button>
             </div>
           </div>
           <div className="user-box">
@@ -218,6 +243,13 @@ function InvitePage() {
                   eventData.currentNum === eventData.totalNum ||
                   (daysDifference >= 0 && daysDifference <= 2)
                 }
+                style={{
+                  display:
+                    memberId === String(eventData.member.id) ||
+                    userParticipation
+                      ? 'none'
+                      : 'block',
+                }}
               >
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
@@ -354,38 +386,40 @@ const EventDetailsContainer = styled.div`
 
   .image-container {
     position: relative;
-  }
-  .data,
-  .main-img,
-  .join-btn,
-  #map {
-    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    height: 400px;
   }
 
   .heart-button {
     position: absolute;
     background-color: transparent;
-    top: 365px;
-    left: 358px;
     width: 31px;
     height: 27px;
     border: none;
     cursor: pointer;
-    z-index: 1;
+    right: 10px;
+    bottom: 10px;
   }
-  .heart-icon {
-    position: absolute;
-    top: 360px;
-    left: 355px;
+  .heart-icon,
+  .heart-icon-red {
     font-size: 38px;
+  }
+
+  .heart-icon {
+    color: gainsboro;
+  }
+
+  .heart-icon-red {
     color: red;
   }
+
   .likes-count {
-    text-align: center;
     position: absolute;
-    color: whitesmoke;
-    top: 368px;
-    left: 371px;
+    top: 20px;
+    left: 20px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-size: 16px;
   }
 
   .host-container {
@@ -441,6 +475,12 @@ const EventDetailsContainer = styled.div`
     margin-left: -30px;
     width: 50px;
     height: 50px;
+  }
+
+  .data,
+  .main-img,
+  #map {
+    box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.2);
   }
 
   .participation-data {
@@ -638,11 +678,6 @@ const EventDetailsContainer = styled.div`
     .heart-icon {
       top: 390px;
       left: 390px;
-    }
-
-    .likes-count {
-      top: 397px;
-      left: 406px;
     }
   }
 `;

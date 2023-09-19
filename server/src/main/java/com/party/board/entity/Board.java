@@ -117,8 +117,10 @@ public class Board {
     @PrePersist
     public void validateDate() {
         LocalDate today = LocalDate.now();
+        System.out.println("[@PrePersist now()]" +today);
         LocalDate allowedStartDate = today.plusDays(3);
         if (date.isBefore(allowedStartDate)) {
+            System.out.println("[@PrePersist Illegal]"+ date.isBefore(allowedStartDate));
             throw new IllegalArgumentException("You can only select a date starting from " + allowedStartDate);
         }
     }

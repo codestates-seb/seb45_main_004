@@ -2,16 +2,29 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const ContentList = styled.ul`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
   list-style-type: none;
-  width: 70vw;
-  flex-wrap: wrap;
+  place-items: center;
   margin-top: 20px;
+  width: 100%;
+
+  @media screen and (max-width: 768px) {
+    margin: 20px 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  @media screen and (min-width: 769px) and (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+  }
 `;
 
 const ContentItem = styled.li`
-  width: 16em;
-  height: 16em;
+  width: 18.7em;
+  height: 18.7em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -20,14 +33,13 @@ const ContentItem = styled.li`
   margin-bottom: 20px;
 
   img {
-    width: 16em;
-    height: 16em;
+    width: 18.7em;
+    height: 18.7em;
+    cursor: pointer;
   }
 `;
 
 const Participations = ({ myData, memberData, handleMovingBoard }) => {
-  console.log(memberData, myData);
-
   return (
     <ContentList>
       {memberData

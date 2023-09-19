@@ -39,6 +39,10 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .requiresChannel()
+                .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+                .requiresSecure()
+                .and()
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable()
@@ -52,6 +56,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/*/members").permitAll()
                         .antMatchers(HttpMethod.POST, "/boards/new-boards").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members/me").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/{memberId}").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/boards/{board-id}/join").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/likes/{board-id}").hasRole("USER")
