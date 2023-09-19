@@ -50,22 +50,28 @@ const InfoBox = styled.div`
   }
 `;
 
+const IntroContainer = styled.div`
+  margin-right: 15px;
+`;
+
 const IntorBox = styled.div`
   border: 1px solid black;
   height: 4.8em;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 10px;
   margin-left: 15px;
+  margin-right: 10px;
   position: relative;
 
   input {
     position: absolute;
     left: 0;
     bottom: 0;
-    width: 49.89vw;
     height: 100%;
+    width: 100%;
     margin-top: 5px;
     font-size: 1.2rem;
     padding: 10px;
@@ -109,7 +115,7 @@ const MyProfile = ({ myData, setMyData }) => {
           alert('소개글은 1자 이상 20자 이하로 작성해 주세요.');
         } else {
           const response = await axios.patch(
-            `http://3.39.76.109:8080/members/${myId}`,
+            `https://api.celebee.kro.kr/members/${myId}`,
             patchData,
             {
               headers: {
@@ -157,30 +163,28 @@ const MyProfile = ({ myData, setMyData }) => {
         </InfoBox>
         {/* 유저 정보의 자기소개내용 표시 */}
         {isIntroEditing ? (
-          <div>
+          <IntroContainer>
             <IntorBox>
-              <div>
-                <input
-                  name="introduce"
-                  value={introduce}
-                  onChange={handleInputChange}
-                  placeholder="자기소개를 입력해주세요."
-                />
-              </div>
+              <input
+                name="introduce"
+                value={introduce}
+                onChange={handleInputChange}
+                placeholder="자기소개를 입력해주세요."
+              />
             </IntorBox>
             <BtnBox>
               <Button type="text" text="Save" onClick={handleIntroChange} />
             </BtnBox>
-          </div>
+          </IntroContainer>
         ) : (
-          <div>
+          <IntroContainer>
             <IntorBox className="introduction-box">
               <p>{introduce}</p>
             </IntorBox>
             <BtnBox>
               <Button type="text" text="Edit" onClick={handleIntroEditClick} />
             </BtnBox>
-          </div>
+          </IntroContainer>
         )}
       </UserInfoContainer>
     </ProfileContainer>

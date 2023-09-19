@@ -44,7 +44,7 @@ const UserPage = () => {
       const fetchUserInfo = async () => {
         try {
           const response = await axios.get(
-            `http://3.39.76.109:8080/members/${userId}`,
+            `https://api.celebee.kro.kr:443/members/${userId}`,
           );
           const memberInfo = response.data;
           const userData = {

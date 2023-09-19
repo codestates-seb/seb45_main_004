@@ -20,7 +20,7 @@ export default function Homepage() {
 
   const fetchAllInvitaion = () => {
     axios
-      .get('http://3.39.76.109:8080/boards')
+      .get('https://api.celebee.kro.kr/boards')
       .then((response) => {
         const newData = response.data;
         const closedInvitations = newData.filter(
@@ -98,8 +98,8 @@ export default function Homepage() {
     // 전체 검색창에서 검색되는 url과 선택된 카테고리에서만 검색되는 url
     const searchApi =
       category === 'CATEGORY_ALL'
-        ? `http://3.39.76.109:8080/boards/search/title/?title=${search}`
-        : `http://3.39.76.109:8080/boards/category/${category}/search/title/?title=${search}`;
+        ? `https://api.celebee.kro.kr/boards/search/title/?title=${search}`
+        : `https://api.celebee.kro.kr/boards/category/${category}/search/title/?title=${search}`;
     axios
       .get(searchApi)
       .then((response) => {
@@ -129,8 +129,8 @@ export default function Homepage() {
   const likesSort = (category) => {
     const apiUrl =
       category === 'CATEGORY_ALL'
-        ? `http://3.39.76.109:8080/boards/likes`
-        : `http://3.39.76.109:8080/boards/category/${category}/likes`;
+        ? `https://api.celebee.kro.kr/boards/likes`
+        : `https://api.celebee.kro.kr/boards/category/${category}/likes`;
     axios
       .get(apiUrl)
       .then((response) => {

@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'http://3.39.76.109:8080';
+  const api = 'https://api.celebee.kro.kr';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -101,18 +101,39 @@ function InviteWritePage() {
     }
   };
 
-  // 마감 날짜 계산
-  const getTwoDaysAfter = () => {
-    const date = new Date();
-    date.setDate(date.getDate() + 3);
-    return date.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 반환
+  const getCurrentDateInKST = () => {
+    return new Date()
+      .toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .replace(/\./g, '-')
+      .replace(/\s/g, '') // 공백 제거
+      .slice(0, -1);
   };
 
-  const TwoDaysAfterCurrentDate = getTwoDaysAfter();
-  const currentDate = new Date().toISOString().split('T')[0];
+  const getDaysAfterInKST = (days) => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date
+      .toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })
+      .replace(/\./g, '-')
+      .replace(/\s/g, '') // 공백 제거
+      .slice(0, -1);
+  };
+
+  const TwoDaysAfterCurrentDate = getDaysAfterInKST(3);
+  const currentDate = getCurrentDateInKST();
+
   const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   };
+
   // 카테고리 버튼 클릭
   const handleCategoryButtonClick = async (buttonId) => {
     setSelectedButton(buttonId);
@@ -300,7 +321,7 @@ function InviteWritePage() {
                     </button>
                   ))}
                 </div>
-              </div>{' '}
+              </div>
             </div>
           )}
 

@@ -39,25 +39,25 @@ const Follow = ({ handleFollowChange, handleUnFollowChange }) => {
 
   const handleFollowClick = () => {
     setSelectedFollow(true);
-    handleFollowChange();
+    alert('추후 업데이트 될 기능입니다.');
   };
 
   const handleUnfollowClick = () => {
     setSelectedFollow(false);
-    handleUnFollowChange();
+    alert('추후 업데이트 될 기능입니다.');
   };
 
   return (
     <>
       {!selectedFollow ? (
-        <FollowIconBox>
-          <button className="follow-btn" onClick={handleFollowClick}>
+        <FollowIconBox onClick={handleFollowClick}>
+          <button className="follow-btn" onClick={handleFollowChange}>
             <Icon icon="mdi:heart-plus" className="follow-icon" />
           </button>
         </FollowIconBox>
       ) : (
-        <FollowIconBox>
-          <button className="follow-btn" onClick={handleUnfollowClick}>
+        <FollowIconBox onClick={handleUnfollowClick}>
+          <button className="follow-btn" onClick={handleUnFollowChange}>
             <Icon icon="mdi:heart-minus" className="follow-icon" />
           </button>
         </FollowIconBox>

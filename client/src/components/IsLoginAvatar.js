@@ -103,7 +103,7 @@ const IsLoginAvatar = ({ myData, setMyData }) => {
     const getProfileImg = async () => {
       try {
         const response = await axios.get(
-          'http://3.39.76.109:8080/members/images',
+          'https://api.celebee.kro.kr/members/images',
         );
         setIsImages(response.data);
       } catch (error) {
