@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'https://api.celebee.kro.kr';
+  const api = 'http://3.39.76.109:8080';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -88,6 +88,13 @@ function InviteWritePage() {
         ? 0
         : parseInt(pureNumber, 10);
 
+      // 백만원 초과 검증
+      if (numericValue > 1000000) {
+        alert('백만원을 초과할 수 없습니다.');
+        return;
+      }
+
+      console.log(numericValue);
       setFormData((prevData) => ({
         ...prevData,
         [name]: numericValue,
@@ -107,6 +114,7 @@ function InviteWritePage() {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
+        timeZone: 'Asia/Seoul',
       })
       .replace(/\./g, '-')
       .replace(/\s/g, '') // 공백 제거
@@ -121,6 +129,7 @@ function InviteWritePage() {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
+        timeZone: 'Asia/Seoul',
       })
       .replace(/\./g, '-')
       .replace(/\s/g, '') // 공백 제거

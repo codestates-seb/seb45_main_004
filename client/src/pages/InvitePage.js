@@ -36,7 +36,7 @@ function InvitePage() {
   const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const api = 'https://api.celebee.kro.kr:443';
+  const api = 'http://3.39.76.109:8080';
   const [participants, setParticipants] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
