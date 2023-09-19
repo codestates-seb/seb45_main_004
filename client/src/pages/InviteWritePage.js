@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'https://api.celebee.kro.kr';
+  const api = 'http://3.39.76.109:8080';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -98,6 +98,12 @@ function InviteWritePage() {
         ...prevData,
         [name]: numericValue,
       }));
+    }
+
+    // 바디의 글자 수 검증 로직
+    else if (name === 'body' && value.length > 255) {
+      alert('본문의 글자 수는 255글자를 넘을 수 없습니다.');
+      return;
     } else {
       // 다른 필드들의 처리 로직
       setFormData((prevData) => ({
