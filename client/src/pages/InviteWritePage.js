@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'http://3.39.76.109:8080';
+  const api = 'https://api.celebee.kro.kr';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
@@ -74,7 +74,7 @@ function InviteWritePage() {
 
     if (
       name === 'date' &&
-      new Date(value) < new Date(TwoDaysAfterCurrentDate)
+      new Date(value) < new Date(ThreeDaysAfterCurrentDate)
     ) {
       alert(
         '작성하시려는 모임의 마감일은 오늘입니다. 모집일은 오늘로부터 3일 후부터 가능합니다. ',
@@ -94,7 +94,6 @@ function InviteWritePage() {
         return;
       }
 
-      console.log(numericValue);
       setFormData((prevData) => ({
         ...prevData,
         [name]: numericValue,
@@ -136,7 +135,7 @@ function InviteWritePage() {
       .slice(0, -1);
   };
 
-  const TwoDaysAfterCurrentDate = getDaysAfterInKST(3);
+  const ThreeDaysAfterCurrentDate = getDaysAfterInKST(3);
   const currentDate = getCurrentDateInKST();
 
   const numberWithCommas = (x) => {
