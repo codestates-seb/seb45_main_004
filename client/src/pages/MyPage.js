@@ -47,7 +47,7 @@ const MyPage = () => {
       const fetchMyInfo = async () => {
         try {
           const response = await axios.get(
-            `http://3.39.76.109:8080/members/me`,
+            `https://api.celebee.kro.kr/members/me`,
             {
               headers: {
                 Authorization: token,
