@@ -134,7 +134,7 @@ function InvitePage() {
   const handleLikeClick = () => {
     if (!token) {
       // 토큰이 없다면 로그인되어 있지 않다는 메시지를 표시
-      alert('로그인을 해야 찜 기능을 사용할 수 있습니다.');
+      alert('로그인 후 찜 기능을 사용할 수 있습니다.');
       return;
     }
 
