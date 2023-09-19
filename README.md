@@ -31,8 +31,8 @@
   </td>
   <td align="left">
     - server 환경 구축 및 배포(AWS)<br/> 
+    - 모임 참여, 모임 마감 처리<br/> 
     - 이미지 처리<br/> 
-    - 모임 참여<br/> 
     - 알림 <br/>
   </td>
   <td align="left">
