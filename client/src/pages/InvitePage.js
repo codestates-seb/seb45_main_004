@@ -36,7 +36,7 @@ function InvitePage() {
   const memberId = localStorage.getItem('myId');
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const api = 'https://api.celebee.kro.kr:443';
+  const api = 'https://api.celebee.kro.kr';
   const [participants, setParticipants] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const cardDate = startOfDay(new Date(eventData.date)); // 모임 날짜의 시작 시간
@@ -397,9 +397,8 @@ const EventDetailsContainer = styled.div`
     height: 27px;
     border: none;
     cursor: pointer;
-    z-index: 1;
-    right: 10px; /* 원하는 우측 간격으로 조정하세요 */
-    bottom: 10px; /* 원하는 하단 간격으로 조정하세요 */
+    right: 10px;
+    bottom: 10px;
   }
   .heart-icon,
   .heart-icon-red {
