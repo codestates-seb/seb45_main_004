@@ -24,15 +24,15 @@
   <td align="center"><a href="https://github.com/hseonghui">한성희<br>(@hseonghui)</a></td>
   </tr>
   <tr>
-  <td align="center">
+  <td align="left">
     - 로그인/회원가입 기능<br/>    
     -
   </td>
-  <td align="center">
+  <td align="left">
     - server 환경 구축<br/> 
     -
   </td>
-  <td align="center">
+  <td align="left">
     - 모임 글 작성 및 조회 <br/>    
     -검색 및 카테고리 <br/>
     -팔로우<br/>
@@ -58,12 +58,12 @@
   <td align="center"><a href="https://github.com/JIAHLEE0213">이지아<br>(@JIAHLEE0213)</a></td>
   </tr>
   <tr>
-  <td align="center">
+  <td align="left">
     - 마이(유저)페이지<br/>    
     - 로그인 페이지<br/>
     - 이메일 로그인<br/>
   </td>
-  <td align="center">
+  <td align="left">
     - 카드 작성 페이지<br/>
     - 카드 상세 페이지<br/>    
     - 카카오 지도<br />
