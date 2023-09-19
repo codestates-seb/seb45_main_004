@@ -25,7 +25,7 @@
   </tr>
   <tr>
   <td align="left">
-    - Security, JWT, Oauth2 카카오<br/>
+    - Security, JWT, OAuth2 카카오<br/>
     - 일반 로그인 / 회원가입<br/>
     - 유저정보 조회 및 수정<br/>
   </td>
