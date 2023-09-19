@@ -99,8 +99,6 @@
 |<img src = "https://github.com/codestates-seb/seb45_main_004/assets/129840158/6c06f272-beee-4c30-9078-3b938e958e47" width = "500" height="250">
 |<b>글 상세 페이지</b>|
 |<img src = "https://github.com/codestates-seb/seb45_main_004/assets/129840158/47e1169c-5528-47ac-9fc2-109565daf31d" width = "500" height="250">|
-|<b>글 작성 페이지</b>|
-||
 |<b>마이페이지</b>|
 |<img src = "https://github.com/codestates-seb/seb45_main_004/assets/129840158/a6aec436-671e-4c6f-9a62-4ac750004f92" width = "500" height="250">|
 <br>
