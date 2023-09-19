@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import PropTypes from 'prop-types';
 
 const StyleButton = styled.button`
-  /* 버튼 기본 스타일*/
+  /* 버튼 기본 스타일.*/
   width: 120px;
   font-size: 16px;
   cursor: pointer;
