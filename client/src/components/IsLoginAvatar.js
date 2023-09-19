@@ -1,11 +1,9 @@
 import { styled } from 'styled-components';
 import { Icon } from '@iconify/react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Modal from './Modal';
-import Follow from './Follow';
 
 const AvatarContainer = styled.div`
   width: 200px;
@@ -87,23 +85,19 @@ const EditIconBox = styled.span`
 `;
 
 const IsLoginAvatar = ({ myData, setMyData }) => {
-  const { follower, following } = myData;
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isImages, setIsImages] = useState([]);
 
   /* 함수에서 공통으로 사용할 데이터 */
   const token = localStorage.getItem('jwtToken');
   const myId = localStorage.getItem('myId');
-  const isLogin = useSelector((state) => state.auth.isLogin);
-  const toMemberId = useSelector((state) => state.user.memberId);
 
   /* 수정할 프로필 이미지 받아오기 */
   useEffect(() => {
     const getProfileImg = async () => {
       try {
         const response = await axios.get(
-          'https://api.celebee.kro.kr/members/images',
+          'http://3.39.76.109:8080/members/images',
         );
         setIsImages(response.data);
       } catch (error) {
@@ -128,7 +122,7 @@ const IsLoginAvatar = ({ myData, setMyData }) => {
       try {
         const imageUrl = e.target.currentSrc; // 클릭한 이미지의 URL 가져오기
         const response = await axios.patch(
-          `http://3.39.76.109:8080/members/${myId}`,
+          `https://api.celebee.kro.kr/members/${myId}`,
           { imageUrl }, // 이미지 URL을 보냅니다.
           {
             headers: {
@@ -147,83 +141,24 @@ const IsLoginAvatar = ({ myData, setMyData }) => {
     }
   };
 
-  /* 팔로잉, 언팔로잉 */
-  const followData = {
-    following,
-    follower,
-  };
-
-  const handleFollowChange = async () => {
-    if (token) {
-      try {
-        const response = await axios.post(
-          `http://3.39.76.109:8080/follows/${toMemberId}`,
-          followData,
-          {
-            headers: {
-              Authorization: token,
-            },
-          },
-        );
-        console.log('POST 요청 성공!', response.data);
-      } catch (error) {
-        console.log('PATCH 요청 실패!', error);
-      }
-    } else {
-      console.error('토큰이 없으므로 PATCH 요청을 보낼 수 없습니다.');
-    }
-  };
-
-  const handleUnFollowChange = async () => {
-    if (token) {
-      try {
-        const response = await axios.delete(
-          `http://3.39.76.109:8080/follows/${toMemberId}`,
-          {
-            headers: {
-              Authorization: token,
-            },
-          },
-        );
-        console.log('DELETE 요청 성공!', response.data);
-      } catch (error) {
-        console.log('PATCH 요청 실패!', error);
-      }
-    } else {
-      console.error('토큰이 없으므로 PATCH 요청을 보낼 수 없습니다.');
-    }
-  };
-
   return (
     <>
-      {isLogin ? (
-        <AvatarContainer>
-          {myData.id ? (
-            <EditIconBox onClick={openModal}>
-              <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
-            </EditIconBox>
-          ) : (
-            <Follow
-              handleFollowChange={handleFollowChange}
-              handleUnFollowChange={handleUnFollowChange}
-            />
-          )}
+      <AvatarContainer>
+        <EditIconBox onClick={openModal}>
+          <Icon className="edit-icon" icon="uil:edit" color="#9669f7" />
+        </EditIconBox>
 
-          {myData.imageUrl ? (
-            <img
-              src={myData.imageUrl}
-              alt="프로필 이미지"
-              className="profile-img"
-            />
-          ) : (
-            <Icon icon="mingcute:ghost-line" className="default-img" />
-          )}
-        </AvatarContainer>
-      ) : (
-        <AvatarContainer>
+        {myData.imageUrl ? (
+          <img
+            src={myData.imageUrl}
+            alt="프로필 이미지"
+            className="profile-img"
+          />
+        ) : (
           <Icon icon="mingcute:ghost-line" className="default-img" />
-        </AvatarContainer>
-      )}
+        )}
+      </AvatarContainer>
+
       {isModalOpen ? (
         <Modal closeModal={closeModal}>
           <TitleBox>
