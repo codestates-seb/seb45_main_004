@@ -76,7 +76,7 @@ const LoginPage = () => {
       //유효한 데이터를 서버로 전송한다.
       try {
         const response = await axios.post(
-          `http://3.39.76.109:8080/members/login`,
+          `https://api.celebee.kro.kr/members/login`,
           {
             username,
             password,

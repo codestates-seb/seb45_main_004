@@ -115,7 +115,7 @@ const MyProfile = ({ myData, setMyData }) => {
           alert('소개글은 1자 이상 20자 이하로 작성해 주세요.');
         } else {
           const response = await axios.patch(
-            `http://3.39.76.109:8080/members/${myId}`,
+            `https://api.celebee.kro.kr/members/${myId}`,
             patchData,
             {
               headers: {
