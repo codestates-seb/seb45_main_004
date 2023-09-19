@@ -146,4 +146,4 @@
 <br>
 <h2><a href="https://www.figma.com/file/5YjNE0j5GAdezRox3xQtSg/%EB%A9%94%EC%9D%B8%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%99%94%EB%A9%B4-%EA%B5%AC%EC%84%B1---%ED%95%98%EB%A3%A8-%EB%AA%A8%EC%9E%84?type=design&node-id=0-1&mode=design&t=6Chc3WTDrrTtTp2e-0" rel="nofollow">▶피그마</a></h2>
 <br>
-<h2><a href="https://www.notion.so/codestates/e2cd791dfa124bf7970ed0f061466bb1?p=bf98fa8b5c8a40728f091d6ba6ce86f8&pm=s" rel="nofollow">▶서비스 메뉴얼</a></h2>
+<h2><a href="https://www.notion.so/codestates/bf98fa8b5c8a40728f091d6ba6ce86f8" rel="nofollow">▶서비스 메뉴얼</a></h2>
