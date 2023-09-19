@@ -30,6 +30,9 @@ function InviteWritePage() {
     imageUrl: selectedImage,
   });
 
+  console.log(formData.date);
+  console.log(formData);
+
   // 모집 글 작성 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
