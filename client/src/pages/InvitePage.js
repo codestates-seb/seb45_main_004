@@ -72,6 +72,7 @@ function InvitePage() {
       }));
       fetchParticipants(); // 참여자 목록을 다시 불러옴
     } catch (error) {
+      alert('로그인 후 이용해주세요.');
       console.error('Error sending join status:', error);
     }
   };
@@ -131,6 +132,12 @@ function InvitePage() {
 
   // 좋아요 상태
   const handleLikeClick = () => {
+    if (!token) {
+      // 토큰이 없다면 로그인되어 있지 않다는 메시지를 표시
+      alert('로그인을 해야 찜 기능을 사용할 수 있습니다.');
+      return;
+    }
+
     const newLikeStatus = !isLiked;
     setIsLiked(newLikeStatus);
     sendLikeStatus(newLikeStatus);
