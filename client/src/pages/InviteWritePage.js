@@ -74,7 +74,7 @@ function InviteWritePage() {
 
     if (
       name === 'date' &&
-      new Date(value) < new Date(TwoDaysAfterCurrentDate)
+      new Date(value) < new Date(ThreeDaysAfterCurrentDate)
     ) {
       alert(
         '작성하시려는 모임의 마감일은 오늘입니다. 모집일은 오늘로부터 3일 후부터 가능합니다. ',
@@ -87,6 +87,12 @@ function InviteWritePage() {
       const numericValue = isNaN(parseInt(pureNumber, 10))
         ? 0
         : parseInt(pureNumber, 10);
+
+      // 백만원 초과 검증
+      if (numericValue > 1000000) {
+        alert('백만원을 초과할 수 없습니다.');
+        return;
+      }
 
       setFormData((prevData) => ({
         ...prevData,
@@ -107,6 +113,7 @@ function InviteWritePage() {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
+        timeZone: 'Asia/Seoul',
       })
       .replace(/\./g, '-')
       .replace(/\s/g, '') // 공백 제거
@@ -121,13 +128,14 @@ function InviteWritePage() {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
+        timeZone: 'Asia/Seoul',
       })
       .replace(/\./g, '-')
       .replace(/\s/g, '') // 공백 제거
       .slice(0, -1);
   };
 
-  const TwoDaysAfterCurrentDate = getDaysAfterInKST(3);
+  const ThreeDaysAfterCurrentDate = getDaysAfterInKST(3);
   const currentDate = getCurrentDateInKST();
 
   const numberWithCommas = (x) => {
