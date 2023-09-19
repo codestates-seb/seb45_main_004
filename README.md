@@ -33,6 +33,7 @@
     - server 환경 구축 및 배포(AWS)<br/> 
     - 이미지 처리<br/> 
     - 모임 참여<br/> 
+    - 알림 <br/>
   </td>
   <td align="left">
     - 모임 글 작성 및 조회 <br/>    
