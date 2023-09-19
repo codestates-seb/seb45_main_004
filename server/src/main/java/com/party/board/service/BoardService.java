@@ -43,6 +43,7 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
+        System.out.println("[모임글 생성에 들어가는 날짜]"+ postDto.getDate());
         //알림 발송
         alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
 
