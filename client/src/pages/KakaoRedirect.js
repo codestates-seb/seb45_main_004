@@ -18,7 +18,7 @@ export default function Kakao() {
         code: code,
       };
       axios
-        .post(`https://api.celebee.kro.kr/login`, data)
+        .post(`https://api.celebee.kro.kr/oauth/login`, data)
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
