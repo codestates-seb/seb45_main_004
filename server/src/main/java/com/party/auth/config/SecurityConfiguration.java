@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .antMatchers(HttpMethod.POST, "/*/members").permitAll()
                         .antMatchers(HttpMethod.POST, "/boards/new-boards").hasRole("USER")
-                        .antMatchers(HttpMethod.POST, "/members/me").hasRole("USER")
+                        .antMatchers(HttpMethod.GET, "/members/me").hasRole("USER")
                         .antMatchers(HttpMethod.PATCH, "/members/{memberId}").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/boards/{board-id}/join").hasRole("USER")
                         .antMatchers(HttpMethod.POST, "/likes/{board-id}").hasRole("USER")
