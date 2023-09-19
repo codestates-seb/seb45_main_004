@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 function InviteWritePage() {
   const token = localStorage.getItem('jwtToken');
-  const api = 'http://3.39.76.109:8080';
+  const api = 'https://api.celebee.kro.kr';
   const navigate = useNavigate();
   const [selectedButton, setSelectedButton] = useState(null);
   const [imageFromServer, setImageFromServer] = useState(null);
