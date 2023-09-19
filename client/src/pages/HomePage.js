@@ -107,6 +107,7 @@ export default function Homepage() {
         setCurrentInvitations(titleData);
         console.log(titleData); // 검색창에 검색어와 동일한 내용만 필터
         setSearch('');
+        setCurrentPage(0);
       })
       .catch((error) => {
         console.log('Error', error);
