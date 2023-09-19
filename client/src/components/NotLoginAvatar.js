@@ -44,7 +44,7 @@ const NotLoginAvatar = ({ memberData }) => {
     if (token) {
       try {
         const response = await axios.post(
-          `http://3.39.76.109:8080/follows/${toMemberId}`,
+          `https://api.celebee.kro.kr/follows/${toMemberId}`,
           followData,
           {
             headers: {
@@ -65,7 +65,7 @@ const NotLoginAvatar = ({ memberData }) => {
     if (token) {
       try {
         const response = await axios.delete(
-          `http://3.39.76.109:8080/follows/${toMemberId}`,
+          `https://api.celebee.kro.kr/follows/${toMemberId}`,
           {
             headers: {
               Authorization: token,
