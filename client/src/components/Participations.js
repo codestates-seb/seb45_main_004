@@ -8,6 +8,7 @@ const ContentList = styled.ul`
   list-style-type: none;
   place-items: center;
   margin-top: 20px;
+  width: 100%;
 
   @media screen and (max-width: 768px) {
     margin: 20px 20px;
