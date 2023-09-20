@@ -254,7 +254,7 @@ function InvitePage() {
                 {eventData.currentNum === eventData.totalNum ||
                 (daysDifference >= 0 && daysDifference <= 2)
                   ? 'Closed'
-                  : 'Participation'}
+                  : 'Join'}
               </button>
             </div>
             <div className="user-container">
@@ -339,6 +339,7 @@ function InvitePage() {
                     key={key}
                     text={CategoryMappings[key]?.label}
                     color={CategoryMappings[key]?.backgroundColor}
+                    disableCursor={true}
                   />
                 );
               }
@@ -358,23 +359,19 @@ function InvitePage() {
 }
 
 const EventDetailsContainer = styled.div`
-  margin: 0px 320px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  color: black;
-  section {
-    margin: 50px 0px;
-    display: flex;
-    padding: 0px 200px;
 
-    @media (max-width: 768px) {
-      flex-direction: column;
-      padding: 0px 10px;
-    }
+  section {
+    display: flex;
+    padding: 50px;
+    max-width: 1196px;
+    margin: 0 auto;
+    gap: 20px;
   }
 
   article {
-    width: 433px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -563,6 +560,9 @@ const EventDetailsContainer = styled.div`
     height: 2px; /* 아래 여백 높이 조절 */
   }
 
+  .form-box {
+    width: 450px;
+  }
   .title-box {
     background-color: white;
     height: 40px;
@@ -591,7 +591,7 @@ const EventDetailsContainer = styled.div`
     align-items: center;
     background-color: rgba(244, 227, 233, 0.4);
     border: none;
-    margin-bottom: 23px;
+    margin-bottom: 15px;
   }
   .map-box {
     height: 300px;
@@ -608,6 +608,7 @@ const EventDetailsContainer = styled.div`
     width: 100%;
     padding: 10px;
   }
+  width: 433px;
 
   label {
     width: 100%;
@@ -651,6 +652,11 @@ const EventDetailsContainer = styled.div`
   }
 
   @media (max-width: 768px) {
+    section {
+      flex-direction: column;
+      padding: 20px 0px;
+    }
+
     img {
       width: 100%;
       height: auto;
@@ -669,15 +675,43 @@ const EventDetailsContainer = styled.div`
 
     .form-box {
       margin-top: 20px;
+      width: 400px;
     }
     .main-img {
       width: 100%;
-      height: 100%;
+      height: auto;
     }
 
     .heart-icon {
       top: 390px;
       left: 390px;
+    }
+  }
+
+  @media (min-width: 375px) and (max-width: 432px) {
+    .image-container,
+    .card-container {
+      width: 360px;
+      height: 100%;
+    }
+    .user-box {
+      flex-direction: column;
+      justify-content: center;
+      margin-top: 5px;
+    }
+
+    .host-container {
+      width: 100%;
+    }
+
+    .form-box {
+      margin-top: 10px;
+      width: 360px;
+    }
+
+    .main-img {
+      width: 360px;
+      height: 100%;
     }
   }
 `;
