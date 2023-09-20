@@ -289,6 +289,7 @@ const HomePage = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow-x: hidden;
   .main-container {
     max-width: 1280px;
     margin: 0 auto;
