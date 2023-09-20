@@ -373,6 +373,7 @@ const HomePage = styled.div`
   .invitation-item {
     display: flex;
     justify-content: center;
+    width: 300px;
     height: 300px;
     margin-bottom: 30px;
     position: relative;
