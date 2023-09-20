@@ -24,10 +24,10 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*");
                 // 목적은 웹소켓 연결이 가능하지 않을 때
                 // (예: 웹소켓을 지원하지 않는 브라우저, 인터넷 중간에 프록시나 방화벽이 있어 웹소켓을 차단하는 경우)에도
                 // 가능한 가장 유사한 대체 수단을 사용하여 통신할 수 있게 하는 것입니다.
-                .withSockJS();
+//                .withSockJS();
     }
 }
