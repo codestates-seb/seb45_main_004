@@ -10,6 +10,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessLogicException.class)
     public ResponseEntity handleBusinessLogicException(BusinessLogicException e) {
-        return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(e.getExceptionCode().getStatus()));
+        return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

@@ -159,10 +159,6 @@ public class OAuthService {
     }
 
     private Member saveMember(MemberProfile memberProfile) {
-        if (memberRepository.findByEmail(memberProfile.getEmail()).isPresent()) {
-            throw new BusinessLogicException(ExceptionCode.MEMBER_EXIST);
-        }
-
         Member member = Member.createMember(
                 memberProfile.getEmail(),
                 "oauthUser",
