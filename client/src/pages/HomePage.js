@@ -239,12 +239,16 @@ export default function Homepage() {
           scrollThreshold={1}
         >
           {currentInvitations.map((item) => (
-            <Link
+            <div
               key={item.boardId}
               to={`/boards/${item.boardId}`}
               className="invitation-item"
             >
-              <div className="invitation-image-container">
+              <Link
+                key={item.boardId}
+                to={`/boards/${item.boardId}`}
+                className="invitation-image-container"
+              >
                 <div className="card-container">
                   {/* 앞면: 이미지 */}
                   <div className="card-face card-front">
@@ -273,8 +277,8 @@ export default function Homepage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </InfiniteScroll>
       </div>
