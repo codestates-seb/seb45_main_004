@@ -3,7 +3,7 @@ package com.party.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
-    MEMBER_EXIST(409, "Member exists"),
+    MEMBER_EXIST(410, "Member exists"),
     MEMBER_NOT_FOUND(404, "Member not found"),
     BOARD_NOT_FOUND(405, "board not found"),
     NOT_ALLOW_PARTICIPATE(405, "unable to participate"),
