@@ -217,7 +217,7 @@ export default function Homepage() {
               className="search-text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
             />
             <SearchBtn className="icon-search" onClick={handleSearchIconClick}>
               <FaSearch />
@@ -286,12 +286,12 @@ const HomePage = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-
   display: flex;
   justify-content: center;
-
+  width: 100%;
   .main-container {
-    margin: 0px 320px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
   .main-header {
