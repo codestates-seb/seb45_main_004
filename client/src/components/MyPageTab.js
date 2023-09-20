@@ -52,7 +52,7 @@ const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
           }}
         />
         <Button
-          text="Participation"
+          text="Joined"
           type="participations"
           label="tab2"
           onClick={() => {
