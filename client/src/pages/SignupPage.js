@@ -187,7 +187,7 @@ export default function Signuppage() {
                 onChange={handleGenderChange}
                 className="sex-checkbox"
               />
-              <label htmlFor="option1">Men</label>
+              <label htmlFor="option1">Man</label>
             </GenderStylebox>
             <GenderStylebox className="sex-women">
               <input
@@ -197,7 +197,7 @@ export default function Signuppage() {
                 onChange={handleGenderChange}
                 className="sex-checkbox"
               />
-              <label htmlFor="option1">Women</label>
+              <label htmlFor="option1">Woman</label>
             </GenderStylebox>
           </div>
           <div className="signup-form-email">
