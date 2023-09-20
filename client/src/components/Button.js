@@ -27,6 +27,10 @@ const StyleButton = styled.button`
     margin-bottom: 10px;
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
+  &.Button-login:active,
+  &.Button-login:focus {
+    box-shadow: inset 1px 1px 3px 1px rgb(0, 0, 0, 0.2); /* 클릭 또는 포커스 시 box-shadow를 추가합니다. */
+  }
 
   &.Button-based {
     height: 42px;

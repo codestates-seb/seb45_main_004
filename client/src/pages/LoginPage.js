@@ -43,7 +43,7 @@ const LoginPage = () => {
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
 
-    const isValid = isEmailValid(username);
+    const isValid = isEmailValid(e.target.value);
 
     if (!isValid) {
       setEmailError('유효한 메일 형식이 아닙니다.');
@@ -71,6 +71,10 @@ const LoginPage = () => {
   // 로그인 데이터 양식 전달 시 검사 규칙 정의
   const handleLogin = async (e) => {
     e.preventDefault();
+    if (!username && !password) {
+      window.alert('이메일과 패스워드를 입력해주시기 바랍니다.');
+      return;
+    }
 
     if (isEmailValid(username) && isPasswordValid(password)) {
       //유효한 데이터를 서버로 전송한다.
