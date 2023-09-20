@@ -62,7 +62,6 @@ function InviteWritePage() {
       });
 
       navigate(`/boards/${response.data.boardId}`);
-      console.log('요청됨');
     } catch (error) {
       console.error('Error creating card:', error);
     }
@@ -315,8 +314,12 @@ function InviteWritePage() {
               tabIndex="0"
             >
               <div className="modal">
-                <button onClick={handlePrevImage}>이전</button>
-                <button onClick={handleNextImage}>다음</button>
+                <button className="pre-btn" onClick={handlePrevImage}>
+                  이전
+                </button>
+                <button className="next-btn" onClick={handleNextImage}>
+                  다음
+                </button>
                 <div
                   className="slider-container"
                   style={{ transform: `translateX(-${currentIndex * 220}px)` }}
@@ -338,7 +341,6 @@ function InviteWritePage() {
               </div>
             </div>
           )}
-
           {/*카테고리*/}
           <div className="category-btn">
             {Object.keys(CategoryMappings)
@@ -366,16 +368,17 @@ function InviteWritePage() {
 }
 
 const StyledWritePage = styled.div`
-  margin: 0px 320px;
   display: flex;
   justify-content: center;
+  width: 100%;
 
   section {
     position: relative;
-    margin: 50px 0px;
     display: flex;
     gap: 20px;
-    padding: 0px 200px;
+    padding: 50px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
   .btn-box {
@@ -388,6 +391,7 @@ const StyledWritePage = styled.div`
     flex-direction: column;
     gap: 10px;
     margin-bottom: -7px;
+    width: 450px;
   }
   input,
   textarea {
@@ -502,14 +506,15 @@ const StyledWritePage = styled.div`
     display: flex;
     transition: transform 0.3s;
     width: 100%;
+    transform: translateX(-220px);
   }
 
   .modal-btn {
     position: absolute;
     width: 38px;
-    left: 200px;
+    left: 50px;
     height: 38px;
-    top: 362px;
+    top: 412px;
     background-color: #d25bea;
     border: none;
     z-index: 1;
@@ -561,7 +566,7 @@ const StyledWritePage = styled.div`
       height: auto;
     }
     .modal-btn {
-      top: 410px;
+      top: 462px;
     }
 
     .submit-btn {
@@ -571,6 +576,66 @@ const StyledWritePage = styled.div`
     .main-img {
       width: 100%;
       height: 100%;
+    }
+
+    .modal {
+      width: 360px;
+      height: 400px;
+      padding: 15px;
+      overflow: scroll;
+      border-radius: 0px;
+    }
+    .slider-container {
+      flex-direction: column;
+      transform: none !important;
+    }
+
+    .pre-btn,
+    .next-btn {
+      display: none;
+    }
+  }
+  @media (min-width: 375px) and (max-width: 472px) {
+    .modal {
+      width: 90%;
+      height: 400px;
+      padding: 15px;
+      overflow: scroll;
+    }
+    .slider-container {
+      width: 100%;
+      flex-direction: column;
+      transform: none !important;
+    }
+    .modal-btn {
+      right: 0px;
+      top: 372px;
+    }
+
+    .image-container,
+    .card-container {
+      width: 360px;
+      height: 100%;
+    }
+
+    .form-box {
+      width: 360px;
+    }
+    .body-date {
+      min-height: 150px;
+      max-height: 150px;
+      max-width: 500px;
+      min-width: 360px;
+    }
+
+    .category-btn {
+      li > button {
+        width: 100%;
+      }
+    }
+    .search-box,
+    #map {
+      width: 360px;
     }
   }
 `;

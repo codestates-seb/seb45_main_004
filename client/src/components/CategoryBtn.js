@@ -9,18 +9,26 @@ const CatgegoryBtnWrapper = styled.li`
     background-color: ${(props) => props.color || 'white'};
     border: none;
     border-radius: 20px;
-    cursor: pointer;
+    /* cursor: pointer; */
     padding: 0px;
     // 버튼 그림자
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
 
-    // InviteWritePage 버튼 클릭 상태에 따른 css
     box-shadow: ${(props) =>
-      props.isSelected ? 'inset 1px 1px 3px 1px rgb(0, 0, 0, 0.2)' : ''};
+      props.$isSelected ? 'inset 1px 1px 3px 1px rgba(0, 0, 0, 0.2)' : ''};
+
+    // InviePage
+    cursor: ${(props) => (props.$disableCursor ? 'default' : 'pointer')};
   }
 `;
 
-export default function CategoryBtn({ text, color, onClick, isSelected }) {
+export default function CategoryBtn({
+  text,
+  color,
+  onClick,
+  isSelected,
+  disableCursor,
+}) {
   const handleClick = () => {
     // 클릭 이벤트 핸들러 실행 후, 부모 컴포넌트에서 전달한 onClick 함수 실행
     if (onClick) {
@@ -29,8 +37,8 @@ export default function CategoryBtn({ text, color, onClick, isSelected }) {
   };
   return (
     <CatgegoryBtnWrapper
-      isSelected={isSelected}
-      // isETC={text === 'ETC'}
+      $disableCursor={disableCursor}
+      $isSelected={isSelected}
       color={color}
     >
       <button onClick={handleClick}>{text}</button>
@@ -39,8 +47,9 @@ export default function CategoryBtn({ text, color, onClick, isSelected }) {
 }
 
 CategoryBtn.propTypes = {
-  text: PropTypes.string, // text prop의 유효성을 검사합니다.
+  text: PropTypes.string,
   color: PropTypes.string,
   onClick: PropTypes.func,
   isSelected: PropTypes.bool,
+  disableCursor: PropTypes.bool,
 };
