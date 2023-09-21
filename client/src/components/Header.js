@@ -11,7 +11,8 @@ const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
   background-color: rgba(255, 255, 255, 0.2);
   width: 100%;
-  padding: 10px 0;
+  padding: 20px 0;
+
   /* 헤더의 요소 정렬 */
   .header-container {
     display: flex;
@@ -20,7 +21,6 @@ const ServieceHeader = styled.header`
     height: 100%;
     margin: 0 auto;
     max-width: 1280px;
-    padding: 0 30px;
   }
 
   .button-box {

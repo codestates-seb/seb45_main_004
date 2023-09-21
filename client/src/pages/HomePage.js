@@ -533,6 +533,24 @@ const HomePage = styled.div`
       font-size: 8vh;
     }
   }
+  // 추가
+  @media screen and (min-width: 375px) and (max-width: 432px) {
+    .main-header h1 {
+      font-size: 3vh;
+    }
+    .search {
+      width: 300px; /* 예시: 검색바 너비 조정 */
+    }
+    .categorys-container {
+      li > button {
+        width: 100px;
+      }
+    }
+    .categorys-container {
+      gap: 15px;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 `;
 
 const SearchBtn = styled.button`
