@@ -217,7 +217,7 @@ export default function Homepage() {
               className="search-text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
             />
             <SearchBtn className="icon-search" onClick={handleSearchIconClick}>
               <FaSearch />
@@ -239,12 +239,16 @@ export default function Homepage() {
           scrollThreshold={1}
         >
           {currentInvitations.map((item) => (
-            <Link
+            <div
               key={item.boardId}
               to={`/boards/${item.boardId}`}
               className="invitation-item"
             >
-              <div className="invitation-image-container">
+              <Link
+                key={item.boardId}
+                to={`/boards/${item.boardId}`}
+                className="invitation-image-container"
+              >
                 <div className="card-container">
                   {/* 앞면: 이미지 */}
                   <div className="card-face card-front">
@@ -273,8 +277,8 @@ export default function Homepage() {
                     </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           ))}
         </InfiniteScroll>
       </div>
@@ -286,12 +290,13 @@ const HomePage = styled.div`
   ::-webkit-scrollbar {
     display: none;
   }
-
   display: flex;
   justify-content: center;
-
+  width: 100%;
+  overflow-x: hidden;
   .main-container {
-    margin: 0px 320px;
+    max-width: 1280px;
+    margin: 0 auto;
   }
 
   .main-header {

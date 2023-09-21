@@ -13,15 +13,15 @@
 
 body {
     width: 100%; 
-    /* background: linear-gradient(135deg, rgba(18, 104, 233, 0.60) 0%, rgba(196, 113, 237, 0.60) 50%, rgba(246, 79, 89, 0.60) 100%); */
     background-image: 
     radial-gradient(circle, transparent 1px, rgba(255, 255, 255, 0.162) 1px),
     radial-gradient(circle, rgb(255, 248, 106) 1px, transparent 1px),
     linear-gradient(100deg, rgba(94, 152, 239, 1) 0%, rgba(196, 113, 237, 1) 50%, rgba(246, 79, 89, 1) 100%);
-  background-size: 20px 20px, 60px 60px, 100% 100%;
+  background-size: 200px 20px, 60px 60px, 100% 100%;
   animation: moveBackground 7s linear infinite;
   }
   
+
   @keyframes moveBackground {
     0% {
       background-position: 0% 0%, 30px 30px, 0% 0%;
@@ -30,7 +30,8 @@ body {
       background-position: 60px 60px, 90px 90px, 0% 0%;
     }
   }
-  
+
+
   #root{
     display: flex;
     flex-direction: column;

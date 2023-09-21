@@ -26,6 +26,12 @@ const SignupPage = styled.div`
     background-color: #0a95ff;
     cursor: pointer;
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s;
+  }
+
+  .singup-submit-btn:active,
+  .singup-submit-btn:focus {
+    box-shadow: inset 1px 1px 3px 1px rgb(0, 0, 0, 0.2); /* 클릭 또는 포커스 시 box-shadow를 추가합니다. */
   }
   .agree-text {
     font-size: 15px;
@@ -181,7 +187,7 @@ export default function Signuppage() {
                 onChange={handleGenderChange}
                 className="sex-checkbox"
               />
-              <label htmlFor="option1">Men</label>
+              <label htmlFor="option1">Man</label>
             </GenderStylebox>
             <GenderStylebox className="sex-women">
               <input
@@ -191,7 +197,7 @@ export default function Signuppage() {
                 onChange={handleGenderChange}
                 className="sex-checkbox"
               />
-              <label htmlFor="option1">Women</label>
+              <label htmlFor="option1">Woman</label>
             </GenderStylebox>
           </div>
           <div className="signup-form-email">

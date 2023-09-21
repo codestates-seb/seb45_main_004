@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* global kakao */
 import { useEffect } from 'react';
-import PropTypes from 'prop-types'; // prop-types 라이브러리를 import
-// import InviteWritePage from '../pages/InviteWritePage';
+import PropTypes from 'prop-types';
 const { kakao } = window;
 
 function MapKakao({
@@ -92,6 +91,15 @@ function MapKakao({
         });
       }
     };
+
+    //엔터 검색
+    const handleEnterPress = (e) => {
+      if (e.key === 'Enter' && showSearch) {
+        e.preventDefault();
+        handleSearchButtonClick();
+      }
+    };
+
     if (showMarker && latitude && longitude) {
       const latlngs = new kakao.maps.LatLng(latitude, longitude);
 
@@ -117,6 +125,13 @@ function MapKakao({
         },
       );
     }
+
+    // 엔터 키 이벤트 리스너 추가
+    const addressInput = document.getElementById('address-input');
+    if (addressInput) {
+      addressInput.addEventListener('keydown', handleEnterPress);
+    }
+    // 검색 버튼 이벤트 리스너 추가
     const searchButton = showSearch
       ? document.getElementById('search-button')
       : null;
@@ -126,6 +141,9 @@ function MapKakao({
     return () => {
       if (searchButton) {
         searchButton.removeEventListener('click', handleSearchButtonClick);
+      }
+      if (addressInput) {
+        addressInput.removeEventListener('keydown', handleEnterPress);
       }
     };
   }, [latitude, longitude, showSearch, showMarker]);

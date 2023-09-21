@@ -9,7 +9,7 @@ const MyPageSection = styled.section`
   display: flex;
   justify-content: center;
   width: 100%;
-  max-width: 1196px;
+  max-width: 1280px;
 `;
 
 const ContentsContainer = styled.div`
