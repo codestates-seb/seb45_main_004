@@ -38,7 +38,6 @@ export default function Homepage() {
         // 모집 마감 초대장을 그 뒤에 추가
         const lastInviation = [...sortedInvitation, ...closedInvitations];
         setInvitation(lastInviation);
-        console.log(lastInviation);
       })
       .then(() => {
         getInvitations(PER_SCROLL);
@@ -531,6 +530,24 @@ const HomePage = styled.div`
     }
     .main-header h1 {
       font-size: 8vh;
+    }
+  }
+  // 추가
+  @media screen and (min-width: 375px) and (max-width: 432px) {
+    .main-header h1 {
+      font-size: 3vh;
+    }
+    .search {
+      width: 300px; /* 예시: 검색바 너비 조정 */
+    }
+    .categorys-container {
+      li > button {
+        width: 100px;
+      }
+    }
+    .categorys-container {
+      gap: 15px;
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 `;
