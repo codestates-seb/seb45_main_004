@@ -6,7 +6,7 @@ const SignupPage = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80%;
+  height: 100%;
   font-size: 16px;
   margin: 0px 320px;
   .signup-form-sex {
