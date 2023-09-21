@@ -17,6 +17,8 @@ jobs:
       KAKAO_CLIENT_ID: ${{secrets.KAKAO_CLIENT_ID}}
       KAKAO_CLIENT_SECRET: ${{secrets.KAKAO_CLIENT_SECRET}}
 
+      SPRING_PROFILES_ACTIVE: dev
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
