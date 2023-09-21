@@ -11,10 +11,31 @@ const StyleButton = styled.button`
   /* 버튼 조건부 스타일 &.{btnType} 
   예) 카테고리 버튼 : &.Button-category
   */
+  &.Button-based {
+    height: 42px;
+    font-weight: 700;
+    background-color: rgba(246, 246, 246, 0);
+  }
 
-  &.Button-membership:active {
+  &.Button-based:active {
     transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
     box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.7);
+  }
+
+  @media (max-width: 768px) {
+    &.Button-based {
+      width: 80px;
+      height: 35px;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 432px) {
+    &.Button-based {
+      width: 60px;
+      height: 30px;
+      font-size: 0.6rem;
+    }
   }
 
   &.Button-login {
@@ -26,12 +47,6 @@ const StyleButton = styled.button`
     background-color: rgb(10, 149, 255);
     margin-bottom: 10px;
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
-  }
-
-  &.Button-based {
-    height: 42px;
-    font-weight: 700;
-    background-color: rgba(246, 246, 246, 0);
   }
 
   &.Button-like {
@@ -86,31 +101,31 @@ const StyleButton = styled.button`
   }
 `;
 
-const Button = ({ type, text, onClick }) => {
-  const btnType = [
+const Button = ({ style, text, onClick }) => {
+  const btnStyle = [
     'based',
     'newCard',
     'like',
     'participations',
     'login',
     'text',
-  ].includes(type)
-    ? type
+  ].includes(style)
+    ? style
     : 'default';
 
   return (
-    <StyleButton className={`Button-${btnType}`} onClick={onClick}>
+    <StyleButton className={`Button-${btnStyle}`} onClick={onClick}>
       {text}
     </StyleButton>
   );
 };
 
 Button.defaultProps = {
-  type: 'default',
+  style: 'default',
 };
 
 Button.propTypes = {
-  type: PropTypes.string.isRequired,
+  style: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
