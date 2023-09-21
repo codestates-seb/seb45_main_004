@@ -217,7 +217,11 @@ function InviteWritePage() {
   return (
     <StyledWritePage>
       <section>
-        <button className="modal-btn" onClick={handleModalClick}>
+        <button
+          className="modal-btn"
+          aria-label="모달 열기"
+          onClick={handleModalClick}
+        >
           <BiEdit className="edit-btn" />
         </button>
         <form onSubmit={handleSubmit}>
@@ -343,7 +347,7 @@ function InviteWritePage() {
             </div>
           )}
           {/*카테고리*/}
-          <div className="category-btn">
+          <menu className="category-btn">
             {Object.keys(CategoryMappings)
               .filter((key) => key !== 'CATEGORY_ALL')
               .map((key) => {
@@ -360,7 +364,7 @@ function InviteWritePage() {
                   />
                 );
               })}
-          </div>
+          </menu>
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>

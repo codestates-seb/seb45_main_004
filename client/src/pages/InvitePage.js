@@ -331,7 +331,7 @@ function InvitePage() {
           <div className="data title-body">
             <div>{eventData.body}</div>
           </div>
-          <div>
+          <menu>
             {Object.keys(CategoryMappings).map((key) => {
               if (eventData.category === key) {
                 return (
@@ -345,7 +345,7 @@ function InvitePage() {
               }
               return null;
             })}
-          </div>
+          </menu>
           <MapKakao
             latitude={parseFloat(eventData.latitude)}
             longitude={parseFloat(eventData.longitude)}
