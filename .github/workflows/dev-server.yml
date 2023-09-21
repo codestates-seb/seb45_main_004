@@ -55,7 +55,7 @@ jobs:
       - name: Deploy to Server
         run: |
           aws ssm send-command \
-            --instance-id i-04fccea6f0f7c7810 \
+            --instance-id i-001154b877d9c18ef \
             --document-name "AWS-RunShellScript" \
             --parameters "commands=[
               'if sudo docker ps -a --format \\'{{.Names}}\\' | grep -q \'^server$\\'; then',
