@@ -1,3 +1,4 @@
+#로컬 서버
 spring:
   h2:
     console:

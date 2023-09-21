@@ -8,4 +8,4 @@ ARG JAR_FILE=build/libs/*-SNAPSHOT.jar
 COPY ${JAR_FILE} app.jar
 
 # (4) jar 파일 실행
-ENTRYPOINT ["java","-jar","/app.jar", "--spring.profiles.active=server"]
+ENTRYPOINT ["java","-jar","/app.jar"]
