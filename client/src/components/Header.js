@@ -10,8 +10,8 @@ import { useEffect } from 'react';
 const ServieceHeader = styled.header`
   /* 헤더 기본 스타일 */
   background-color: rgba(255, 255, 255, 0.2);
-  height: 6em;
   width: 100%;
+  padding: 10px 0;
   /* 헤더의 요소 정렬 */
   .header-container {
     display: flex;
@@ -20,18 +20,9 @@ const ServieceHeader = styled.header`
     height: 100%;
     margin: 0 auto;
     max-width: 1280px;
-  }
-  @media (max-width: 968px) {
-    .header-container {
-      padding: 0 30px;
-    }
+    padding: 0 30px;
   }
 
-  @media (max-width: 768px) {
-    .header-container {
-      padding: 0 40px; // 원하는 패딩 값을 조절할 수 있습니다.
-    }
-  }
   .button-box {
     display: flex;
     align-items: center;
@@ -49,6 +40,54 @@ const ServieceHeader = styled.header`
       margin: 0;
       font-size: 2.5rem;
       color: white;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .header-container {
+      padding: 0 20px;
+    }
+
+    .title-box {
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    .button-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .user-info-icon {
+      width: 35px;
+      height: 35px;
+      color: #000;
+    }
+  }
+
+  @media (max-width: 432px) {
+    .header-container {
+      padding: 0 15px;
+    }
+
+    .title-box {
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .button-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .user-info-icon {
+      width: 30px;
+      height: 30px;
+      color: #000;
     }
   }
 `;
@@ -103,33 +142,33 @@ const Header = () => {
               </Link>
               <Link to="/boards/new-boards">
                 <Button
-                  type="based"
+                  style="based"
                   text="New Card!"
                   onClick={handleWriteClick}
                 />
               </Link>
               {/* {isNew ? (
                 <Button
-                  type="notification"
+                  style="notification"
                   text={<MdNotificationsActive className="noti-icon" />}
                 />
               ) : (
                 <Button
-                  type="notification"
+                  style="notification"
                   text={<MdNotificationsNone className="noti-icon" />}
                 />
               )} */}
-              <Button type="based" text="Logout" onClick={handleLogout} />
+              <Button style="based" text="Logout" onClick={handleLogout} />
             </div>
           </ButtonBox>
         ) : (
           <ButtonBox>
             <div className="button-box">
               <Link to="/members/login">
-                <Button type="based" text="Log In" />
+                <Button style="based" text="Log In" />
               </Link>
               <Link to="/members">
-                <Button type="based" text="Sign Up" />
+                <Button style="based" text="Sign Up" />
               </Link>
             </div>
           </ButtonBox>

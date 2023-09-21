@@ -12,10 +12,13 @@ const MailLoginform = styled.form`
     margin-bottom: 15px;
     color: red;
 
-    a {
+    button {
+      border: 0;
+      background-color: rgba(255, 255, 255, 0);
       color: white;
       text-decoration: none;
       font-size: 1rem;
+      cursor: pointer;
     }
   }
   .password {
@@ -70,6 +73,10 @@ const EmailLoginForm = ({
   eamilError,
   passwordError,
 }) => {
+  const handleClickAlert = () => {
+    alert('추후 업데이트 될 기능입니다.');
+  };
+
   return (
     <MailLoginform>
       <div className="title-box"></div>
@@ -84,7 +91,7 @@ const EmailLoginForm = ({
         {eamilError && <p className="error">{eamilError}</p>}
       </div>
       <div className="title-box">
-        <a href="/">Forgot password?</a>
+        <button onClick={handleClickAlert}>Forgot password?</button>
       </div>
       <div className="input-box password">
         <InputStyle

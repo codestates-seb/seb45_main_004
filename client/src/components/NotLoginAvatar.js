@@ -24,6 +24,30 @@ const AvatarContainer = styled.div`
     height: 200px;
     border-radius: 50%;
   }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+  }
+
+  @media (max-width: 432px) {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+  }
 `;
 
 const NotLoginAvatar = ({ memberData }) => {
