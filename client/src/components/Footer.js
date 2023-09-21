@@ -5,7 +5,7 @@ const StyledFooter = styled.footer`
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.2);
   width: 100%;
-  height: 130px;
+  padding: 10px 0;
 `;
 
 const FooterContainer = styled.div`

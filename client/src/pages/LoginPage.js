@@ -14,15 +14,13 @@ const LoginBody = styled.section`
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  height: 80vh;
+  height: 100%;
 `;
 
 const Logincontainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-top: 100px;
-  margin-bottom: 100px;
 `;
 
 const LoginPage = () => {
@@ -94,7 +92,6 @@ const LoginPage = () => {
           localStorage.setItem('refresh', refresh);
           localStorage.setItem('myId', myId);
 
-          console.log('성공');
           dispatch(login(token));
           dispatch(fetchMyData(myId));
           navigate('/');
@@ -118,7 +115,7 @@ const LoginPage = () => {
           eamilError={eamilError}
           passwordError={passwordError}
         />
-        <Button type="login" text="Log In" onClick={handleLogin} />
+        <Button style="login" text="Log In" onClick={handleLogin} />
         {isError && <p>{isError}</p>}
       </Logincontainer>
     </LoginBody>

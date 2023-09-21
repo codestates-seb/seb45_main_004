@@ -155,7 +155,7 @@ function MapKakao({
           <input
             type="text"
             id="address-input"
-            placeholder="주소를 입력하세요"
+            placeholder="전체 주소를 입력해주세요."
             style={{ marginRight: '10px' }}
           />
           <button tabIndex="0" id="search-button">

@@ -18,16 +18,18 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="boards/new-boards" element={<InviteWritePage />} />
-        <Route path="/boards/:boardId" element={<InvitePage />} />
-        <Route path="/members/:memberId" element={<UserPage />} />
-        <Route path="/members/me" element={<MyPage />} />
-        <Route path="/members/login" element={<LoginPage />} />
-        <Route path="/members/" element={<SignupPage />} />
-        <Route path="oauth/kakao/login" element={<Kakao />} />
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="boards/new-boards" element={<InviteWritePage />} />
+          <Route path="/boards/:boardId" element={<InvitePage />} />
+          <Route path="/members/:memberId" element={<UserPage />} />
+          <Route path="/members/me" element={<MyPage />} />
+          <Route path="/members/login" element={<LoginPage />} />
+          <Route path="/members/" element={<SignupPage />} />
+          <Route path="oauth/kakao/login" element={<Kakao />} />
+        </Routes>
+      </main>
       <Footer />
     </BrowserRouter>
   );

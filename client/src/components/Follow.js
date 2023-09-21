@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';
 
 const FollowIconBox = styled.span`
   background-color: white;
-  border-radius: 50%;
   width: 60px;
   height: 60px;
+  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,8 +17,6 @@ const FollowIconBox = styled.span`
   cursor: pointer;
 
   .follow-btn {
-    width: 40px;
-    height: 40px;
     border: 0;
     border-radius: 50%;
     background-color: white;
@@ -31,6 +29,31 @@ const FollowIconBox = styled.span`
     width: 38px;
     height: 38px;
     color: red;
+  }
+
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+
+    .follow-btn {
+    }
+
+    .follow-icon {
+      width: 28.5px;
+      height: 28.5px;
+    }
+  }
+  @media (max-width: 432px) {
+    width: 30px;
+    height: 30px;
+
+    .follow-btn {
+    }
+
+    .follow-icon {
+      width: 19px;
+      height: 19px;
+    }
   }
 `;
 

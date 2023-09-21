@@ -12,8 +12,8 @@ const ContentList = styled.ul`
 
   @media screen and (max-width: 768px) {
     margin: 20px 20px;
-    display: flex;
-    justify-content: center;
+    grid-template-columns: repeat(1, 1fr);
+    place-items: center;
   }
 
   @media screen and (min-width: 769px) and (max-width: 1000px) {

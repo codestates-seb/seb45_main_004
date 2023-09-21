@@ -31,6 +31,42 @@ const AvatarContainer = styled.div`
     height: 200px;
     border-radius: 50%;
   }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 150px;
+    margin-right: 10px;
+
+    .default-img {
+      width: 150px;
+      height: 150px;
+      color: #d99bff;
+    }
+
+    .profile-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+    }
+  }
+
+  @media (max-width: 432px) {
+    width: 100px;
+    height: 100px;
+    margin-right: 5px;
+
+    .default-img {
+      width: 100px;
+      height: 100px;
+      color: #d99bff;
+    }
+
+    .profile-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
+  }
 `;
 
 const TitleBox = styled.div`
@@ -63,6 +99,11 @@ const ImgBox = styled.div`
     border-radius: 50%;
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+  }
+  @media (max-width: 432px) {
+  }
 `;
 
 const EditIconBox = styled.span`
@@ -81,6 +122,25 @@ const EditIconBox = styled.span`
   .edit-icon {
     width: 38px;
     height: 38px;
+  }
+
+  @media (max-width: 768px) {
+    width: 45px;
+    height: 45px;
+
+    .edit-icon {
+      width: 28.5px;
+      height: 28.5px;
+    }
+  }
+  @media (max-width: 432px) {
+    width: 30px;
+    height: 30px;
+
+    .edit-icon {
+      width: 19px;
+      height: 19px;
+    }
   }
 `;
 

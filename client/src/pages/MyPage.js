@@ -6,8 +6,6 @@ import MyProfile from '../components/MyProfile';
 //import { useSelector } from 'react-redux';
 
 const MyPageSection = styled.section`
-  display: flex;
-  justify-content: center;
   width: 100%;
   max-width: 1280px;
 `;
@@ -18,8 +16,14 @@ const ContentsContainer = styled.div`
   flex-direction: column;
   width: 100%;
 
-  @media screen and (max-width: 768px) {
-    margin: 0 20px;
+  @media (max-width: 768px) {
+    padding: 0 20px;
+    width: 100%;
+  }
+
+  @media (max-width: 432px) {
+    padding: 0 15px;
+    width: 100%;
   }
 `;
 
