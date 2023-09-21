@@ -38,7 +38,6 @@ export default function Homepage() {
         // 모집 마감 초대장을 그 뒤에 추가
         const lastInviation = [...sortedInvitation, ...closedInvitations];
         setInvitation(lastInviation);
-        console.log(lastInviation);
       })
       .then(() => {
         getInvitations(PER_SCROLL);

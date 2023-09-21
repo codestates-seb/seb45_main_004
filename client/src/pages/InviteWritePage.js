@@ -301,6 +301,7 @@ function InviteWritePage() {
                   name="body"
                   value={formData.body}
                   onChange={handleInputChange}
+                  placeholder="최대 255자까지 입력 가능합니다."
                 />
               </label>
             </article>

@@ -92,7 +92,6 @@ const LoginPage = () => {
           localStorage.setItem('refresh', refresh);
           localStorage.setItem('myId', myId);
 
-          console.log('성공');
           dispatch(login(token));
           dispatch(fetchMyData(myId));
           navigate('/');
