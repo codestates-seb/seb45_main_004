@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'client/**'
 
 env:
   working-directory: ./client #root 폴더 설정
@@ -45,6 +47,6 @@ jobs:
         run: |
           aws s3 sync \
             --region ap-northeast-2 \
-            build s3://celebee-bucket \
+            build s3://celebee.kro.kr \
             --delete
         working-directory: ./client
