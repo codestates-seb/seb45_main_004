@@ -14,7 +14,7 @@ const LoginBody = styled.section`
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
-  height: 80%;
+  height: 100%;
 `;
 
 const Logincontainer = styled.div`
