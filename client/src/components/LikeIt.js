@@ -12,8 +12,8 @@ const ContentList = styled.ul`
 
   @media screen and (max-width: 768px) {
     margin: 20px 20px;
-    display: flex;
-    justify-content: center;
+    grid-template-columns: repeat(1, 1fr);
+    place-items: center;
   }
 
   @media screen and (min-width: 769px) and (max-width: 1000px) {
@@ -40,29 +40,19 @@ const ContentItem = styled.li`
 `;
 
 const LikeIt = ({ myData, memberData, handleMovingBoard }) => {
+  const boardLikes = memberData ? memberData.boardLikes : myData.boardLikes;
+  const isEmpty = boardLikes.length === 0;
+
   return (
-    <ContentList>
-      {memberData
-        ? memberData.boardLikes.map((el) => {
-            return (
-              <ContentItem
-                key={el.boardId}
-                onClick={() => handleMovingBoard(el.boardId)}
-              >
-                <img src={el.imgUrl} alt="찜한 목록" />
-              </ContentItem>
-            );
-          })
-        : myData.boardLikes.map((el) => {
-            return (
-              <ContentItem
-                key={el.boardId}
-                onClick={() => handleMovingBoard(el.boardId)}
-              >
-                <img src={el.imgUrl} alt="찜한 목록" />
-              </ContentItem>
-            );
-          })}
+    <ContentList isEmpty={isEmpty}>
+      {boardLikes.map((el) => (
+        <ContentItem
+          key={el.boardId}
+          onClick={() => handleMovingBoard(el.boardId)}
+        >
+          <img src={el.imgUrl} alt="찜한 목록" />
+        </ContentItem>
+      ))}
     </ContentList>
   );
 };

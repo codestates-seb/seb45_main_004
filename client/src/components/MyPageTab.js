@@ -12,6 +12,14 @@ const MyTabContainer = styled.section`
   align-items: center;
   width: 100%;
   margin-top: 50px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+  }
+
+  @media (max-width: 432px) {
+    margin-top: 20px;
+  }
 `;
 
 const MyTabBtn = styled.div`
@@ -25,8 +33,12 @@ const TabContentContainer = styled.div`
   margin-top: 40px;
   width: 100%;
 
-  @media screen and (max-width: 768px) {
-    margin: 50px 20px;
+  @media (max-width: 768px) {
+    margin-top: 30px;
+  }
+
+  @media (max-width: 432px) {
+    margin-top: 20px;
   }
 `;
 
@@ -45,15 +57,17 @@ const MyPageTab = ({ activetab, handleTabClick, myData, memberData }) => {
       <MyTabBtn>
         <Button
           text="Like It"
-          type="like"
+          style="fill"
+          color="hotpink"
           label="tab1"
           onClick={() => {
             handleTabClick('tab1');
           }}
         />
         <Button
-          text="Participation"
-          type="participations"
+          text="Joined"
+          style="fill"
+          color="orange"
           label="tab2"
           onClick={() => {
             handleTabClick('tab2');
