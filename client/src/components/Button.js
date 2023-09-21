@@ -22,22 +22,6 @@ const StyleButton = styled.button`
     box-shadow: inset 1px 1px 1px rgb(0, 0, 0, 0.7);
   }
 
-  @media (max-width: 768px) {
-    &.Button-based {
-      width: 80px;
-      height: 35px;
-      font-size: 0.8rem;
-    }
-  }
-
-  @media (max-width: 432px) {
-    &.Button-based {
-      width: 60px;
-      height: 30px;
-      font-size: 0.6rem;
-    }
-  }
-
   &.Button-login {
     width: 340px;
     height: 50px;
@@ -49,10 +33,10 @@ const StyleButton = styled.button`
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
 
-  &.Button-like {
+  &.Button-fill {
     width: 180px;
     height: 60px;
-    background-color: #ff6ac6;
+    background-color: ${(props) => (props.color ? props.color : 'default')};
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -63,58 +47,74 @@ const StyleButton = styled.button`
     font-size: 1.2rem;
     box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
   }
-
-  &.Button-like:focus {
-    box-shadow: inset 1px 1px 4px 1px rgb(0, 0, 0, 0.5);
-  }
-
-  &.Button-participations {
-    width: 180px;
-    height: 60px;
-    background-color: #ffa472;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    padding: 0px;
-    margin-left: 30px;
-    margin-right: 30px;
-    color: white;
-    font-size: 1.2rem;
-    box-shadow: 1px 3px 4px rgb(0, 0, 0, 0.4);
-  }
-  &.Button-participations:focus {
+  &.Button-fill:focus {
     box-shadow: inset 1px 1px 4px 1px rgb(0, 0, 0, 0.5);
   }
 
   &.Button-text {
     background-color: rgba(246, 246, 246, 0);
     border: none;
-    color: ${(props) => (props ? props.color : 'default')};
     border-radius: 0;
     font-weight: 600;
     font-size: 1.2rem;
     text-align: right;
     position: absolute;
-    bottom: 1px;
+    bottom: 2px;
     right: 10px;
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    &.Button-based {
+      width: 80px;
+      height: 35px;
+      font-size: 0.8rem;
+    }
+
+    &.Button-text {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    &.Button-fill {
+      font-size: 1rem;
+      width: 150px;
+      height: 55px;
+    }
+  }
+
+  @media (max-width: 432px) {
+    &.Button-based {
+      width: 60px;
+      height: 30px;
+      font-size: 0.6rem;
+    }
+
+    &.Button-text {
+      font-size: 0.6rem;
+      font-weight: 500;
+    }
+
+    &.Button-fill {
+      font-size: 0.6rem;
+      width: 120px;
+      height: 50px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+  }
 `;
 
-const Button = ({ style, text, onClick }) => {
-  const btnStyle = [
-    'based',
-    'newCard',
-    'like',
-    'participations',
-    'login',
-    'text',
-  ].includes(style)
-    ? style
-    : 'default';
+const Button = ({ style, text, color, onClick }) => {
+  const validStyle = ['based', 'newCard', 'fill', 'login', 'text'];
+  const btnStyle = validStyle.includes(style) ? style : 'default';
 
   return (
-    <StyleButton className={`Button-${btnStyle}`} onClick={onClick}>
+    <StyleButton
+      className={`Button-${btnStyle}`}
+      color={color}
+      onClick={onClick}
+    >
       {text}
     </StyleButton>
   );
@@ -122,11 +122,13 @@ const Button = ({ style, text, onClick }) => {
 
 Button.defaultProps = {
   style: 'default',
+  color: '',
 };
 
 Button.propTypes = {
   style: PropTypes.string.isRequired,
   text: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   onClick: PropTypes.func,
 };
 
