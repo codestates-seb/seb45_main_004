@@ -537,6 +537,9 @@ const HomePage = styled.div`
     .main-header h1 {
       font-size: 3vh;
     }
+    .main-header {
+      height: 200px;
+    }
     .search {
       width: 300px; /* 예시: 검색바 너비 조정 */
     }
@@ -546,8 +549,9 @@ const HomePage = styled.div`
       }
     }
     .categorys-container {
-      gap: 15px;
-      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      gap: 10px;
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 `;

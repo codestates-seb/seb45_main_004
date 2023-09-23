@@ -29,7 +29,7 @@ function InviteWritePage() {
     address: '',
     imageUrl: selectedImage,
   });
-
+  console.log(formData);
   // 모집 글 작성 요청
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -217,7 +217,11 @@ function InviteWritePage() {
   return (
     <StyledWritePage>
       <section>
-        <button className="modal-btn" onClick={handleModalClick}>
+        <button
+          className="modal-btn"
+          aria-label="모달 열기"
+          onClick={handleModalClick}
+        >
           <BiEdit className="edit-btn" />
         </button>
         <form onSubmit={handleSubmit}>
@@ -284,7 +288,7 @@ function InviteWritePage() {
                 </label>
               </div>
               <label>
-                Money:
+                Cost per person:
                 <input
                   className="money-date"
                   type="text"
@@ -343,7 +347,7 @@ function InviteWritePage() {
             </div>
           )}
           {/*카테고리*/}
-          <div className="category-btn">
+          <menu className="category-btn">
             {Object.keys(CategoryMappings)
               .filter((key) => key !== 'CATEGORY_ALL')
               .map((key) => {
@@ -360,7 +364,7 @@ function InviteWritePage() {
                   />
                 );
               })}
-          </div>
+          </menu>
           <MapKakao onSelectLocation={handleLocationSelect} showSearch={true} />
         </div>
       </section>
@@ -412,6 +416,44 @@ const StyledWritePage = styled.div`
     box-shadow: 4px 3px 10px rgba(0, 0, 0, 0.2);
   }
 
+  #map {
+    position: relative;
+    height: 400px;
+  }
+
+  #listings {
+    position: absolute;
+    width: 200px;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 10px;
+    z-index: 2;
+  }
+  #listings.filled {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  #toggleButton {
+    width: 80px;
+    height: 28px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    z-index: 999;
+    position: relative;
+    background-color: whitesmoke;
+  }
+  .selected-item::before {
+    content: '✔';
+    color: red;
+    margin-right: 5px;
+  }
+  .search-result-item {
+    cursor: pointer;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
   .main-img {
     width: 400px;
     height: 400px;
@@ -429,12 +471,13 @@ const StyledWritePage = styled.div`
   }
 
   .search-box {
-    margin: 10px 0px;
+    position: relative;
     display: flex;
     justify-content: space-around;
     align-items: center;
     height: 38px;
-    background-color: rgba(244, 227, 233, 0.4);
+    background-color: whitesmoke;
+    z-index: 2;
   }
 
   #address-input {
@@ -523,9 +566,10 @@ const StyledWritePage = styled.div`
 
   .modal-btn:active,
   .submit-btn:active,
+  #toggleButton:active,
   #search-button:active {
     transform: translateY(1px); // 클릭 시 버튼을 아래로 2px 이동
-    box-shadow: 1px 1px rgb(0, 0, 0, 0.7);
+    box-shadow: 1px 1px rgb(0, 0, 0, 0.2);
   }
 
   .card-img-container {

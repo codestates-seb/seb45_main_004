@@ -137,7 +137,11 @@ const Header = () => {
         {isLogin ? (
           <ButtonBox>
             <div className="button-box">
-              <Link to="/members/me" className="user-info-icon">
+              <Link
+                to="/members/me"
+                className="user-info-icon"
+                aria-label="사용자 정보 보기"
+              >
                 <FaRegUserCircle className="user-info-icon" />
               </Link>
               <Link to="/boards/new-boards">

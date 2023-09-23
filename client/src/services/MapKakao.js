@@ -58,38 +58,83 @@ function MapKakao({
     let marker = null; // 이전 마커 인스턴스를 추적하기 위한 변수
 
     // 장소 검색 객체 생성
-    const geocoder = new kakao.maps.services.Geocoder();
+    const places = new kakao.maps.services.Places(); // 키워드 검색 서비스 생성
 
     const handleSearchButtonClick = () => {
-      // showSearch 값이 true일 때만 검색 기능을 사용
-      if (showSearch) {
-        const input = document.getElementById('address-input');
-        const address = input.value;
+      const input = document.getElementById('address-input');
+      const keyword = input.value;
+      places.keywordSearch(keyword, (result, status) => {
+        const listings = document.getElementById('listings');
+        const markers = []; // 검색 결과에 대한 모든 마커를 저장할 배열
+        const toggleButton = document.getElementById('toggleButton');
 
-        // 주소를 검색하여 좌표를 얻어옴
-        geocoder.addressSearch(address, (result, status) => {
-          if (status === kakao.maps.services.Status.OK) {
-            // 마커가 표시될 위치
-            const latlng = new kakao.maps.LatLng(result[0].y, result[0].x);
+        if (status === kakao.maps.services.Status.OK) {
+          listings.innerHTML = '';
+          listings.classList.add('filled'); // 내용이 있을 때 filled 클래스 추가
+          input.value = '';
 
-            // 이전 마커가 존재하면 제거
-            if (marker) {
-              marker.setMap(null);
+          toggleButton.onclick = () => {
+            if (
+              listings.style.display === 'none' ||
+              listings.style.display === ''
+            ) {
+              listings.style.display = 'block';
+              toggleButton.innerText = '목록 숨기기';
+            } else {
+              listings.style.display = 'none';
+              toggleButton.innerText = '목록 표시하기';
             }
+          };
 
-            // displayMarkerAndInfowindow 함수를 사용하여 마커와 인포윈도우를 생성 및 표시
-            marker = displayMarkerAndInfowindow(map, latlng, address);
+          result.forEach((item) => {
+            const latlng = new kakao.maps.LatLng(item.y, item.x);
 
-            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-            map.setCenter(latlng);
+            const tempMarker = displayMarkerAndInfowindow(
+              map,
+              latlng,
+              `${item.place_name} (${item.address_name})`,
+            );
 
-            // 위도, 경도, 주소 정보를 상위 컴포넌트로 전달 // handleLocationSelect 함수가 호출되는 것
-            onSelectLocation(latlng.getLat(), latlng.getLng(), address);
-          } else {
-            alert('주소를 찾을 수 없습니다.');
-          }
-        });
-      }
+            markers.push(tempMarker); // 마커 배열에 추가
+
+            const el = document.createElement('div');
+            el.innerHTML = `${item.place_name} (${item.address_name})`;
+            el.classList.add('search-result-item');
+            el.onclick = () => {
+              if (marker) {
+                marker.setMap(null);
+              }
+
+              const selectedItems = document.querySelectorAll(
+                '.search-result-item.selected-item',
+              );
+              selectedItems.forEach((item) => {
+                item.classList.remove('selected-item');
+              });
+              el.classList.add('selected-item');
+
+              // 사용자가 목록 중 하나를 클릭하면, 나머지 마커는 삭제합니다.
+              markers.forEach((m) => m.setMap(null));
+
+              marker = displayMarkerAndInfowindow(map, latlng, item.place_name);
+
+              map.setCenter(latlng);
+              onSelectLocation(
+                latlng.getLat(),
+                latlng.getLng(),
+                item.place_name,
+              );
+            };
+            listings.appendChild(el);
+          });
+          // listings.appendChild(toggleButton);
+          listings.style.display = 'block'; // listings 숨기기
+        } else {
+          listings.innerHTML = '';
+          listings.classList.remove('filled');
+          alert('검색 결과가 없습니다.');
+        }
+      });
     };
 
     //엔터 검색
@@ -102,6 +147,7 @@ function MapKakao({
 
     if (showMarker && latitude && longitude) {
       const latlngs = new kakao.maps.LatLng(latitude, longitude);
+      const geocoder = new kakao.maps.services.Geocoder();
 
       // 좌표를 주소로 변환
       geocoder.coord2Address(
@@ -150,20 +196,23 @@ function MapKakao({
 
   return (
     <div>
-      {showSearch && ( // showSearch가 true일 때만 검색 입력란 및 버튼을 렌더링
-        <div className="search-box">
-          <input
-            type="text"
-            id="address-input"
-            placeholder="전체 주소를 입력해주세요."
-            style={{ marginRight: '10px' }}
-          />
-          <button tabIndex="0" id="search-button">
-            검색
-          </button>
-        </div>
-      )}
-      <div id="map" style={{ height: '400px' }}></div>
+      <div id="map" style={{ height: '400px' }}>
+        {showSearch && (
+          <div className="search-box">
+            <input
+              type="text"
+              id="address-input"
+              placeholder="주소를 입력해주세요."
+              style={{ marginRight: '10px' }}
+            />
+            <button tabIndex="0" id="search-button">
+              검색
+            </button>
+          </div>
+        )}
+        <button id="toggleButton">검색 목록</button>
+        <div id="listings" className="search-results"></div>
+      </div>
     </div>
   );
 }
