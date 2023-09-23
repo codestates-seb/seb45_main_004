@@ -233,7 +233,7 @@ function InvitePage() {
                     alt="host-img"
                   />
                 </button>
-                <div>금액: {numberWithCommas(eventData.money)}</div>
+                <div>Cost per person: {numberWithCommas(eventData.money)}</div>
               </div>
               <button
                 className="join-btn"
@@ -530,6 +530,7 @@ const EventDetailsContainer = styled.div`
     overflow: scroll;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
+    z-index: 999;
   }
   /* 스크롤바 높낮이 */
   .dropdown::-webkit-scrollbar {
