@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.party.alram.entity.Alarm;
 import com.party.boardlike.entity.BoardLike;
-import com.party.chatting.entity.ChatRoom;
+//import com.party.chatting.entity.ChatRoom;
 import com.party.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -71,9 +71,9 @@ public class Board {
     @JsonBackReference
     private Member member;
 
-    @OneToOne
-    @JoinColumn(name = "CHATROOM_ID")
-    private ChatRoom chatRoom;
+//    @OneToOne
+//    @JoinColumn(name = "CHATROOM_ID")
+//    private ChatRoom chatRoom;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
     private List<BoardLike> boardLikes = new ArrayList<>();
