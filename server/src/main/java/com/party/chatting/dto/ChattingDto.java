@@ -1,4 +1,4 @@
-package com.party.chatting.Dto;
+package com.party.chatting.dto;
 
 import lombok.Getter;
 

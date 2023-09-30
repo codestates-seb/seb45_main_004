@@ -1,6 +1,6 @@
 package com.party.chatting.controller;
 
-import com.party.chatting.Dto.ChattingDto;
+import com.party.chatting.dto.ChattingDto;
 import com.party.chatting.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

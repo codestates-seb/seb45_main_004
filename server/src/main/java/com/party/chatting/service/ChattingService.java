@@ -1,6 +1,6 @@
 package com.party.chatting.service;
 
-import com.party.chatting.Dto.ChattingDto;
+import com.party.chatting.dto.ChattingDto;
 import com.party.chatting.entity.Chatting;
 import com.party.chatting.mapper.ChattingMapper;
 import com.party.chatting.repository.ChattingRepository;
