@@ -5,7 +5,9 @@ import com.party.board.repository.ApplicantRepository;
 import com.party.board.service.BoardService;
 import com.party.mail.handler.MailHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,18 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MailService {
-    private final JavaMailSender javaMailSender;
+    private JavaMailSender javaMailSender;
     private final BoardService boardService;
     private final ApplicantRepository applicantRepository;
+
+    @Bean
+    public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl javaMailSender1 = new JavaMailSenderImpl();
+        javaMailSender1.setProtocol("smtp");
+        javaMailSender1.setHost("127.0.0.1");
+        javaMailSender1.setPort(25);
+        return javaMailSender1;
+    }
 
     @Async
     public void sendFollowMail(String toEmail, String title, String message, String imageUrl) throws MessagingException, IOException {
