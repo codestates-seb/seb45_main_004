@@ -1,6 +1,5 @@
 package com.party.chatting.service;
 
-import com.party.chatting.controller.ChatRoomController;
 import com.party.chatting.entity.ChatRoom;
 import com.party.chatting.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,7 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
 
+    // boardId와 주요키가 같은 chatRoom을 생성
     public void creatChatRoom(long boardId) {
         ChatRoom chatRoom = ChatRoom.builder()
                 .id(boardId)

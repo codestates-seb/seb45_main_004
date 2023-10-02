@@ -27,4 +27,8 @@ public class Chatting {
     @ManyToOne
     @JoinColumn(name = "CHATROOM_ID")
     private ChatRoom chatRoom;
+
+    public void assignChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
+    }
 }
