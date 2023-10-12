@@ -141,6 +141,21 @@
 ![Notion](https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white)
 ![Zoom](https://img.shields.io/badge/zoom-2D8CFF?style=for-the-badge&logo=zoom&logoColor=white)
 
+## git 규칙
+|Type|내용|
+|----|---|
+|feat|새로운 기능 추가|
+|fix|버그 수정|
+|docs|문서 수정|
+|style|코드 포맷팅, 세미콜론 누락 (코드변경 x)|
+|refactor|코드 리팩토링|
+
+✅ **사용 예시**
+[직무] Type : 변경 내용
+
+ex) header 컴포넌트 작업 완료 ➡️
+[FE]feat : header component 작업 완료
+
 <br>
 <h2><a href="https://www.notion.so/codestates/ERD-146a70115df14c63bbb7295364e11703">▶테이블 명세서</a></h2>
 <br>
