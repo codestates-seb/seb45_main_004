@@ -2,7 +2,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${MYSQL_DATABASE_URL}
+    url: ${DEV_MYSQL_DATABASE_URL}
     username: ${MYSQL_DATABASE_USERNAME}
     password: ${MYSQL_DATABASE_PASSWORD}
   thymeleaf:
@@ -55,8 +55,8 @@ jwt:
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: ${DEV_AWS_ACCESS_KEY}
+      secretKey: ${DEV_AWS_SECRET_ACCESS_KEY}
     s3:
       bucket: celebee-image
     region:
