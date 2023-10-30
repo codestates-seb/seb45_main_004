@@ -24,6 +24,7 @@ public class Chatting {
 
     private LocalDate date;
 
+    @Column(nullable = false)
     private long roomId;
 
     @ManyToOne
