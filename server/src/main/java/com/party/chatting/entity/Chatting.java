@@ -24,8 +24,10 @@ public class Chatting {
 
     private LocalDate date;
 
+    private long roomId;
+
     @ManyToOne
-    @JoinColumn(name = "CHATROOM_ID")
+    @JoinColumn(name = "CHAT_ROOM_ID")
     private ChatRoom chatRoom;
 
     public void assignChatRoom(ChatRoom chatRoom) {

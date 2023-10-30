@@ -23,7 +23,7 @@ public class ChattingService {
     public void saveChat(ChattingDto chattingDto) {
         log.info("전달 받은 ChattingDto roomId: " + chattingDto.getRoomId());
         log.info("전달 받은 ChattingDto Message: " + chattingDto.getMessage());
-        ChatRoom chatRoom = chatRoomRepository.findById(chattingDto.getRoomId())
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chattingDto.getRoomId())
                 .orElseThrow(() -> new RuntimeException("ChatRoom not found"));
 
         Chatting chatting = mapper.ChattingDtoToChatting(chattingDto);
@@ -32,7 +32,7 @@ public class ChattingService {
 
         chattingRepository.save(chatting);
 
-        log.info("저장된 Chatting Entity roomId: " + chatting.getChatRoom().getId());
+        log.info("저장된 Chatting Entity roomId: " + chatting.getRoomId());
         log.info("저장된 Chatting Entity Message: " + chatting.getMessage());
     }
 }

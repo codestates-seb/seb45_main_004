@@ -7,9 +7,4 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 class ServerApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
 }

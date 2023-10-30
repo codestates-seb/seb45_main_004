@@ -18,7 +18,7 @@ public class ChatRoomService {
     // boardId와 주요키가 같은 chatRoom을 생성
     public void creatChatRoom(long boardId) {
         ChatRoom chatRoom = ChatRoom.builder()
-                .id(boardId)
+                .roomId(boardId)
                 .build();
         chatRoomRepository.save(chatRoom);
     }

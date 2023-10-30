@@ -19,8 +19,10 @@ public class ChatRoom {
     boardId랑 chatRoomId랑 맞춰야 해서 자동생성 하지 않을 것
     cascade로 board 지우면 chatroom도 지워지게 할거임
      */
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long roomId;
 
     @OneToMany(mappedBy = "chatRoom")
     private List<Chatting> chatting;
