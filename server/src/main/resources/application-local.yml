@@ -51,10 +51,10 @@ jwt:
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY}
-      secretKey: ${AWS_SECRET_ACCESS_KEY}
+      accessKey: ${DEV_AWS_ACCESS_KEY}
+      secretKey: ${DEV_AWS_SECRET_ACCESS_KEY}
     s3:
-      bucket: celebeeimage
+      bucket: celebee-image
     region:
       static: ap-northeast-2
     stack:

@@ -30,7 +30,6 @@ public class ApplicantService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final AlarmService alarmService;
-    private final AwsService awsService;
 
 
     //모임 참여
