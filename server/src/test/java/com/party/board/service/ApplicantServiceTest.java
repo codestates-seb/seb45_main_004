@@ -18,10 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -33,7 +36,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 class ApplicantServiceTest {
 
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
     private final ApplicantService applicantService;
     private final MemberService memberService;
     private final BoardService boardService;
@@ -47,6 +50,7 @@ class ApplicantServiceTest {
         this.memberService = memberService;
         this.boardService = boardService;
     }
+
 
 //    @BeforeEach
 //    void beforeEach (){
@@ -77,24 +81,9 @@ class ApplicantServiceTest {
 //        //boardService.
 //    }
 
-    private String getAccessToken() throws Exception {
-        String clientId = "foo";
-        String clientSecret = "bar";
-        String username = "id";
-        String password = "password";
-
-        ResultActions perform = this.mvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
-                .param("username", username)
-                .param("password", password)
-                .param("grant_type", "password"));
-
-        return (String) new Jackson2JsonParser().parseMap(perform.andReturn().getResponse().getContentAsString()).get("access_token");
-    }
     @Test
     @DisplayName("내가 작성한 모임 참여가 되는지 확인하는 테스트")
     void joinBoard1() {
-        Member member1 = Member.createMember("1111@gmail.com", "123456789", "멤버 1", "여성");
         //테스트 시작할 때 마다 모임 글을 새로 생성
         BoardDto.Post board = new BoardDto.Post();
         board.setTitle("글 제목");
