@@ -1,6 +1,7 @@
 package com.party.chatting.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -25,9 +26,14 @@ public class WebSockConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*");
-                // 목적은 웹소켓 연결이 가능하지 않을 때
-                // (예: 웹소켓을 지원하지 않는 브라우저, 인터넷 중간에 프록시나 방화벽이 있어 웹소켓을 차단하는 경우)에도
-                // 가능한 가장 유사한 대체 수단을 사용하여 통신할 수 있게 하는 것입니다.
+        // 목적은 웹소켓 연결이 가능하지 않을 때
+        // (예: 웹소켓을 지원하지 않는 브라우저, 인터넷 중간에 프록시나 방화벽이 있어 웹소켓을 차단하는 경우)에도
+        // 가능한 가장 유사한 대체 수단을 사용하여 통신할 수 있게 하는 것입니다.
 //                .withSockJS();
+    }
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors();
     }
 }

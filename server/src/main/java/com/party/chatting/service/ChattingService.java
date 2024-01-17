@@ -8,6 +8,7 @@ import com.party.chatting.repository.ChatRoomRepository;
 import com.party.chatting.repository.ChattingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,5 +35,12 @@ public class ChattingService {
 
         log.info("저장된 Chatting Entity roomId: " + chatting.getRoomId());
         log.info("저장된 Chatting Entity Message: " + chatting.getMessage());
+    }
+
+    public Page<Chatting> previousChatLog(int roomId) {
+        log.info("전달 받은 RoomId: " + roomId);
+
+
+        return null;
     }
 }
