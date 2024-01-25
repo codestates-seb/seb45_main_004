@@ -30,11 +30,11 @@
     - 유저정보 조회 및 수정<br/>
   </td>
   <td align="left">
-    - AWS를 이용해 server 환경 구축 및 
-FE/BE 배포<br/> 
+    - AWS를 이용해 server 환경 구축 및 FE/BE 배포<br/> 
+    - DNS 및 HTTPS 적용  <br/> 
     - 모임 참여, 모임 마감 처리<br/> 
-    - 이미지 처리<br/> 
-    - 알림 <br/>
+    - AWS S3를 통한 이미지 처리<br/> 
+    - 알림 기능<br/>
   </td>
   <td align="left">
     - 모임 글 작성 및 조회 <br/>    
