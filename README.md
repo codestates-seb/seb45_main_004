@@ -30,7 +30,8 @@
     - 유저정보 조회 및 수정<br/>
   </td>
   <td align="left">
-    - server 환경 구축 및 배포(AWS)<br/> 
+    - AWS를 이용해 server 환경 구축 및 
+FE/BE 배포<br/> 
     - 모임 참여, 모임 마감 처리<br/> 
     - 이미지 처리<br/> 
     - 알림 <br/>
