@@ -26,6 +26,7 @@ repositories {
 }
 
 dependencies {
+	testImplementation 'org.projectlombok:lombok:1.18.26'
 	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -47,6 +48,8 @@ dependencies {
 	implementation 'com.google.code.gson:gson'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // s3 설정
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.21.0'
+
 }
 
 tasks.named('test') {

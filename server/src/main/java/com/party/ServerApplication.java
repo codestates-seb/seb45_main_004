@@ -1,5 +1,6 @@
 package com.party;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -11,6 +12,7 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableScheduling
+@Slf4j
 public class ServerApplication extends SpringBootServletInitializer {
 
 	//타임존 한국 시간으로 맞춤
