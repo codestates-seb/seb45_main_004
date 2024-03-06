@@ -30,6 +30,7 @@
     - 유저정보 조회 및 수정<br/>
   </td>
   <td align="left">
+    - 프로젝트 서버 관리 <br/>
     - AWS를 이용해 server 환경 구축 및 FE/BE 배포<br/> 
     - DNS 및 HTTPS 적용  <br/> 
     - 모임 참여, 모임 마감 처리<br/> 
