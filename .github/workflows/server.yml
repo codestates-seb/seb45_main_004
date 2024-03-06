@@ -40,8 +40,8 @@ jobs:
           docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_PASSWORD}}
           cd server
           docker build -t celebee-server .
-          docker tag celebee-server ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:${GITHUB_SHA::7}
-          docker push ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:${GITHUB_SHA::7}
+          docker tag celebee-server ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:v3
+          docker push ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:v3
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -50,29 +50,22 @@ jobs:
           aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
           aws-region: ap-northeast-2
 
-      - name: Deploy to Server
+      - name: Check if container exists
         run: |
-          aws ssm send-command \
-            --instance-id i-0bb0f132aa82958ba \
-            --document-name "AWS-RunShellScript" \
-            --parameters "commands=[
-              'if sudo docker ps -a --format \\'{{.Names}}\\' | grep -q \'^server$\\'; then',
-              '  sudo docker stop server',
-              '  sudo docker rm server',
-              'fi',
-              'sudo docker pull ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:${GITHUB_SHA::7}',
-              'sudo docker run -d --name server -p 8080:8080 \
-                -e AWS_ACCESS_KEY=${{secrets.AWS_ACCESS_KEY}} \
-                -e AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}} \
-                -e DOCKER_HUB_PASSWORD=${{secrets.DOCKER_HUB_PASSWORD}} \
-                -e DOCKER_HUB_USERNAME=${{secrets.DOCKER_HUB_USERNAME}} \
-                -e JWT_SECRET_KEY=${{secrets.JWT_SECRET_KEY}} \
-                -e MYSQL_DATABASE_PASSWORD=${{secrets.MYSQL_DATABASE_PASSWORD}} \
-                -e MYSQL_DATABASE_URL=${{secrets.MYSQL_DATABASE_URL}} \
-                -e MYSQL_DATABASE_USERNAME=${{secrets.MYSQL_DATABASE_USERNAME}} \
-                -e KAKAO_CLIENT_ID=${{secrets.KAKAO_CLIENT_ID}} \
-                -e KAKAO_CLIENT_SECRET=${{secrets.KAKAO_CLIENT_SECRET}} \
-                -e MAIL_USERNAME=${{secrets.MAIL_USERNAME}} \
-                -e MAIL_PASSWORD=${{secrets.MAIL_PASSWORD}} \
-                ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:${GITHUB_SHA::7}'
-            ]"
+          if docker ps -a --format '{{.Names}}' | grep -q '^celebee-server$'; then
+            docker rm -f celebee-server
+          fi
+        continue-on-error: true
+
+      - name: Run scripts in server
+        uses: appleboy/ssh-action@master
+        with:
+          key: ${{secrets.EC2_KEY}}
+          host: ${{secrets.EC2_HOST}}
+          username: ubuntu
+          port: ${{secrets.EC2_PORT}}
+          script: |
+            whoami
+            sudo docker login -u ${{secrets.DOCKER_HUB_USERNAME}} -p ${{secrets.DOCKER_HUB_PASSWORD}}
+            sudo docker pull ${{secrets.DOCKER_HUB_USERNAME}}/celebee-server:v3
+            sudo docker-compose -f ./docker-compose.yml up -d
