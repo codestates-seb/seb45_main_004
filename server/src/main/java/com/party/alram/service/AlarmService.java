@@ -6,6 +6,7 @@ import com.party.alram.repository.EmitterRepository;
 import com.party.board.entity.Board;
 import com.party.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
@@ -19,7 +20,6 @@ import java.util.Map;
  * 서버에서는 클라이언트와 매핑되는 SSE 통신 객체를 만든다.
  * 서버에서 이벤트가 발생하면 해당 객체를 통해 클라이언트로 데이터를 전달한다.
  */
-
 @Service
 @RequiredArgsConstructor
 public class AlarmService {
@@ -52,10 +52,10 @@ public class AlarmService {
     }
 
     /**
-     * 알림 생성, 전송
+     * 알림 생성, 전송 메서드
      * 사용자의 모든 알람을 읽음처리
      */
-//    @Async
+    @Async
 //    @Transactional
     public void sendAlarm(Member member, Board board, Alarm.AlarmStatus alarmStatus, String content){
         Alarm alarm = Alarm.create(member, board, alarmStatus,content);
@@ -73,9 +73,32 @@ public class AlarmService {
         });
     }
 
+
+    //모임 글 작성자에게 알림 전송
+    public void sendBoardCreatedNotification(Member member, Board board){
+        sendAlarm(member,board,Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
+    }
+
+
+    //모임 참여자 발생 시 참여 중인 모든 인원에게 알림 전송
+    public void sendParticipantsNotification(Board board){
+        sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
+    }
+
+    //모임 참여 완료 알림 전송 (모임 참여 신청자에게 전송)
+    public void sendApplicantNotification(Member member, Board board){
+        sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
+    }
+
+    //모임 모집 마감 알림 전송
+    public void sendCompletedNotification (Board board){
+        sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
+    }
+
     /**
      * 클라에 데이터 전송 (id -> 데이터를 전달받을 사용자의 id)
      */
+    @Async
     private void sendToClient(SseEmitter emitter, String eventId, Object data) {
         try {
             emitter.send(SseEmitter.event()

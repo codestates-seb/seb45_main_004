@@ -25,7 +25,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
-@Slf4j
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -43,10 +43,13 @@ public class BoardService {
         Member member = findMember(extractMemberId());
         Board board = processCreateBoard(postDto, member);
         saveApplicantForBoardCreat(board, member);
-        //알림 발송
-        alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_CREATED,"["+board.getTitle()+"] 모임이 등록되었습니다!🔥");
 
-        return boardRepository.save(board);
+        //작성한 모임 저장
+        Board savedBoard = boardRepository.save(board);
+        //알림 발송
+        notifyCreateBoard(member, board);
+
+        return savedBoard;
     }
 
     //모임글 상세 조회
@@ -143,7 +146,7 @@ public class BoardService {
             board.setImageUrl(cutPath+"-closed.png");
             boardRepository.save(board);
             //알림 발송
-            alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
+            notifyDeadline(board);
         }
     }
 
@@ -173,4 +176,16 @@ public class BoardService {
     public List<Board> findEventsScheduledForDate(LocalDate eventDate) {
         return boardRepository.findByDate(eventDate);
     }
+
+    //모임글 작성 시 알림 전송 (알림 발송 관련 메서드)
+    private void notifyCreateBoard (Member member, Board board){
+        alarmService.sendBoardCreatedNotification(member,board);
+    }
+
+    //날짜 지난 모임 마감 알림 전송 (알림 발송 관련 메서드)
+    private void notifyDeadline (Board board){
+        alarmService.sendCompletedNotification(board);
+    }
+
+
 }

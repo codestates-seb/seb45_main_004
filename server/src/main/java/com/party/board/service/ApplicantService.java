@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -51,9 +51,6 @@ public class ApplicantService {
         //현재 모임 참여 인원 수 업데이트
         if(board.getCurrentNum() < board.getTotalNum()){
             board.setCurrentNum(board.getCurrentNum()+1);
-            //알림 발송
-            alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_UPDATE, "["+board.getTitle()+"] 모임에 새로운 인연이 모임에 찾아왔어요 💝");
-            alarmService.sendAlarm(member,board, Alarm.AlarmStatus.BOARD_UPDATE,"["+board.getTitle()+"] 모임에 참여 완료되었습니다! 💞");
 
             if (board.getCurrentNum() == board.getTotalNum()){
                 board.setStatus(Board.BoardStatus.BOARD_STATUS);
@@ -62,18 +59,23 @@ public class ApplicantService {
                 System.out.println(cutPath);
                 board.setImageUrl(cutPath+"-closed.png");
                 boardRepository.save(board);
-                //알림 발송
-                alarmService.sendAlarm(board.getMember(), board, Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
-                alarmService.sendAlarm(member,board,Alarm.AlarmStatus.BOARD_CLOSED, "["+board.getTitle()+"] 모임이 모집 마감되었습니다 💖");
+                //알림
+                notifyCompleted(board);
+                notifyCompleted(board);
             }
         }else {//인원수 다 찼으면 추가 안함
             throw new BusinessLogicException(ExceptionCode.NOT_ALLOW_PARTICIPATE);
         }
 
+        //참여 정보 저장
+        Applicant savedApplicant = applicantRepository.save(applicant);
         //모임 참여 처리
         applicant.setJoin(true);
+        //알림 발송
+        notifyApplicant(member, board);
+        notifyParticipants(board);
 
-        return applicantRepository.save(applicant);
+        return savedApplicant;
     }
 
     //내가 참여한 모임 모두 조회
@@ -94,6 +96,21 @@ public class ApplicantService {
         if (isJoinBord){
             throw new IllegalArgumentException("YOU ALREADY JOIN");
         }
+    }
+
+    //모임 참여 중인 인원에게 알림 전송
+    private void notifyParticipants(Board board){
+        alarmService.sendParticipantsNotification(board);
+    }
+
+    //모임 참여 완료 알림 전송 (모임 참여 신청자에게 전송)
+    private void notifyApplicant (Member member, Board board){
+        alarmService.sendApplicantNotification(member,board);
+    }
+
+    //모임 모집 마감 알림 전송
+    private void notifyCompleted(Board board){
+        alarmService.sendCompletedNotification(board);
     }
 
 
