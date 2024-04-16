@@ -1,6 +1,8 @@
 package com.party.board.service;
 
-import com.party.alram.entity.Alarm;
+
+import com.party.alram.NotificationEvent;
+import com.party.alram.NotificationEventHandler;
 import com.party.alram.service.AlarmService;
 import com.party.board.dto.BoardDto;
 import com.party.board.entity.Applicant;
@@ -14,11 +16,10 @@ import com.party.member.entity.Member;
 import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -36,6 +37,7 @@ public class BoardService {
     private final MemberRepository memberRepository;
     private final ApplicantRepository applicantRepository;
     private final AlarmService alarmService;
+    private final ApplicationEventPublisher eventPublisher; //알림 이벤트 리스너를 위해 추가
 
     //모임글 등록
     public Board createBoard(BoardDto.Post postDto) {
@@ -47,7 +49,9 @@ public class BoardService {
         //작성한 모임 저장
         Board savedBoard = boardRepository.save(board);
         //알림 발송
-        notifyCreateBoard(member, board);
+        // ScheduleCreateEvent 발행 로직 추가
+        eventPublisher.publishEvent(NotificationEvent.createBoard(member,board));
+        //notifyCreateBoard(member, board);
 
         return savedBoard;
     }
@@ -139,7 +143,7 @@ public class BoardService {
         List<Board> closedList = findEventsScheduledForDate(today.plus(2, ChronoUnit.DAYS));
 
         for (Board board : closedList){
-            board.setStatus(Board.BoardStatus.BOARD_STATUS);
+            board.setStatus(Board.BoardStatus.BOARD_COMPLETE);
             String rootImagePath = board.getImageUrl();
             String cutPath = rootImagePath.substring(0, rootImagePath.length()-4);
             System.out.println(cutPath);
@@ -173,14 +177,15 @@ public class BoardService {
     }
 
     //해당 날짜에 예정된 모임 검색(이메일 발송 관련 메서드)
-    public List<Board> findEventsScheduledForDate(LocalDate eventDate) {
-        return boardRepository.findByDate(eventDate);
+    public List<Board> findEventsScheduledForDate(LocalDate eventDate ) {
+        //BoardStatus가 모집중 상태인 모임만 반환
+        return boardRepository.findByDateAndStatus(eventDate, Board.BoardStatus.BOARD_RECRUITING);
     }
 
-    //모임글 작성 시 알림 전송 (알림 발송 관련 메서드)
-    private void notifyCreateBoard (Member member, Board board){
-        alarmService.sendBoardCreatedNotification(member,board);
-    }
+//    //모임글 작성 시 알림 전송 (알림 발송 관련 메서드)
+//    private void notifyCreateBoard (Member member, Board board, Notification accept){
+//        alarmService.sendBoardCreatedNotification(member,board);
+//    }
 
     //날짜 지난 모임 마감 알림 전송 (알림 발송 관련 메서드)
     private void notifyDeadline (Board board){

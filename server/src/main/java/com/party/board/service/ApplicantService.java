@@ -1,5 +1,6 @@
 package com.party.board.service;
 
+import com.party.alram.NotificationEvent;
 import com.party.alram.entity.Alarm;
 import com.party.alram.service.AlarmService;
 import com.party.board.entity.Applicant;
@@ -14,6 +15,7 @@ import com.party.member.repository.MemberRepository;
 import com.party.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,7 @@ public class ApplicantService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
     private final AlarmService alarmService;
+    private final ApplicationEventPublisher eventPublisher;
 
 
     //모임 참여
@@ -53,15 +56,15 @@ public class ApplicantService {
             board.setCurrentNum(board.getCurrentNum()+1);
 
             if (board.getCurrentNum() == board.getTotalNum()){
-                board.setStatus(Board.BoardStatus.BOARD_STATUS);
+                board.setStatus(Board.BoardStatus.BOARD_COMPLETE);
                 String rootImagePath = board.getImageUrl();
                 String cutPath = rootImagePath.substring(0, rootImagePath.length()-4);
                 System.out.println(cutPath);
                 board.setImageUrl(cutPath+"-closed.png");
                 boardRepository.save(board);
                 //알림
-                notifyCompleted(board);
-                notifyCompleted(board);
+                //notifyCompleted(board);
+                //notifyCompleted(board);
             }
         }else {//인원수 다 찼으면 추가 안함
             throw new BusinessLogicException(ExceptionCode.NOT_ALLOW_PARTICIPATE);
@@ -72,8 +75,7 @@ public class ApplicantService {
         //모임 참여 처리
         applicant.setJoin(true);
         //알림 발송
-        notifyApplicant(member, board);
-        notifyParticipants(board);
+        eventPublisher.publishEvent(NotificationEvent.closedBoard(member,board));
 
         return savedApplicant;
     }

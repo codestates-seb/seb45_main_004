@@ -15,7 +15,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     Optional<Board> findByIdWithAll(@Param("boardId") Long boardId);
 
     //모임글 날짜 조회(이메일 발송 관련 메서드)
-    List<Board> findByDate(LocalDate eventDate);
+    List<Board> findByDateAndStatus(LocalDate eventDate, Board.BoardStatus status);
 
     //카테고리 조회
     List<Board> findByCategory(Board.BoardCategory category);
