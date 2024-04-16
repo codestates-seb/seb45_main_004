@@ -103,7 +103,7 @@ public class Board {
     }
     public enum BoardStatus {
         BOARD_RECRUITING("모집 중"),
-        BOARD_STATUS("모집 마감"),
+        BOARD_COMPLETE("모집 마감"),
         ;
 
         @Getter
